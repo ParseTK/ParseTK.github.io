@@ -1,31 +1,52 @@
 @import "tailwindcss";
 
+/* Tailwind v4 follows the OS setting for `dark:` unless told to use the .dark class */
+@custom-variant dark (&:where(.dark, .dark *));
+
 /* === Base Layer: Define root variables === */
 @layer base {
   :root {
+    color-scheme: light;
+
     --background: 210 40% 98%;
     --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
 
-    /* 🔥 Solar Flare Orange Accent */
-    --primary: 28 90% 55%;
+    --secondary: 210 40% 93%;
+    --secondary-foreground: 222 47% 11%;
+
+    /* Muted text must keep 4.5:1 against background, card and secondary */
+    --muted-foreground: 215 19% 33%;
+
+    /* 🔥 Solar Flare Orange Accent (darkened in light mode so text and buttons pass 4.5:1) */
+    --primary: 24 90% 36%;
     --primary-foreground: 210 40% 98%;
 
     --border: 214 32% 91%;
+    /* Form control borders need 3:1 against the page */
+    --input: 215 16% 47%;
   }
 
   .dark {
+    color-scheme: dark;
+
     --background: 222 47% 4%;
     --foreground: 213 31% 91%;
 
     --card: 222 47% 8%;
 
-    /* 🪐 Deeper orange for dark mode glow */
+    --secondary: 217 33% 17%;
+    --secondary-foreground: 213 31% 91%;
+
+    --muted-foreground: 215 20% 72%;
+
+    /* 🪐 Deeper orange for dark mode glow; dark text on it keeps buttons readable */
     --primary: 25 90% 55%;
-    --primary-foreground: 213 31% 91%;
+    --primary-foreground: 222 47% 4%;
 
     --border: 217 33% 20%;
+    --input: 215 16% 55%;
   }
 
   * {
@@ -33,23 +54,55 @@
   }
 
   html {
-    @apply scroll-smooth;
+    /* Keep anchored sections clear of the fixed navbar */
+    scroll-padding-top: 5rem;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
   }
 
   body {
     @apply bg-background text-foreground transition-colors duration-300;
     font-feature-settings: "rlig" 1, "calt" 1;
   }
+
+  /* Visible keyboard focus everywhere */
+  :focus-visible {
+    outline: 2px solid hsl(var(--primary));
+    outline-offset: 2px;
+  }
+
+  /* Honor the OS "reduce motion" setting. Animations jump to their end state
+     so content that fades in is still shown. */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      animation-delay: 0s !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 /* === Theme Layer: Link variables to Tailwind’s color system === */
 @theme {
   --color-border: hsl(var(--border));
+  --color-input: hsl(var(--input));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
   --color-primary: hsl(var(--primary));
   --color-primary-foreground: hsl(var(--primary-foreground));
+
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+
+  --color-muted-foreground: hsl(var(--muted-foreground));
 
   --color-card: hsl(var(--card));
 
@@ -60,6 +113,7 @@
   --animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
   --animate-fade-in-delay-3: fade-in 0.7s ease-out 0.6s forwards;
   --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
+  --animate-grow: grow 1.5s ease-out;
 }
 
 /* === Animations === */
@@ -78,6 +132,11 @@
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes grow {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
+}
+
 /* === Utilities === */
 @utility container {
   margin-inline: auto;
@@ -94,6 +153,19 @@
   @apply relative;
   /* changed glow from purple to orange */
   text-shadow: 0 0 10px rgba(255, 123, 47, 0.5);
+}
+
+@utility text-gradient {
+  background-image: linear-gradient(to right, hsl(var(--primary)), hsl(var(--foreground)));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+
+  /* Gradient text disappears in Windows High Contrast; fall back to a system color */
+  @media (forced-colors: active) {
+    background-image: none;
+    color: CanvasText;
+  }
 }
 
 @utility card-hover {

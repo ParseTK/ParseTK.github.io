@@ -4,7 +4,22 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + React + TS</title>
+    <meta name="color-scheme" content="dark light" />
+    <meta
+      name="description"
+      content="Portfolio of Tyler Kirchner, a software developer building fintech applications, automation scripts and games with React, TypeScript, C# and Python."
+    />
+    <title>Tyler Kirchner | Software Developer Portfolio</title>
+    <script>
+      // Apply the saved theme before first paint so the page never flashes light. Dark is the default.
+      try {
+        if (localStorage.getItem("theme") !== "light") {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {
+        document.documentElement.classList.add("dark");
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>
