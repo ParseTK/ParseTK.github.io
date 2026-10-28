@@ -7,7 +7,7 @@ const skills = [{ name: "Html/CSS", level: 90, category: "frontend" },
                 { name: "TypeScript", level: 40, category: "frontend" },
                 { name: "TailwindCSS", level: 40, category: "frontend" },
                 { name: "Next.js", level: 40, category: "frontend" },
-                
+
                 { name: "Node.js", level: 60, category: "backend" },
                 { name: "Express.js", level: 50, category: "backend" },
                 { name: "C# + EF Core", level: 70, category: "backend" },
@@ -31,7 +31,7 @@ const skills = [{ name: "Html/CSS", level: 90, category: "frontend" },
 const categories = ["all", "frontend", "backend", "tools"];
 export const SkillsSection = () => {
     const [activeCategory, setActiveCategory] = useState("all");
-    const filteredSkills = skills.filter((skill => activeCategory === "all" || skill.category === activeCategory))
+    const filteredSkills = skills.filter((skill) => activeCategory === "all" || skill.category === activeCategory)
   return (
     <section id="skills" className="py-24 px-4 relative bg-secondary/30">
         <div className="container mx-auto max-w-5xl">
@@ -39,39 +39,54 @@ export const SkillsSection = () => {
                 My <span className="text-primary"> Skills</span>
             </h2>
 
-            <div className="flex flex-wrap justify-center gap-4 mb-12">
-                {categories.map((category, key) => (
-                    <button 
-                        key={key}
+            <div
+                role="group"
+                aria-label="Filter skills by category"
+                className="flex flex-wrap justify-center gap-4 mb-12"
+            >
+                {categories.map((category) => (
+                    <button
+                        key={category}
+                        type="button"
                         onClick={() => setActiveCategory(category)}
+                        aria-pressed={activeCategory === category}
                         className={cn("px-5 py-2 rounded-full transition-colors duration-300 capitalize",
-                            activeCategory === category ? 
-                              "bg-primary text-primary-foreground" 
-                            : "bg-seondary/70 text-foreground hover:bd-secondary"
+                            activeCategory === category ?
+                              "bg-primary text-primary-foreground"
+                            : "bg-secondary text-secondary-foreground hover:bg-secondary/70"
                         )}>
                             {category}
                         </button>
                 ))}
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredSkills.map((skill, key) => (
-                    <div key={key} className="bg-card p-6 rounded-lg shadow-xs card-hover">
+            {/* Announces the result of a filter change to screen readers */}
+            <p className="sr-only" role="status">
+                Showing {filteredSkills.length} {activeCategory === "all" ? "" : activeCategory + " "}skills
+            </p>
+
+            <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                {filteredSkills.map((skill) => (
+                    <li key={skill.name} className="bg-card p-6 rounded-lg shadow-xs card-hover">
                         <div className="text-left mb-4">
                             <h3 className="font-semibold text-lg">{skill.name}</h3>
                         </div>
-                        <div className="w-full bg-secondary/50 h-2 rounded-full overflow-hidden">
-                            <div 
-                                className="bg-primary h-2 rounded-full origin-left animate-[grow_1.5s_ease-out]"
+                        {/* The percentage below carries the value; the bar is visual only */}
+                        <div aria-hidden="true" className="w-full bg-secondary h-2 rounded-full overflow-hidden">
+                            <div
+                                className="bg-primary h-2 rounded-full origin-left animate-grow"
                                 style={{ width: skill.level + "%" }}
                             />
                         </div>
                         <div className="text-right mt-1">
-                            <span className="text-sm text-muted-foreground">{skill.level}%</span>
+                            <span className="text-sm text-muted-foreground">
+                                <span className="sr-only">Proficiency: </span>
+                                {skill.level}%
+                            </span>
                         </div>
-                    </div>
+                    </li>
                 ))}
-            </div>
+            </ul>
         </div>
     </section>
   );
