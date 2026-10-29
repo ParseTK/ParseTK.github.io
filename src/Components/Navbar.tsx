@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { cn } from "./lib/utils";
 import { useMediaQuery } from "./lib/useMediaQuery";
+import { ThemeToggle } from "./ThemeToggle";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
@@ -63,7 +64,7 @@ export const Navbar = ({ isMenuOpen, onMenuOpenChange }: NavbarProps) => {
                     isScrolled ? "py-3 bg-background/80 backdrop-blur-md shadow-xs" : "py-5"
                 )}
             >
-                <div className="container flex items-center justify-between">
+                <div className="flex items-center justify-between px-4 md:px-8">
                     <a
                         className="text-xl font-bold text-primary flex items-center"
                         href="#hero"
@@ -72,31 +73,36 @@ export const Navbar = ({ isMenuOpen, onMenuOpenChange }: NavbarProps) => {
                             <span className="text-glow text-foreground"> ParseTK </span> Portfolio
                         </span>
                     </a>
-                    <div className="hidden md:flex space-x-8 ml-6 mr-14">
-                        {navItems.map((item) => (
-                            <a
-                                key={item.href}
-                                href={item.href}
-                                className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                            >
-                                {item.name}
-                            </a>
-                        ))}
-                    </div>
 
-                    <button
-                        ref={menuButtonRef}
-                        type="button"
-                        onClick={() => onMenuOpenChange(!isMenuOpen)}
-                        className="md:hidden p-2.5 text-foreground"
-                        aria-label="Site menu"
-                        aria-expanded={isMenuOpen}
-                        aria-controls="mobile-menu"
-                    >
-                        {isMenuOpen
-                            ? <X size={24} aria-hidden="true" />
-                            : <Menu size={24} aria-hidden="true" />}
-                    </button>
+                    <div className="flex items-center gap-2 md:gap-6">
+                        <div className="hidden md:flex space-x-8">
+                            {navItems.map((item) => (
+                                <a
+                                    key={item.href}
+                                    href={item.href}
+                                    className="text-foreground/80 hover:text-primary transition-colors duration-300"
+                                >
+                                    {item.name}
+                                </a>
+                            ))}
+                        </div>
+
+                        <ThemeToggle />
+
+                        <button
+                            ref={menuButtonRef}
+                            type="button"
+                            onClick={() => onMenuOpenChange(!isMenuOpen)}
+                            className="md:hidden p-2.5 text-foreground"
+                            aria-label="Site menu"
+                            aria-expanded={isMenuOpen}
+                            aria-controls="mobile-menu"
+                        >
+                            {isMenuOpen
+                                ? <X size={24} aria-hidden="true" />
+                                : <Menu size={24} aria-hidden="true" />}
+                        </button>
+                    </div>
                 </div>
             </nav>
 
