@@ -18,7 +18,7 @@ const projects: Project[] = [
         image: "/projects/HomeScreen.png",
         imageAlt: "Portfolio home screen on a dark starry background with the heading Hello, I'm Tyler Kirchner and a View My Projects button",
         tags: ["React", "TypeScript", "Tailwind CSS"],
-        githubUrl: "https://github.com/ParseTK/ReactTailwindPortfolio",
+        githubUrl: "https://github.com/ParseTK/ParseTK.github.io",
     },
     {
         id: 2,
