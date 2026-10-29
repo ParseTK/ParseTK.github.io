@@ -33,10 +33,10 @@ export const StarBackground = () => {
     useEffect(() => {
         generateStars();
 
-        // Phones fire resize when the address bar hides while scrolling; only a width change should reshuffle
         let lastWidth = window.innerWidth;
         const handleResize = () => {
-            if (window.innerWidth === lastWidth) return;
+            const widthChanged = window.innerWidth !== lastWidth;
+            if (!widthChanged) return;
             lastWidth = window.innerWidth;
             generateStars();
         };
