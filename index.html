@@ -10,16 +10,8 @@
       content="Portfolio of Tyler Kirchner, a software developer building fintech applications, automation scripts and games with React, TypeScript, C# and Python."
     />
     <title>Tyler Kirchner | Software Developer Portfolio</title>
-    <script>
-      // Apply the saved theme before first paint so the page never flashes light. Dark is the default.
-      try {
-        if (localStorage.getItem("theme") !== "light") {
-          document.documentElement.classList.add("dark");
-        }
-      } catch (e) {
-        document.documentElement.classList.add("dark");
-      }
-    </script>
+    <!-- Blocking on purpose: sets the theme class before first paint to avoid a flash of light -->
+    <script src="/theme-init.js"></script>
   </head>
   <body>
     <div id="root"></div>
