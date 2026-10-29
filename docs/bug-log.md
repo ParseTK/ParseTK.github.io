@@ -4,6 +4,13 @@ Resolved bugs only, newest first. Each entry has the merge date (UTC), the pull 
 
 Add an entry in a small `doc/` pull request after the fixing pull request merges, so the PR number and date are final. Describe the bug in the fixing pull request's body too.
 
+## Scroll hint stayed visible after scrolling
+- **Fixed:** 2026-10-29, [PR #16](https://github.com/ParseTK/ParseTK.github.io/pull/16)
+- **Seen:** the bouncing "Scroll" text and arrow at the bottom of the hero stayed visible after the visitor had started scrolling.
+- **Cause:** the hint was always rendered and nothing tracked scroll position for it.
+- **Fix:** the hint fades out once the page is scrolled more than 40px and returns at the top. Scroll tracking moved into a shared `useScrolledPast` hook, also used by the navbar.
+- **Checked:** visible at 0px and 20px, hidden at 60px and 900px, visible again back at the top, and the navbar background still switches on and off. Scroll events were dispatched by hand because the test browser does not fire them for programmatic scrolling. A physical phone check was not recorded at merge time.
+
 ## Nav lagged behind the page when switching theme
 - **Fixed:** 2026-10-29, [PR #14](https://github.com/ParseTK/ParseTK.github.io/pull/14)
 - **Seen:** switching between light and dark made the nav bar look slow to change, most noticeably when scrolled down.
