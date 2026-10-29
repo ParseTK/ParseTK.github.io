@@ -33,7 +33,11 @@ export const StarBackground = () => {
     useEffect(() => {
         generateStars();
 
+        let lastWidth = window.innerWidth;
         const handleResize = () => {
+            const widthChanged = window.innerWidth !== lastWidth;
+            if (!widthChanged) return;
+            lastWidth = window.innerWidth;
             generateStars();
         };
 
@@ -45,7 +49,7 @@ export const StarBackground = () => {
     }, []);
 
     return (
-        <div aria-hidden="true" className="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div aria-hidden="true" className="fixed inset-x-0 top-0 h-lvh overflow-hidden pointer-events-none z-0">
             {stars.map((star) => (
                 <div
                     key={star.id}
