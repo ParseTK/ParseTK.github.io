@@ -10,24 +10,22 @@ export const AboutMe = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
                     <div className="space-y-6">
                         <p className="text-2xl font-semibold">
-                            I am a passionate learner, educator, and tech enthusiast who loves
-                            exploring new technologies and sharing knowledge with others.
+                            Passionate about building software that makes a difference. 
+                            I enjoy creating applications that are not only functional, accessible, user-friendly, and visually appealing, 
+                            but also follow production-ready best practices. I am a strong advocate for clean code, 
+                            test-driven development, and continuous learning.
                         </p>
                         <p className="text-muted-foreground">
-                            Currently a college student building practical experience across
-                            web, backend, and game development. I've shipped front-end work with
-                            REACT, TypeScript, and TailwindCSS
-                            and exercised with test driven tools in the MOCHA Framework.
-                            On the backend I write C# with EF Core and LINQ with solid
-                            foundational database best practices.
-                            I also have strong foundational skills in python
-                            as well as game development with c++, GML, and c#, in unreal,
-                            Game Maker Studios and Unity.
+                            I’m a CS & CITS student at Elms College (B.S., graduating 2027), 
+                            with an A.S. in Computer Programming from STCC. I interned as a Software Engineer on the product development team, 
+                            owning work-items end-to-end, and learning the AGILE model & SDLC.
+                            Built production ready features for a RAG platform with Next.js, React, TypeScript, Node.js, PostgreSQL, Weaviate 
+                            and using TDD. (Vitest)
                         </p>
 
                         <p className="text-muted-foreground">
-                            Curiosity is my compass. I treat every problem as a classroom, experimenting, failing fast and documenting what matters
-                            so others can follow the same path without getting lost.
+                            Curiosity is my compass. I treat every problem as a classroom. I write up what I learn, with clear notes and visualizations, so others can learn too. 
+                            I thrive in collaborative, positive environments, and I take pride in helping my team succeed.
                         </p>
 
                         <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
