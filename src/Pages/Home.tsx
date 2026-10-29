@@ -10,7 +10,6 @@ import { ContactSection } from "@/Components/ContactSection";
 export const Home = () => {
   return (
     <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
-        {/* Lets keyboard and screen-reader users jump past the navigation */}
         <a
             href="#main"
             className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-primary-foreground"
@@ -18,16 +17,10 @@ export const Home = () => {
             Skip to main content
         </a>
 
-        {/* Theme toggle */}
         <ThemeToggle />
-
-        {/* Background Effects */}
         <StarBackground />
-
-        {/* Navbar */}
         <Navbar />
 
-        {/* Main Content */}
         <main id="main">
           <HeroSection />
           <AboutMe />
