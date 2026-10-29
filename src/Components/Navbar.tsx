@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 import { cn } from "./lib/utils";
 import { useMediaQuery } from "./lib/useMediaQuery";
+import { useScrolledPast } from "./lib/useScrolledPast";
 import { ThemeToggle } from "./ThemeToggle";
 import { Menu, X } from "lucide-react";
 
@@ -18,19 +19,9 @@ interface NavbarProps {
 }
 
 export const Navbar = ({ isMenuOpen, onMenuOpenChange }: NavbarProps) => {
-    const [isScrolled, setIsScrolled] = useState(false);
+    const isScrolled = useScrolledPast(10);
     const isDesktop = useMediaQuery("(min-width: 768px)");
     const menuButtonRef = useRef<HTMLButtonElement>(null);
-
-    useEffect(() => {
-        const handleScroll = () => {
-            setIsScrolled(window.scrollY > 10)
-        }
-
-        window.addEventListener("scroll", handleScroll);
-        return () =>
-            window.removeEventListener("scroll", handleScroll);
-    }, []);
 
     useEffect(() => {
         if (isDesktop) onMenuOpenChange(false);

@@ -1,6 +1,10 @@
 import { ArrowDown } from "lucide-react";
+import { cn } from "./lib/utils";
+import { useScrolledPast } from "./lib/useScrolledPast";
 
 export const HeroSection = () => {
+    const hasScrolled = useScrolledPast(40);
+
     return (
         <section
             id="hero"
@@ -34,7 +38,11 @@ export const HeroSection = () => {
             </div>
             <div
                 aria-hidden="true"
-                className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce"
+                className={cn(
+                    "absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce",
+                    "transition-opacity duration-300",
+                    hasScrolled && "opacity-0"
+                )}
             >
                 <span className="text-sm text-muted-foreground mb-2"> Scroll </span>
                 <ArrowDown className="h-5 w-5 text-primary" />
