@@ -4,6 +4,13 @@ Resolved bugs only, newest first. Each entry has the merge date (UTC), the pull 
 
 Add an entry in a small `doc/` pull request after the fixing pull request merges, so the PR number and date are final. Describe the bug in the fixing pull request's body too.
 
+## Email link had a space after mailto:
+- **Fixed:** 2026-10-29, [PR #18](https://github.com/ParseTK/ParseTK.github.io/pull/18)
+- **Seen:** the contact email link was `mailto: kirchnertyler@gmail.com`. Some mail apps open a draft addressed to a blank-prefixed address, or do not open a draft at all.
+- **Cause:** a space is not valid in a `mailto:` URL.
+- **Fix:** `mailto:kirchnertyler@gmail.com`. The visible text is unchanged.
+- **Checked:** the built bundle contains the clean link and no spaced `mailto: `. Clicking it in a mail app on a phone or computer was not recorded at merge time.
+
 ## Scroll hint stayed visible after scrolling
 - **Fixed:** 2026-10-29, [PR #16](https://github.com/ParseTK/ParseTK.github.io/pull/16)
 - **Seen:** the bouncing "Scroll" text and arrow at the bottom of the hero stayed visible after the visitor had started scrolling.
