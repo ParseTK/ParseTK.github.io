@@ -4,6 +4,20 @@ Resolved bugs only, newest first. Each entry has the merge date (UTC), the pull 
 
 Add an entry in a small `doc/` pull request after the fixing pull request merges, so the PR number and date are final. Describe the bug in the fixing pull request's body too.
 
+## Nav lagged behind the page when switching theme
+- **Fixed:** 2026-10-29, [PR #14](https://github.com/ParseTK/ParseTK.github.io/pull/14)
+- **Seen:** switching between light and dark made the nav bar look slow to change, most noticeably when scrolled down.
+- **Cause:** the page changed at inconsistent speeds. Section backgrounds, headings and cards changed instantly, but `body` (`transition-colors duration-300`) and the nav (`transition-all duration-300`) faded over 300ms. The nav only has a background once scrolled, so for about 300ms it sat in the old theme's color over an already-switched page.
+- **Fix:** the theme toggle adds a temporary `theme-switching` class to `<html>` that disables transitions for that one switch, so the whole page changes in one step. The `body` fade was removed.
+- **Checked:** scrolled to 1500px, the page background, nav background, section background, headings and logo colors were identical at 0ms, 60ms and 360ms after switching, in both directions. The fade itself was not watched, because the test browser does not run CSS transitions on a hidden pane. Physical phone and large monitor checks were not recorded at merge time.
+
+## Scroll arrow cut off on Android at landing
+- **Fixed:** 2026-10-29, [PR #13](https://github.com/ParseTK/ParseTK.github.io/pull/13)
+- **Seen:** on an Android phone the bouncing scroll arrow at the bottom of the hero was partly hidden when landing on the page.
+- **Cause:** the hero used `min-h-screen` (`100vh`). On Android Chrome `100vh` is the height with the address bar hidden. At landing the address bar is showing, so the visible area is shorter than the hero and the arrow, 32px above the hero's bottom edge, was cut off.
+- **Fix:** `min-h-svh`, the small viewport height (address bar showing), so the hero fits the visible area at landing.
+- **Checked:** the built CSS contains `min-height: 100svh`, and the hero equals the viewport height with the arrow fully visible at 375x700 and 1366x768. A desktop emulator has no address bar, so the cut-off itself could not be reproduced; a physical phone check was not recorded at merge time.
+
 ## Mobile menu covered only the top of the screen after scrolling
 - **Fixed:** 2026-10-29, [PR #10](https://github.com/ParseTK/ParseTK.github.io/pull/10)
 - **Seen:** on a phone, opening the hamburger menu after scrolling showed the menu links printed over the page text instead of a full black screen. At the top of the page it looked right.
