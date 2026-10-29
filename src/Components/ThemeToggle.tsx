@@ -18,7 +18,11 @@ export const ThemeToggle = () => {
 
     const toggleTheme = () => {
         const next = !isDarkMode;
-        document.documentElement.classList.toggle('dark', next);
+        const root = document.documentElement;
+        root.classList.add('theme-switching');
+        root.classList.toggle('dark', next);
+        root.getBoundingClientRect();
+        root.classList.remove('theme-switching');
         try {
             localStorage.setItem("theme", next ? "dark" : "light");
         } catch {
