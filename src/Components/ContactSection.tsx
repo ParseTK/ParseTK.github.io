@@ -29,8 +29,8 @@ export const ContactSection = () => {
                         </div>
                         <div>
                             <h4 className="font-medium text-left">Email</h4>
-                            <a href="mailto:22parse22@gmail.com" className={linkClass}>
-                                22parse22@gmail.com
+                            <a href="mailto: kirchnertyler@gmail.com" className={linkClass}>
+                                kirchnertyler@gmail.com
                             </a>
                         </div>
                     </li>
