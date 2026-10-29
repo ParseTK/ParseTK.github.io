@@ -24,7 +24,6 @@ export const Navbar = () => {
             window.removeEventListener("scroll", handleScroll);
     }, []);
 
-    // Escape closes the mobile menu
     useEffect(() => {
         if (!isMenuOpen) return;
         const handleKeyDown = (event: KeyboardEvent) => {
@@ -51,8 +50,6 @@ export const Navbar = () => {
                         <span className="text-glow text-foreground"> ParseTK </span> Portfolio
                     </span>
                 </a>
-                {/* Desktop nav items */}
-                {/* right margin leaves room for the fixed theme toggle */}
                 <div className="hidden md:flex space-x-8 ml-6 mr-14">
                     {navItems.map((item) => (
                         <a
@@ -65,7 +62,6 @@ export const Navbar = () => {
                     ))}
                 </div>
 
-                {/* Mobile nav items */}
                 <button
                     type="button"
                     onClick={() => setIsMenuOpen((prev) => !prev)}
@@ -79,7 +75,7 @@ export const Navbar = () => {
                         : <Menu size={24} aria-hidden="true" />}
                 </button>
 
-                {/* inert keeps the closed menu out of the tab order and the accessibility tree */}
+                {/* inert keeps the closed menu out of the tab order */}
                 <div
                     id="mobile-menu"
                     inert={!isMenuOpen}

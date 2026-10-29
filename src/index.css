@@ -3,7 +3,6 @@
 /* Tailwind v4 follows the OS setting for `dark:` unless told to use the .dark class */
 @custom-variant dark (&:where(.dark, .dark *));
 
-/* === Base Layer: Define root variables === */
 @layer base {
   :root {
     color-scheme: light;
@@ -16,15 +15,12 @@
     --secondary: 210 40% 93%;
     --secondary-foreground: 222 47% 11%;
 
-    /* Muted text must keep 4.5:1 against background, card and secondary */
     --muted-foreground: 215 19% 33%;
 
-    /* 🔥 Solar Flare Orange Accent (darkened in light mode so text and buttons pass 4.5:1) */
     --primary: 24 90% 36%;
     --primary-foreground: 210 40% 98%;
 
     --border: 214 32% 91%;
-    /* Form control borders need 3:1 against the page */
     --input: 215 16% 47%;
   }
 
@@ -41,7 +37,6 @@
 
     --muted-foreground: 215 20% 72%;
 
-    /* 🪐 Deeper orange for dark mode glow; dark text on it keeps buttons readable */
     --primary: 25 90% 55%;
     --primary-foreground: 222 47% 4%;
 
@@ -54,7 +49,6 @@
   }
 
   html {
-    /* Keep anchored sections clear of the fixed navbar */
     scroll-padding-top: 5rem;
   }
 
@@ -69,14 +63,11 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 
-  /* Visible keyboard focus everywhere */
   :focus-visible {
     outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
   }
 
-  /* Honor the OS "reduce motion" setting. Animations jump to their end state
-     so content that fades in is still shown. */
   @media (prefers-reduced-motion: reduce) {
     *,
     *::before,
@@ -89,7 +80,6 @@
   }
 }
 
-/* === Theme Layer: Link variables to Tailwind’s color system === */
 @theme {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
@@ -116,7 +106,6 @@
   --animate-grow: grow 1.5s ease-out;
 }
 
-/* === Animations === */
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
@@ -137,7 +126,6 @@
   to { transform: scaleX(1); }
 }
 
-/* === Utilities === */
 @utility container {
   margin-inline: auto;
   padding-inline: 2rem;
@@ -151,7 +139,6 @@
 
 @utility text-glow {
   @apply relative;
-  /* changed glow from purple to orange */
   text-shadow: 0 0 10px rgba(255, 123, 47, 0.5);
 }
 
@@ -192,7 +179,6 @@
   animation: var(--animate-pulse-subtle);
 }
 
-/* === Root layout === */
 #root {
   max-width: 100%;
   margin: 0 auto;

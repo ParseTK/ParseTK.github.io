@@ -60,7 +60,6 @@ export const SkillsSection = () => {
                 ))}
             </div>
 
-            {/* Announces the result of a filter change to screen readers */}
             <p className="sr-only" role="status">
                 Showing {filteredSkills.length} {activeCategory === "all" ? "" : activeCategory + " "}skills
             </p>
@@ -71,7 +70,6 @@ export const SkillsSection = () => {
                         <div className="text-left mb-4">
                             <h3 className="font-semibold text-lg">{skill.name}</h3>
                         </div>
-                        {/* The percentage below carries the value; the bar is visual only */}
                         <div aria-hidden="true" className="w-full bg-secondary h-2 rounded-full overflow-hidden">
                             <div
                                 className="bg-primary h-2 rounded-full origin-left animate-grow"

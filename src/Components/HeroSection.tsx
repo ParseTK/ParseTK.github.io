@@ -31,7 +31,6 @@ export const HeroSection = () => {
                     </div>
                 </div>
             </div>
-            {/* Decorative scroll hint; the navigation already covers this for assistive tech */}
             <div
                 aria-hidden="true"
                 className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex flex-col items-center animate-bounce"
