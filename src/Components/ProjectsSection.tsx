@@ -2,6 +2,7 @@ import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Glow } from "./Glow";
 import { ExternalLink } from "./ExternalLink";
+import { Carousel } from "./carousel/Carousel";
 import { ProjectCard } from "./ProjectCard";
 import { Tabs } from "./Tabs";
 import { PROJECT_CATEGORIES, projectsIn, type ProjectCategoryId } from "@/data/projects";
@@ -19,7 +20,7 @@ export const ProjectsSection = () => {
 
                 <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
                     Here are some of the projects I've worked on.
-                    Pick a category, then use the GitHub link on a card to see the code.
+                    Pick a category and swipe through the cards, then use the GitHub link on a card to see the code.
                 </p>
 
                 <Tabs
@@ -28,13 +29,16 @@ export const ProjectsSection = () => {
                     selectedId={category}
                     onSelect={(id) => setCategory(id as ProjectCategoryId)}
                 >
-                    <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                        {projectsIn(category).map((project) => (
-                            <li key={project.id}>
-                                <ProjectCard project={project} />
-                            </li>
-                        ))}
-                    </ul>
+                    <Carousel
+                        key={category}
+                        className="-mx-8 md:mx-0"
+                        label="Projects"
+                        noun="project"
+                        items={projectsIn(category)}
+                        getKey={(project) => project.id}
+                        getTitle={(project) => project.title}
+                        renderItem={(project) => <ProjectCard project={project} />}
+                    />
                 </Tabs>
 
                 <div className="text-center mt-12">
