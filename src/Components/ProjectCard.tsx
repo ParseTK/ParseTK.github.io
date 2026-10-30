@@ -1,60 +1,76 @@
-import { Github } from "lucide-react";
+import { Github, Play } from "lucide-react";
 import { ExternalLink } from "./ExternalLink";
 import { cn } from "./lib/utils";
 import type { Project } from "@/data/projects";
 
-export const ProjectCard = ({ project }: { project: Project }) => {
+// Thumbnails are 16:9, so the frame keeps that shape instead of cropping them
+const MEDIA_FRAME = "relative block aspect-video w-full overflow-hidden";
+
+const PlayBadge = () => (
+    <span aria-hidden="true" className="pointer-events-none absolute inset-0 grid place-items-center">
+        <span className="grid h-10 w-14 place-items-center rounded-lg border border-border bg-background/70 text-foreground backdrop-blur-sm transition-colors group-hover/media:bg-primary group-hover/media:text-primary-foreground group-focus-visible/media:bg-primary group-focus-visible/media:text-primary-foreground">
+            <Play size={18} fill="currentColor" />
+        </span>
+    </span>
+);
+
+const ProjectMedia = ({ project }: { project: Project }) => {
     const { image, videoUrl } = project;
 
-    const picture = image && (
-        <img src={image.src} alt={image.alt} className="h-48 w-full object-cover" />
-    );
+    if (project.comingSoon) {
+        return (
+            <div aria-hidden="true" className={cn(MEDIA_FRAME, "grid place-items-center border-b border-dashed border-input bg-secondary/40 text-muted-foreground")}>
+                <Play size={22} />
+            </div>
+        );
+    }
+    if (!image) return null;
+
+    const picture = <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />;
+    if (!videoUrl) return <div className={MEDIA_FRAME}>{picture}</div>;
 
     return (
-        <article
-            className={cn(
-                "flex h-full flex-col overflow-hidden rounded-lg bg-card text-left",
-                project.comingSoon ? "border border-dashed border-input" : "shadow-xs card-hover"
-            )}
-        >
-            {picture && (
-                <div className="overflow-hidden">
-                    {videoUrl ? (
-                        <ExternalLink href={videoUrl} label={`Watch the ${project.title} video`}>
-                            {picture}
-                        </ExternalLink>
-                    ) : (
-                        picture
-                    )}
-                </div>
-            )}
-            <div className="flex flex-1 flex-col p-6">
-                {!project.comingSoon && (
-                    <ul aria-label="Technologies" className="mb-4 flex flex-wrap gap-2">
-                        {project.tags.map((tag) => (
-                            <li
-                                key={tag}
-                                className="rounded-full border bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground"
-                            >
-                                {tag}
-                            </li>
-                        ))}
-                    </ul>
-                )}
-                <h3 className={cn("mb-1 text-xl font-semibold", project.comingSoon && "text-muted-foreground")}>
-                    {project.title}
-                </h3>
-                <p className="mb-4 text-sm text-muted-foreground">{project.description}</p>
-                {!project.comingSoon && (
-                    <ExternalLink
-                        href={project.githubUrl}
-                        label={`${project.title} source code on GitHub`}
-                        className="mt-auto inline-flex w-fit rounded-full p-2 text-foreground/80 transition-colors duration-300 hover:text-primary"
-                    >
-                        <Github size={20} aria-hidden="true" />
-                    </ExternalLink>
-                )}
-            </div>
-        </article>
+        <ExternalLink href={videoUrl} label={`Watch the ${project.title} video`} className={cn(MEDIA_FRAME, "group/media")}>
+            {picture}
+            <PlayBadge />
+        </ExternalLink>
     );
 };
+
+export const ProjectCard = ({ project }: { project: Project }) => (
+    <article
+        className={cn(
+            "flex h-full flex-col overflow-hidden rounded-lg bg-card text-left",
+            project.comingSoon ? "border border-dashed border-input" : "shadow-xs card-hover"
+        )}
+    >
+        <ProjectMedia project={project} />
+        <div className="flex flex-1 flex-col p-6">
+            {!project.comingSoon && (
+                <ul aria-label="Technologies" className="mb-4 flex flex-wrap gap-2">
+                    {project.tags.map((tag) => (
+                        <li
+                            key={tag}
+                            className="rounded-full border bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground"
+                        >
+                            {tag}
+                        </li>
+                    ))}
+                </ul>
+            )}
+            <h3 className={cn("mb-1 text-xl font-semibold", project.comingSoon && "text-muted-foreground")}>
+                {project.title}
+            </h3>
+            <p className="mb-4 text-sm text-muted-foreground">{project.description}</p>
+            {!project.comingSoon && (
+                <ExternalLink
+                    href={project.githubUrl}
+                    label={`${project.title} source code on GitHub`}
+                    className="mt-auto inline-flex w-fit rounded-full p-2 text-foreground/80 transition-colors duration-300 hover:text-primary"
+                >
+                    <Github size={20} aria-hidden="true" />
+                </ExternalLink>
+            )}
+        </div>
+    </article>
+);
