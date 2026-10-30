@@ -1,4 +1,4 @@
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { resolve } from "node:path";
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
@@ -6,7 +6,8 @@ import Home from "./Home";
 import { SECTIONS } from "@/data/sections";
 import { setViewportWidth } from "@/test/matchMedia";
 
-const css = readFileSync(resolve(process.cwd(), "src/index.css"), "utf8");
+const projectFile = (path: string) => resolve(process.cwd(), path);
+const css = readFileSync(projectFile("src/index.css"), "utf8");
 
 const sectionIdsOnPage = () =>
     [...document.querySelectorAll<HTMLElement>("main > section")].map((section) => section.id);
@@ -139,5 +140,55 @@ describe("bounce animations in CSS", () => {
         const keyframes = /@keyframes bounce-up \{[\s\S]*?\n\}\n/.exec(css)![0];
         expect(keyframes).toContain("translateY(25%)");
         expect(keyframes).toContain("transform: none");
+    });
+});
+
+describe("Hero", () => {
+    it("has the résumé download next to View My Projects, and only there", () => {
+        render(<Home />);
+
+        const resume = screen.getByRole("link", { name: "Download Résumé (PDF)" });
+        const projects = screen.getByRole("link", { name: "View My Projects" });
+        expect(screen.getAllByRole("link", { name: /résumé/i })).toHaveLength(1);
+        expect(resume).toHaveAttribute("href", "/TKirchner_Resume_2027.pdf");
+        expect(resume).toHaveAttribute("download");
+        expect(resume.parentElement).toBe(projects.parentElement);
+        expect(resume.closest("#hero")).not.toBeNull();
+    });
+
+    it("points at a résumé file that exists", () => {
+        expect(existsSync(projectFile("public/TKirchner_Resume_2027.pdf"))).toBe(true);
+    });
+
+    it("is padded so the heading clears the fixed nav and the content clears the scroll cue", () => {
+        render(<Home />);
+
+        expect(document.getElementById("hero")).toHaveClass("pt-28", "pb-28", "min-h-svh");
+    });
+
+    it("lets the buttons wrap onto a second line on a narrow screen", () => {
+        render(<Home />);
+
+        const row = screen.getByRole("link", { name: "View My Projects" }).parentElement!;
+        expect(row).toHaveClass("flex-wrap", "justify-center");
+    });
+});
+
+describe("Scroll and Top controls", () => {
+    it("keep the whole bounce of the arrow inside the control that can be pressed", () => {
+        render(<Home />);
+
+        // Tailwind steps are 4px: h-5 is a 20px arrow, and the bounce moves it by a quarter of its height
+        const pixels = (className: string, prefix: string) =>
+            Number(new RegExp(`\\b${prefix}-(\\d+)\\b`).exec(className)![1]) * 4;
+        for (const control of [
+            screen.getByRole("link", { name: /^Scroll to / }),
+            screen.getByRole("button", { name: "Back to top" }),
+        ]) {
+            const arrow = control.querySelector("svg")!;
+            const bounce = pixels(arrow.getAttribute("class")!, "h") / 4;
+
+            expect(pixels(control.className, "py"), control.textContent!).toBeGreaterThan(bounce);
+        }
     });
 });

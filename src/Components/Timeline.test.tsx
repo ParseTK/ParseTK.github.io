@@ -119,13 +119,10 @@ describe("About section", () => {
         }
     });
 
-    it("keeps the contact shortcut and the résumé download", () => {
+    it("keeps the contact shortcut and no longer holds the résumé download, which is in the hero", () => {
         render(<AboutMe />);
 
         expect(screen.getByRole("link", { name: "Get In Touch" })).toHaveAttribute("href", "#contact");
-        expect(screen.getByRole("link", { name: "Download Résumé (PDF)" })).toHaveAttribute(
-            "href",
-            "/TKirchner_Resume_2027.pdf",
-        );
+        expect(screen.queryByRole("link", { name: /résumé/i })).toBeNull();
     });
 });

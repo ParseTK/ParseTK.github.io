@@ -37,8 +37,8 @@ export const Navbar = ({ openOverlay, onOpenOverlayChange }: NavbarProps) => {
             <nav
                 aria-label="Primary"
                 className={cn(
-                    "fixed w-full z-50 transition-all duration-300",
-                    isScrolled ? "py-3 bg-background/80 backdrop-blur-md shadow-xs" : "py-5",
+                    "fixed w-full z-50 border-b border-border bg-background/80 shadow-xs backdrop-blur-md transition-all duration-300",
+                    isScrolled ? "py-3" : "py-5",
                 )}
             >
                 <div className="flex items-center justify-between px-4 md:px-8">

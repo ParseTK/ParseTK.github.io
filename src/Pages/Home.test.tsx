@@ -104,17 +104,33 @@ describe("Mobile menu", () => {
 });
 
 describe("Scroll behaviour", () => {
-    it("gives the navbar its glass background only after scrolling past 10px", () => {
+    it("keeps the navbar's glass background and edge at the top of the page and when scrolled", () => {
+        render(<Home />);
+        const nav = screen.getByRole("navigation", { name: "Primary" });
+        const container = ["backdrop-blur-md", "bg-background/80", "border-b", "shadow-xs"];
+
+        expect(nav).toHaveClass(...container);
+
+        setScrollY(50);
+        expect(nav).toHaveClass(...container);
+
+        setScrollY(0);
+        expect(nav).toHaveClass(...container);
+    });
+
+    it("only makes the navbar slimmer once scrolled past 10px", () => {
         render(<Home />);
         const nav = screen.getByRole("navigation", { name: "Primary" });
 
-        expect(nav.className).not.toContain("backdrop-blur");
+        expect(nav).toHaveClass("py-5");
+        expect(nav).not.toHaveClass("py-3");
 
         setScrollY(50);
-        expect(nav.className).toContain("backdrop-blur");
+        expect(nav).toHaveClass("py-3");
+        expect(nav).not.toHaveClass("py-5");
 
         setScrollY(0);
-        expect(nav.className).not.toContain("backdrop-blur");
+        expect(nav).toHaveClass("py-5");
     });
 
     it("hides the scroll hint after 40px of scrolling, takes it out of reach, and brings it back at the top", () => {
