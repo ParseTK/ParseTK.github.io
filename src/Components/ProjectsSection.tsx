@@ -1,4 +1,5 @@
 import { ArrowRight, Github } from "lucide-react";
+import { ExternalLink } from "./ExternalLink";
 
 interface Project {
     id: number;
@@ -89,30 +90,25 @@ export const ProjectsSection = () => {
                                 <p className="text-muted-foreground text-sm mb-4">
                                     {project.description}
                                 </p>
-                                <a
+                                <ExternalLink
                                     href={project.githubUrl}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    aria-label={`${project.title} source code on GitHub (opens in a new tab)`}
+                                    label={`${project.title} source code on GitHub`}
                                     className="inline-flex p-2 rounded-full text-foreground/80 hover:text-primary transition-colors duration-300"
                                 >
                                     <Github size={20} aria-hidden="true" />
-                                </a>
+                                </ExternalLink>
                             </div>
                         </li>
                     ))}
                 </ul>
                 <div className="text-center mt-12">
-                    <a
+                    <ExternalLink
                         className="cosmic-button w-fit flex items-center mx-auto gap-2"
-                        target="_blank"
-                        rel="noopener noreferrer"
                         href="https://github.com/parsetk"
                     >
                         Check my GitHub
                         <ArrowRight size={16} aria-hidden="true" />
-                        <span className="sr-only">(opens in a new tab)</span>
-                    </a>
+                    </ExternalLink>
                 </div>
             </div>
         </section>
