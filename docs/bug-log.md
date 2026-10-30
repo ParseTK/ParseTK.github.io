@@ -4,6 +4,46 @@ Resolved bugs only, newest first. Each entry has the merge date (UTC), the pull 
 
 Add an entry in a small `doc/` pull request after the fixing pull request merges, so the PR number and date are final. Describe the bug in the fixing pull request's body too.
 
+## Hero crushed on a phone held sideways
+
+- **Fixed:** 2026-10-30, [PR #49](https://github.com/ParseTK/ParseTK.github.io/pull/49)
+- **Seen:** with the phone turned sideways, "Hello, I'm Tyler" ended up under the nav bar and the bouncing Scroll cue sat under the "View My Projects" button.
+- **Cause:** the hero is exactly one screen tall and centres its content. A sideways phone is about 375px high, less than the content plus the nav bar and the cue, so everything overlapped. Measured at 812x375: the nav ended at y=86 but the heading started at y=72, and the cue (y=291-343) overlapped the button (y=274-310).
+- **Fix:** the hero has top and bottom padding for the nav and the cue and still fills at least one screen. On a tall screen nothing changes; on a short one the hero grows and the page scrolls.
+- **Checked:** at 812x375 the heading starts at y=112 (nav ends at 87) and the cue at y=382 (buttons end at 362). No horizontal overflow at 812x375, 375x812 and desktop. A physical phone check was not recorded at merge time.
+
+## Back to Top and Scroll arrows could not be pressed
+
+- **Fixed:** 2026-10-30, [PR #49](https://github.com/ParseTK/ParseTK.github.io/pull/49)
+- **Seen:** only the "Top" text could be pressed, not its bouncing arrow. The hero's Scroll cue had the same problem.
+- **Cause:** the arrow bounces and the button was barely bigger than the arrow. When the arrow moved out from under a still pointer between press and release, the two landed on different elements and the browser did not count a click on the button.
+- **Fix:** the cue's padding is larger than the bounce (8px against the 5px the arrow moves), so the arrow can never leave the control.
+- **Checked:** in the browser with the arrow frozen at the extreme of its bounce, it stays inside the control for both cues. A test fails if the old padding comes back. A physical touch check was not recorded at merge time.
+
+## Carousel shifted sideways when changing project tabs
+
+- **Fixed:** 2026-10-30, [PR #48](https://github.com/ParseTK/ParseTK.github.io/pull/48)
+- **Seen:** choosing a project tab moved the whole carousel sideways (right when starting on Python, left when starting on Other).
+- **Cause:** choosing a tab scrolled the clicked tab to the middle of the screen (`scrollIntoView`). The page container hid its sideways overflow (`overflow-x: hidden`), which scripts can still scroll, so the page itself slid. Measured: the container scrolled 256px and the carousel moved from x=48 to x=-208.
+- **Fix:** tabs no longer scroll anything into view, and the page container clips (`overflow-x: clip`), which cannot be scrolled at all.
+- **Checked:** going Python, Other, Python leaves the carousel at x=48 and the container scroll at 0. Putting back `overflow-x-hidden` or the `scrollIntoView` call each made a test fail. A phone check was not recorded at merge time.
+
+## Generic GitHub 404 page for mistyped addresses
+
+- **Fixed:** 2026-10-30, [PR #44](https://github.com/ParseTK/ParseTK.github.io/pull/44)
+- **Seen:** a mistyped address showed GitHub Pages' own generic 404 page instead of the site's styled "Page not found" page.
+- **Cause:** GitHub Pages serves its own 404 for any address the single-page app was not loaded on.
+- **Fix:** the build writes `404.html` as an exact copy of the app page (`vite-plugins/spa-fallback.ts`), so an unknown address loads the app, which shows the styled not-found page with the real 404 status and its own tab title ("Page not found | Tyler Kirchner"). The plugin fails the build if there is nothing to copy.
+- **Checked:** in the production build `404.html` is byte-identical to `index.html`, and `/404.html` shows the not-found page with its own title. Tests cover the plugin, the page and its title. The live behaviour on GitHub Pages was not recorded at merge time.
+
+## Dependabot major upgrades could not be merged one by one
+
+- **Fixed:** 2026-10-30, [PR #32](https://github.com/ParseTK/ParseTK.github.io/pull/32)
+- **Seen:** Dependabot's separate pull requests for Vite 8 (#29, conflicting, CI failing) and the React plugin 6 (#27) could not be merged on their own, and the TypeScript 7 (#31) and Node types 26 (#28) pull requests kept coming back.
+- **Cause:** the React plugin 6 requires Vite 8 as a peer dependency, so the two only work together. `typescript-eslint` supports TypeScript `>=4.8.4 <6.1.0`, so TypeScript 7 would break linting, and CI and deploy run Node 22, so the Node types should not jump to 26.
+- **Fix:** Vite 7.3.7 to 8.3.5 and the React plugin 5.0.3 to 6.1.2 in one pull request, with no source or config changes. `.github/dependabot.yml` now ignores major updates for `typescript` and `@types/node`.
+- **Checked:** tests, lint, `tsc -b && vite build`, `npm audit` (0 vulnerabilities) and `npm ci --dry-run` passed; the dev server started and the built site loaded in a browser with no new console errors. The pull request's CI result and a click-through of the live site after deploy were not recorded in its description.
+
 ## Email link had a space after mailto:
 
 - **Fixed:** 2026-10-29, [PR #18](https://github.com/ParseTK/ParseTK.github.io/pull/18)
