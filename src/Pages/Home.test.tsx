@@ -135,7 +135,7 @@ describe("Scroll behaviour", () => {
 
     it("hides the scroll hint after 40px of scrolling, takes it out of reach, and brings it back at the top", () => {
         render(<Home />);
-        const hint = screen.getByRole("link", { name: "Scroll to Projects" }).parentElement as HTMLElement;
+        const hint = screen.getByRole("link", { name: "Scroll to About" }).parentElement as HTMLElement;
 
         expect(hint.className).not.toContain("opacity-0");
         expect(hint).not.toHaveAttribute("inert");

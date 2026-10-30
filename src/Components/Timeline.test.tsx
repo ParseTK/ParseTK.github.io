@@ -32,23 +32,23 @@ describe("timeline data", () => {
 
 describe("Timeline", () => {
     it("is an ordered list with one item per entry, title and detail", () => {
-        render(<Timeline items={sample} />);
+        render(<Timeline items={sample} label="Test timeline" />);
 
         const items = within(screen.getByRole("list")).getAllByRole("listitem");
         expect(items).toHaveLength(3);
-        expect(within(items[0]).getByRole("heading", { level: 4 })).toHaveTextContent("First");
+        expect(within(items[0]).getByRole("heading", { level: 3 })).toHaveTextContent("First");
         expect(items[0]).toHaveTextContent("In progress now");
     });
 
     it("tells screen readers whether each entry is in progress or completed", () => {
-        render(<Timeline items={sample} />);
+        render(<Timeline items={sample} label="Test timeline" />);
 
         expect(screen.getByRole("heading", { name: /^First\s*\(in progress\)$/ })).toBeInTheDocument();
         expect(screen.getByRole("heading", { name: /^Second\s*\(completed\)$/ })).toBeInTheDocument();
     });
 
     it("hides the markers from assistive technology", () => {
-        const { container } = render(<Timeline items={sample} />);
+        const { container } = render(<Timeline items={sample} label="Test timeline" />);
 
         for (const marker of container.querySelectorAll("[data-marker]")) {
             expect(marker.closest("[aria-hidden=true]")).not.toBeNull();
@@ -56,14 +56,14 @@ describe("Timeline", () => {
     });
 
     it("marks only the in-progress entry as animated and the others as filled", () => {
-        const { container } = render(<Timeline items={sample} />);
+        const { container } = render(<Timeline items={sample} label="Test timeline" />);
 
         const states = [...container.querySelectorAll("[data-status]")].map((fill) => fill.getAttribute("data-status"));
         expect(states).toEqual(["in-progress", "completed", "completed"]);
     });
 
     it("draws a connecting line between entries but none after the last", () => {
-        const { container } = render(<Timeline items={sample} />);
+        const { container } = render(<Timeline items={sample} label="Test timeline" />);
 
         expect(container.querySelectorAll("[data-line]")).toHaveLength(2);
         const lastItem = container.querySelectorAll("li")[2];
@@ -71,7 +71,7 @@ describe("Timeline", () => {
     });
 
     it("centres every marker and every line on the middle of the same column", () => {
-        const { container } = render(<Timeline items={sample} />);
+        const { container } = render(<Timeline items={sample} label="Test timeline" />);
 
         for (const item of container.querySelectorAll("li")) {
             const column = item.querySelector("[data-marker]")!.parentElement!;
@@ -84,7 +84,7 @@ describe("Timeline", () => {
     });
 
     it("has no detectable accessibility violations", async () => {
-        const { container } = render(<Timeline items={sample} />);
+        const { container } = render(<Timeline items={sample} label="Test timeline" />);
 
         expect(await axe(container)).toHaveNoViolations();
     });
@@ -109,14 +109,46 @@ describe("marker animation in CSS", () => {
 });
 
 describe("About section", () => {
-    it("shows the timeline instead of the three generic cards", () => {
+    it("is an About me section with a personal title, named by its heading", () => {
         render(<AboutMe />);
 
-        expect(screen.getByRole("heading", { level: 3, name: "Where I'm coming from" })).toBeInTheDocument();
-        expect(screen.getAllByRole("listitem")).toHaveLength(timeline.length);
+        expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("The person behind the code");
+        expect(screen.getByText("About me", { selector: "p" })).toBeInTheDocument();
+        expect(screen.getByRole("region", { name: "The person behind the code" })).toBeInTheDocument();
+        expect(screen.queryByText("Where I'm coming from")).toBeNull();
+    });
+
+    it("keeps the about text from the live site", () => {
+        render(<AboutMe />);
+
+        for (const phrase of [
+            "Passionate about building software that makes a difference.",
+            "Elms College (B.S., graduating 2027)",
+            "Curiosity is my compass.",
+            "I take pride in helping my team succeed.",
+        ]) {
+            expect(document.body.textContent).toContain(phrase);
+        }
+    });
+
+    it("shows the timeline, in its own labelled list, instead of the three generic cards", () => {
+        render(<AboutMe />);
+
+        const list = screen.getByRole("list", { name: "Education and experience" });
+        expect(within(list).getAllByRole("listitem")).toHaveLength(timeline.length);
+        expect(within(list).getAllByRole("heading", { level: 3 })).toHaveLength(timeline.length);
         for (const removed of ["Full-Stack Development", "UI:UX", "Project management"]) {
             expect(screen.queryByText(removed)).toBeNull();
         }
+    });
+
+    it("is left aligned, with the button on the left", () => {
+        const { container } = render(<AboutMe />);
+
+        expect(container.querySelector(".grid")).toHaveClass("text-left");
+        expect(screen.getByRole("link", { name: "Get In Touch" }).parentElement!.className).not.toContain(
+            "justify-center",
+        );
     });
 
     it("keeps the contact shortcut and no longer holds the résumé download, which is in the hero", () => {

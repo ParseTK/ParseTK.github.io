@@ -45,10 +45,11 @@ describe("links and images on the page", () => {
         }
     });
 
-    it("links the email address with a valid mailto", () => {
-        const mail = renderLinks().find((link) => link.getAttribute("href")?.startsWith("mailto:"));
+    it("shows no email address and has no mail link", () => {
+        const { container } = render(<Home />);
 
-        expect(mail?.getAttribute("href")).toBe("mailto:kirchnertyler@gmail.com");
+        expect(container.querySelector("a[href^=mailto]")).toBeNull();
+        expect(container.textContent).not.toMatch(/[\w.+-]+@[\w-]+\.[\w.]+/);
     });
 
     it("describes every image", () => {
