@@ -58,7 +58,7 @@ export const loadTypeface = (id: string): Promise<unknown> => {
 export const loadAllTypefaces = () => Promise.all(TYPEFACES.map((typeface) => loadTypeface(typeface.id)));
 
 const applyToDocument = (selection: StyleSelection) => {
-    const { modeClass, vars } = resolveStyle(selection);
+    const { modeClass, themeColor, vars } = resolveStyle(selection);
     const root = document.documentElement;
 
     // Switching colors with transitions running makes different parts of the page lag behind each other
@@ -67,6 +67,7 @@ const applyToDocument = (selection: StyleSelection) => {
     for (const [name, value] of Object.entries(vars)) root.style.setProperty(name, value);
     root.getBoundingClientRect();
     root.classList.remove("theme-switching");
+    document.querySelector("meta[name=theme-color]")?.setAttribute("content", themeColor);
 
     void loadTypeface(selection.typeface);
 };

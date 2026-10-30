@@ -26,6 +26,9 @@ const luminance = ([r, g, b]: Rgb): number => {
     return 0.2126 * lr + 0.7152 * lg + 0.0722 * lb;
 };
 
+export const rgbToHex = ([r, g, b]: Rgb): string =>
+    "#" + [r, g, b].map((value) => value.toString(16).padStart(2, "0")).join("");
+
 export const contrastRatio = (a: Rgb, b: Rgb): number => {
     const [lighter, darker] = [luminance(a), luminance(b)].sort((x, y) => y - x);
     return (lighter + 0.05) / (darker + 0.05);

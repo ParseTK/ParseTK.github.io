@@ -26,6 +26,17 @@ describe("style store", () => {
         expect(document.documentElement.style.getPropertyValue("--primary")).toBe(accentColors("mint", "light").color);
     });
 
+    it("updates the browser colour with the mode", () => {
+        document.head.insertAdjacentHTML("beforeend", '<meta name="theme-color" content="#05080f">');
+
+        setSelection({ mode: "light" });
+        expect(document.querySelector("meta[name=theme-color]")).toHaveAttribute("content", "#f8fafc");
+
+        setSelection({ mode: "dark" });
+        expect(document.querySelector("meta[name=theme-color]")).toHaveAttribute("content", "#05080f");
+        document.querySelector("meta[name=theme-color]")!.remove();
+    });
+
     it("restores a saved choice on load", () => {
         setSelection({ mode: "light", typeface: "geometric" });
         document.documentElement.className = "";

@@ -7,6 +7,8 @@ export interface Mode extends Option {
     colorScheme: "light" | "dark";
     // "r, g, b" for the background stars, or null for a mode that shows none
     starColor: string | null;
+    // The page background as a hex colour, for the browser bar on phones
+    themeColor: string;
 }
 
 export interface AccentColors {
@@ -33,8 +35,8 @@ export interface StyleSelection {
 const SANS_FALLBACK = "ui-sans-serif, system-ui, sans-serif";
 
 export const MODES: readonly Mode[] = [
-    { id: "dark", label: "Dark", colorScheme: "dark", starColor: "255, 255, 255" },
-    { id: "light", label: "Light", colorScheme: "light", starColor: null },
+    { id: "dark", label: "Dark", colorScheme: "dark", starColor: "255, 255, 255", themeColor: "#05080f" },
+    { id: "light", label: "Light", colorScheme: "light", starColor: null, themeColor: "#f8fafc" },
 ];
 
 export const TYPEFACES: readonly Typeface[] = [
@@ -115,6 +117,7 @@ export const accentColors = (accentId: string, modeId: string): AccentColors =>
 
 export interface ResolvedStyle {
     modeClass: string;
+    themeColor: string;
     vars: Record<string, string>;
 }
 
@@ -125,6 +128,7 @@ export const resolveStyle = (selection: StyleSelection): ResolvedStyle => {
 
     return {
         modeClass: mode.id,
+        themeColor: mode.themeColor,
         vars: {
             "--primary": color,
             "--primary-foreground": onColor,
