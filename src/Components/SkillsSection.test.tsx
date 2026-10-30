@@ -5,6 +5,15 @@ import { skillGroups } from "@/data/skills";
 import { setViewportWidth } from "@/test/matchMedia";
 
 describe("SkillsSection", () => {
+    it("says what kind of developer it is under the heading", () => {
+        setViewportWidth(1280);
+        render(<SkillsSection />);
+
+        const section = screen.getByRole("region", { name: "What I work with" });
+        expect(section).toHaveTextContent("Passionate about building software that makes a difference.");
+        expect(section).toHaveTextContent("clean code, test-driven development, and continuous learning");
+    });
+
     it("shows every group, always open, on desktop", () => {
         setViewportWidth(1280);
         const { container } = render(<SkillsSection />);

@@ -13,7 +13,7 @@ export const AboutMe = () => {
                         <p className="text-2xl font-semibold">
                             I’m a computer science student at Elms College, graduating in 2027, after an associate
                             degree in computer programming at STCC. I spent a summer as a software engineering intern,
-                            where I shipped real features for a production product.
+                            where I shipped features for a production product.
                         </p>
                         <p className="text-muted-foreground">
                             I treat every problem as a classroom. I write up what I learn, with clear notes and

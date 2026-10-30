@@ -123,7 +123,7 @@ describe("About section", () => {
 
         for (const phrase of [
             "computer science student at Elms College, graduating in 2027",
-            "software engineering intern, where I shipped real features for a production product",
+            "software engineering intern, where I shipped features for a production product",
             "I treat every problem as a classroom.",
             "I take pride in helping my team succeed.",
             "Outside of code, I’m a dad who enjoys video games, sports, and conversations with friends.",
