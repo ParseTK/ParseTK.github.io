@@ -37,8 +37,10 @@ export const Navbar = ({ openOverlay, onOpenOverlayChange }: NavbarProps) => {
             <nav
                 aria-label="Primary"
                 className={cn(
-                    "fixed w-full z-50 border-b border-border bg-background/80 shadow-xs backdrop-blur-md transition-all duration-300",
-                    isScrolled ? "py-3" : "py-5",
+                    "fixed w-full z-50 border-b border-border bg-background/80 shadow-xs transition-all duration-300",
+                    // Blurring what is behind the bar only matters once the page scrolls under it, and it costs
+                    // graphics time on every frame, so the bar stays plain at the very top
+                    isScrolled ? "py-3 backdrop-blur-md" : "py-5",
                 )}
             >
                 <div className="flex items-center justify-between px-4 md:px-8">

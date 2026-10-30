@@ -1,5 +1,5 @@
 import { act, render } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { StarBackground } from "./StarBackground";
 import { setReducedMotion, setScrollY } from "@/test/matchMedia";
 import { fakeContext, pendingFrames, runFrame } from "@/test/canvas";
@@ -135,5 +135,103 @@ describe("StarBackground", () => {
         act(() => setSelection({ mode: "dark" }));
 
         expect(container.querySelector("canvas")).not.toBeNull();
+    });
+});
+
+describe("StarBackground cost", () => {
+    const draws = () => fakeContext().clears;
+
+    it("redraws about 15 times a second instead of on every frame", () => {
+        renderSky();
+        const before = draws();
+
+        // One second of 60-per-second frames
+        for (let frame = 1; frame <= 60; frame++) act(() => runFrame(1000 + frame * (1000 / 60)));
+
+        const redrawn = draws() - before;
+        expect(redrawn).toBeGreaterThanOrEqual(13);
+        expect(redrawn).toBeLessThanOrEqual(17);
+    });
+
+    it("still keeps asking for the next frame, so the twinkle carries on", () => {
+        renderSky();
+
+        act(() => runFrame(1010));
+
+        expect(pendingFrames()).toBe(1);
+    });
+
+    it("skips a frame that comes too soon when nothing has changed", () => {
+        renderSky();
+        const before = draws();
+
+        act(() => runFrame(1010));
+
+        expect(draws()).toBe(before);
+    });
+
+    it("redraws at once when the page scrolls, even between the throttled frames", () => {
+        renderSky();
+        const before = draws();
+
+        setScrollY(300);
+        act(() => runFrame(1010));
+
+        expect(draws()).toBe(before + 1);
+    });
+
+    it("redraws at once after the width changes, without waiting for the next slot", () => {
+        renderSky(400, 800);
+        const before = draws();
+
+        resizeTo(500, 800);
+        act(() => runFrame(1010));
+
+        expect(draws()).toBe(before + 1);
+    });
+
+    it("draws one still sky, not a stream of frames, when motion is reduced", () => {
+        setReducedMotion(true);
+        renderSky();
+        const before = draws();
+
+        for (let frame = 1; frame <= 10; frame++) act(() => runFrame(1000 + frame * 16));
+
+        expect(draws()).toBe(before);
+        expect(pendingFrames()).toBe(0);
+    });
+});
+
+describe("StarBackground canvas size", () => {
+    afterEach(() => {
+        Object.defineProperty(window, "devicePixelRatio", { value: 1, configurable: true });
+    });
+
+    const pixels = (container: HTMLElement) => {
+        const canvas = container.querySelector("canvas")!;
+        return canvas.width * canvas.height;
+    };
+
+    it("is held to a few million pixels on a big, sharp screen", () => {
+        Object.defineProperty(window, "devicePixelRatio", { value: 2, configurable: true });
+        const { container } = renderSky(1920, 1080);
+
+        expect(pixels(container)).toBeLessThanOrEqual(3_000_000 * 1.01);
+        expect(pixels(container)).toBeGreaterThan(1920 * 1080);
+    });
+
+    it("is never smaller than the screen it covers, however large the screen", () => {
+        const { container } = renderSky(3840, 2160);
+
+        const canvas = container.querySelector("canvas")!;
+        expect(canvas.width).toBe(3840);
+        expect(canvas.height).toBe(2160);
+    });
+
+    it("is left alone on an ordinary phone screen", () => {
+        Object.defineProperty(window, "devicePixelRatio", { value: 3, configurable: true });
+        const { container } = renderSky(390, 844);
+
+        expect(container.querySelector("canvas")!.width).toBe(780);
     });
 });

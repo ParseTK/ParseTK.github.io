@@ -6,6 +6,13 @@ import { useStyleSelection } from "@/style/store";
 
 const MAX_PIXEL_RATIO = 2;
 
+// A full-screen canvas costs graphics time every time it changes. Stars fade slowly, so redrawing about 15 times a
+// second looks the same as 60 for a quarter of the work. Scrolling still redraws at once, so the drift stays smooth.
+const TWINKLE_FRAME_MS = 66;
+
+// A very large or very sharp screen gets a slightly coarser canvas instead of an enormous one
+const MAX_CANVAS_PIXELS = 3_000_000;
+
 const StarCanvas = ({ color }: { color: string }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
@@ -20,27 +27,30 @@ const StarCanvas = ({ color }: { color: string }) => {
         let height = 0;
         let stars: Star[] = [];
         let frame = 0;
+        let lastDrawn = -Infinity;
+        let lastScrollY = -1;
 
         const render = (milliseconds: number) => {
-            drawStars(ctx, stars, {
-                width,
-                height,
-                color,
-                scrollY: window.scrollY,
-                seconds: milliseconds / 1000,
-                animate,
-            });
             if (animate) frame = requestAnimationFrame(render);
+
+            const scrollY = window.scrollY;
+            if (milliseconds - lastDrawn < TWINKLE_FRAME_MS && scrollY === lastScrollY) return;
+            lastDrawn = milliseconds;
+            lastScrollY = scrollY;
+
+            drawStars(ctx, stars, { width, height, color, scrollY, seconds: milliseconds / 1000, animate });
         };
 
         const build = () => {
-            const ratio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
             width = window.innerWidth;
             height = canvas.clientHeight || window.innerHeight;
+            const sharpest = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
+            const ratio = Math.max(1, Math.min(sharpest, Math.sqrt(MAX_CANVAS_PIXELS / (width * height))));
             canvas.width = width * ratio;
             canvas.height = height * ratio;
             ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
             stars = generateStars(width, height);
+            lastDrawn = -Infinity;
         };
 
         build();
