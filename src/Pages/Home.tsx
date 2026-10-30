@@ -1,4 +1,4 @@
-import { useState, type ComponentType } from "react";
+import { memo, useState, type ComponentType } from "react";
 import { StarBackground } from "../Components/StarBackground";
 import { GrainOverlay } from "../Components/GrainOverlay";
 import { Navbar, type OverlayName } from "../Components/Navbar";
@@ -11,11 +11,17 @@ import { ProjectsSection } from "../Components/ProjectsSection";
 import { ContactSection } from "@/Components/ContactSection";
 import { SECTIONS, type SectionId } from "@/data/sections";
 
+// Opening the menu or the style panel changes this page's state. None of these pieces take props, so
+// memo lets React skip them instead of rendering the whole page again for a small panel.
+const Stars = memo(StarBackground);
+const Grain = memo(GrainOverlay);
+const Hero = memo(HeroSection);
+
 const SECTION_VIEWS: Record<SectionId, ComponentType> = {
-    projects: ProjectsSection,
-    skills: SkillsSection,
-    about: AboutMe,
-    contact: ContactSection,
+    projects: memo(ProjectsSection),
+    skills: memo(SkillsSection),
+    about: memo(AboutMe),
+    contact: memo(ContactSection),
 };
 
 const TOP_ID = "top";
@@ -44,12 +50,12 @@ export const Home = () => {
                 Skip to main content
             </a>
 
-            <StarBackground />
-            <GrainOverlay />
+            <Stars />
+            <Grain />
             <Navbar openOverlay={openOverlay} onOpenOverlayChange={setOpenOverlay} />
 
             <main id="main" inert={isPageBlocked}>
-                <HeroSection />
+                <Hero />
                 {SECTIONS.map(({ id }) => {
                     const View = SECTION_VIEWS[id];
                     return <View key={id} />;

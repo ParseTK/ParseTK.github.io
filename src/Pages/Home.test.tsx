@@ -104,10 +104,10 @@ describe("Mobile menu", () => {
 });
 
 describe("Scroll behaviour", () => {
-    it("keeps the navbar's glass background and edge at the top of the page and when scrolled", () => {
+    it("keeps the navbar's background, edge and shadow at the top of the page and when scrolled", () => {
         render(<Home />);
         const nav = screen.getByRole("navigation", { name: "Primary" });
-        const container = ["backdrop-blur-md", "bg-background/80", "border-b", "shadow-xs"];
+        const container = ["bg-background/80", "border-b", "shadow-xs"];
 
         expect(nav).toHaveClass(...container);
 
@@ -116,6 +116,19 @@ describe("Scroll behaviour", () => {
 
         setScrollY(0);
         expect(nav).toHaveClass(...container);
+    });
+
+    it("only blurs what is behind the navbar once the page has scrolled under it", () => {
+        render(<Home />);
+        const nav = screen.getByRole("navigation", { name: "Primary" });
+
+        expect(nav).not.toHaveClass("backdrop-blur-md");
+
+        setScrollY(50);
+        expect(nav).toHaveClass("backdrop-blur-md");
+
+        setScrollY(0);
+        expect(nav).not.toHaveClass("backdrop-blur-md");
     });
 
     it("only makes the navbar slimmer once scrolled past 10px", () => {
