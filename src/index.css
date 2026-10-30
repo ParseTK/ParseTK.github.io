@@ -4,7 +4,9 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  :root {
+  /* .light exists so a preview tile can show light inside a dark page */
+  :root,
+  .light {
     color-scheme: light;
 
     --background: 210 40% 98%;
@@ -17,8 +19,8 @@
 
     --muted-foreground: 215 19% 33%;
 
-    --primary: 24 90% 36%;
-    --primary-foreground: 210 40% 98%;
+    --primary: #b83f0a;
+    --primary-foreground: #ffffff;
 
     --border: 214 32% 91%;
     --input: 215 16% 47%;
@@ -37,15 +39,27 @@
 
     --muted-foreground: 215 20% 72%;
 
-    --primary: 25 90% 55%;
-    --primary-foreground: 222 47% 4%;
+    --primary: #f47b25;
+    --primary-foreground: #06080d;
 
     --border: 217 33% 20%;
     --input: 215 16% 55%;
   }
 
+  :root {
+    --style-font-heading: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+    --style-font-body: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+  }
+
   * {
     @apply border-border;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
   }
 
   html {
@@ -71,7 +85,7 @@
   }
 
   :focus-visible {
-    outline: 2px solid hsl(var(--primary));
+    outline: 2px solid var(--primary);
     outline-offset: 2px;
   }
 
@@ -87,14 +101,15 @@
   }
 }
 
-@theme {
+/* inline: utilities read the variables where they are used, so a .dark or .light preview tile gets its own colors */
+@theme inline {
   --color-border: hsl(var(--border));
   --color-input: hsl(var(--input));
   --color-background: hsl(var(--background));
   --color-foreground: hsl(var(--foreground));
 
-  --color-primary: hsl(var(--primary));
-  --color-primary-foreground: hsl(var(--primary-foreground));
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
 
   --color-secondary: hsl(var(--secondary));
   --color-secondary-foreground: hsl(var(--secondary-foreground));
@@ -103,6 +118,11 @@
 
   --color-card: hsl(var(--card));
 
+  --font-sans: var(--style-font-body);
+  --font-display: var(--style-font-heading);
+}
+
+@theme {
   --animate-float: float 6s ease-in-out infinite;
   --animate-pulse-subtle: pulse-subtle 4s ease-in-out infinite;
   --animate-fade-in: fade-in 0.7s ease-out forwards;
@@ -140,11 +160,11 @@
 
 @utility text-glow {
   @apply relative;
-  text-shadow: 0 0 10px rgba(255, 123, 47, 0.5);
+  text-shadow: 0 0 10px color-mix(in srgb, var(--primary) 50%, transparent);
 }
 
 @utility text-gradient {
-  background-image: linear-gradient(to right, hsl(var(--primary)), hsl(var(--foreground)));
+  background-image: linear-gradient(to right, var(--primary), hsl(var(--foreground)));
   background-clip: text;
   -webkit-background-clip: text;
   color: transparent;
@@ -170,7 +190,7 @@
 @utility cosmic-button {
   @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium
          transition-all duration-300
-         hover:shadow-[0_0_10px_rgba(255,123,47,0.5)]
+         hover:shadow-[0_6px_16px_-10px_color-mix(in_srgb,var(--primary)_60%,transparent)]
          hover:scale-105 active:scale-85;
 }
 

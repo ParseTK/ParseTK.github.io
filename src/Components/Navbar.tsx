@@ -1,9 +1,10 @@
 import { useCallback, useEffect, useRef } from "react";
 import { cn } from "./lib/utils";
-import { useMediaQuery } from "./lib/useMediaQuery";
+import { useIsDesktop } from "./lib/useIsDesktop";
 import { useOverlay } from "./lib/useOverlay";
 import { useScrolledPast } from "./lib/useScrolledPast";
-import { ThemeToggle } from "./ThemeToggle";
+import { StyleButton } from "./Style/StyleButton";
+import { StylePanel } from "./Style/StylePanel";
 import { Menu, X } from "lucide-react";
 
 const navItems = [
@@ -14,22 +15,27 @@ const navItems = [
     { name: "Contact", href: "#contact" },
 ]
 
+export type OverlayName = "menu" | "style";
+
 interface NavbarProps {
-    isMenuOpen: boolean;
-    onMenuOpenChange: (open: boolean) => void;
+    openOverlay: OverlayName | null;
+    onOpenOverlayChange: (overlay: OverlayName | null) => void;
 }
 
-export const Navbar = ({ isMenuOpen, onMenuOpenChange }: NavbarProps) => {
+export const Navbar = ({ openOverlay, onOpenOverlayChange }: NavbarProps) => {
     const isScrolled = useScrolledPast(10);
-    const isDesktop = useMediaQuery("(min-width: 768px)");
+    const isDesktop = useIsDesktop();
     const menuButtonRef = useRef<HTMLButtonElement>(null);
+    const styleButtonRef = useRef<HTMLButtonElement>(null);
+    const isMenuOpen = openOverlay === "menu";
+    const isStyleOpen = openOverlay === "style";
 
     useEffect(() => {
-        if (isDesktop) onMenuOpenChange(false);
-    }, [isDesktop, onMenuOpenChange]);
+        if (isDesktop && openOverlay === "menu") onOpenOverlayChange(null);
+    }, [isDesktop, openOverlay, onOpenOverlayChange]);
 
-    const closeMenu = useCallback(() => onMenuOpenChange(false), [onMenuOpenChange]);
-    useOverlay({ isOpen: isMenuOpen, onClose: closeMenu, returnFocusTo: menuButtonRef });
+    const closeOverlay = useCallback(() => onOpenOverlayChange(null), [onOpenOverlayChange]);
+    useOverlay({ isOpen: isMenuOpen, onClose: closeOverlay, returnFocusTo: menuButtonRef });
 
     return (
         <>
@@ -63,12 +69,16 @@ export const Navbar = ({ isMenuOpen, onMenuOpenChange }: NavbarProps) => {
                             ))}
                         </div>
 
-                        <ThemeToggle />
+                        <StyleButton
+                            buttonRef={styleButtonRef}
+                            isOpen={isStyleOpen}
+                            onClick={() => onOpenOverlayChange(isStyleOpen ? null : "style")}
+                        />
 
                         <button
                             ref={menuButtonRef}
                             type="button"
-                            onClick={() => onMenuOpenChange(!isMenuOpen)}
+                            onClick={() => onOpenOverlayChange(isMenuOpen ? null : "menu")}
                             className="md:hidden p-2.5 text-foreground"
                             aria-label="Site menu"
                             aria-expanded={isMenuOpen}
@@ -101,13 +111,15 @@ export const Navbar = ({ isMenuOpen, onMenuOpenChange }: NavbarProps) => {
                             key={item.href}
                             href={item.href}
                             className="text-foreground/80 hover:text-primary transition-colors duration-300"
-                            onClick={() => onMenuOpenChange(false)}
+                            onClick={closeOverlay}
                         >
                             {item.name}
                         </a>
                     ))}
                 </div>
             </nav>
+
+            <StylePanel isOpen={isStyleOpen} onClose={closeOverlay} buttonRef={styleButtonRef} />
         </>
     );
 };
