@@ -27,9 +27,8 @@ export const HeroSection = () => {
                     </h1>
 
                     <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto opacity-0 animate-fade-in-delay-4">
-                        I'm a software developer who enjoys building fintech applications, developing scripts to
-                        simplify tasks, exploring game development, and learning new technologies. This is a snapshot of
-                        my journey so far!
+                        Welcome to my portfolio. I'm a software developer, and here you'll find the projects I've built,
+                        the skills behind them, and how to get in touch.
                     </p>
                     <div className="flex flex-wrap items-center justify-center gap-3 pt-4 opacity-0 animate-fade-in-delay-4">
                         <a href="#projects" className="cosmic-button">
