@@ -110,4 +110,12 @@ describe("Tabs and page position", () => {
         expect(list).toHaveClass("flex-wrap");
         expect(list.className).not.toMatch(/overflow-x-(auto|scroll)/);
     });
+
+    it("centres the tabs, on every line they wrap onto, to match the centred carousel below", () => {
+        render(<Harness />);
+
+        const list = screen.getByRole("tablist");
+        expect(list).toHaveClass("justify-center");
+        expect(list.className).not.toMatch(/justify-(start|between)/);
+    });
 });

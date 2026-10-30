@@ -40,7 +40,11 @@ export const Tabs = <T extends Tab>({ label, tabs, selectedId, onSelect, childre
 
     return (
         <div>
-            <div role="tablist" aria-label={label} className="mb-8 flex flex-wrap gap-x-1 border-b border-border">
+            <div
+                role="tablist"
+                aria-label={label}
+                className="mb-8 flex flex-wrap justify-center gap-x-1 border-b border-border"
+            >
                 {tabs.map((tab, index) => {
                     const isSelected = tab.id === selectedId;
                     return (
