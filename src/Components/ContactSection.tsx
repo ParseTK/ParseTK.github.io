@@ -28,21 +28,21 @@ export const ContactSection = () => (
             />
 
             <Reveal>
-            <ul className="mx-auto grid max-w-md grid-cols-1 gap-4">
-                {contactEntries.map((entry) => (
-                    <li key={entry.id}>
-                        {entry.external ? (
-                            <Frame as={ExternalLink} href={entry.href} className={ENTRY_CLASS}>
-                                <EntryContent entry={entry} />
-                            </Frame>
-                        ) : (
-                            <Frame as="a" href={entry.href} className={ENTRY_CLASS}>
-                                <EntryContent entry={entry} />
-                            </Frame>
-                        )}
-                    </li>
-                ))}
-            </ul>
+                <ul className="mx-auto grid max-w-md grid-cols-1 gap-4">
+                    {contactEntries.map((entry) => (
+                        <li key={entry.id}>
+                            {entry.external ? (
+                                <Frame as={ExternalLink} href={entry.href} className={ENTRY_CLASS}>
+                                    <EntryContent entry={entry} />
+                                </Frame>
+                            ) : (
+                                <Frame as="a" href={entry.href} className={ENTRY_CLASS}>
+                                    <EntryContent entry={entry} />
+                                </Frame>
+                            )}
+                        </li>
+                    ))}
+                </ul>
             </Reveal>
         </div>
     </section>

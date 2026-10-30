@@ -75,8 +75,10 @@ describe("style registry", () => {
         for (const accent of ACCENTS) {
             for (const mode of MODES) {
                 const { color, onColor } = accentColors(accent.id, mode.id);
-                expect(contrastRatio(hexToRgb(color), hexToRgb(onColor)), `${accent.id} in ${mode.id}`)
-                    .toBeGreaterThanOrEqual(4.5);
+                expect(
+                    contrastRatio(hexToRgb(color), hexToRgb(onColor)),
+                    `${accent.id} in ${mode.id}`,
+                ).toBeGreaterThanOrEqual(4.5);
             }
         }
     });

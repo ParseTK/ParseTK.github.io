@@ -29,14 +29,18 @@ describe("section order", () => {
 
         const links = within(screen.getByRole("navigation", { name: "Primary" })).getAllByRole("link");
         const sectionLinks = links.slice(1);
-        expect(sectionLinks.map((link) => link.getAttribute("href"))).toEqual(SECTIONS.map((section) => `#${section.id}`));
+        expect(sectionLinks.map((link) => link.getAttribute("href"))).toEqual(
+            SECTIONS.map((section) => `#${section.id}`),
+        );
         expect(sectionLinks.map((link) => link.textContent)).toEqual(SECTIONS.map((section) => section.label));
     });
 
     it("lists them in the same order in the mobile menu", () => {
         render(<Home />);
 
-        const links = within(screen.getByRole("navigation", { name: "Mobile", hidden: true })).getAllByRole("link", { hidden: true });
+        const links = within(screen.getByRole("navigation", { name: "Mobile", hidden: true })).getAllByRole("link", {
+            hidden: true,
+        });
         expect(links.map((link) => link.getAttribute("href"))).toEqual(SECTIONS.map((section) => `#${section.id}`));
     });
 

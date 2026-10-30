@@ -68,7 +68,7 @@ export const Tabs = <T extends Tab>({ label, tabs, selectedId, onSelect, childre
                                 "min-h-11 shrink-0 border-b-2 px-4 py-2 text-sm transition-colors",
                                 isSelected
                                     ? "border-primary font-semibold text-primary"
-                                    : "border-transparent text-muted-foreground hover:text-foreground"
+                                    : "border-transparent text-muted-foreground hover:text-foreground",
                             )}
                         >
                             {tab.label}

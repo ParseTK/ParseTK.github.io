@@ -8,7 +8,10 @@ const Marker = ({ status, isLast }: { status: TimelineItem["status"]; isLast: bo
     <div aria-hidden="true" className="relative">
         <span
             data-marker
-            className={cn(CENTRED, "top-1.5 z-1 size-3 overflow-hidden rounded-full border-2 border-primary bg-background")}
+            className={cn(
+                CENTRED,
+                "top-1.5 z-1 size-3 overflow-hidden rounded-full border-2 border-primary bg-background",
+            )}
         >
             <span data-status={status} className="marker-fill" />
         </span>

@@ -5,10 +5,7 @@ type ScrollCueProps = {
     label: string;
     accessibleName: string;
     className?: string;
-} & (
-    | { direction: "down"; href: string }
-    | { direction: "up"; onClick: () => void }
-);
+} & ({ direction: "down"; href: string } | { direction: "up"; onClick: () => void });
 
 const CUE_CLASS =
     "flex min-h-11 min-w-11 flex-col items-center justify-center gap-1 rounded-md px-3 py-1 text-sm text-muted-foreground transition-colors hover:text-primary";
@@ -21,7 +18,10 @@ export const ScrollCue = (props: ScrollCueProps) => {
     const content = (
         <>
             <span>{label}</span>
-            <Arrow aria-hidden="true" className={cn("h-5 w-5 text-primary", isDown ? "animate-bounce" : "animate-bounce-up")} />
+            <Arrow
+                aria-hidden="true"
+                className={cn("h-5 w-5 text-primary", isDown ? "animate-bounce" : "animate-bounce-up")}
+            />
         </>
     );
 

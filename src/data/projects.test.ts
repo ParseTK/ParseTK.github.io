@@ -1,11 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-    CARDS_PER_CATEGORY,
-    PROJECT_CATEGORIES,
-    projects,
-    projectsIn,
-    type LiveProject,
-} from "./projects";
+import { CARDS_PER_CATEGORY, PROJECT_CATEGORIES, projects, projectsIn, type LiveProject } from "./projects";
 
 const live = projects.filter((project): project is LiveProject => !project.comingSoon);
 
@@ -66,7 +60,8 @@ describe("projects", () => {
     it("require alt text for any image and a YouTube address for any video", () => {
         for (const project of projects) {
             if (project.image) expect(project.image.alt.trim(), project.id).not.toBe("");
-            if (project.videoUrl) expect(project.videoUrl, project.id).toMatch(/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//);
+            if (project.videoUrl)
+                expect(project.videoUrl, project.id).toMatch(/^https:\/\/(www\.)?(youtube\.com|youtu\.be)\//);
         }
     });
 

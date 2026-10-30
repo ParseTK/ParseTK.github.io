@@ -40,7 +40,7 @@ export const OptionGroup = <T extends Option>({
                         className={cn(
                             "block h-full rounded-md border border-input bg-card p-3 transition-colors",
                             "hover:border-primary peer-checked:border-primary peer-checked:ring-1 peer-checked:ring-primary",
-                            "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary"
+                            "peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-primary",
                         )}
                     >
                         {renderPreview(option)}

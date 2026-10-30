@@ -23,23 +23,23 @@ export const ProjectsSection = () => {
                 />
 
                 <Reveal>
-                <Tabs
-                    label="Project categories"
-                    tabs={PROJECT_CATEGORIES}
-                    selectedId={category}
-                    onSelect={(id) => setCategory(id as ProjectCategoryId)}
-                >
-                    <Carousel
-                        key={category}
-                        className="-mx-8 md:mx-0"
-                        label="Projects"
-                        noun="project"
-                        items={projectsIn(category)}
-                        getKey={(project) => project.id}
-                        getTitle={(project) => project.title}
-                        renderItem={(project) => <ProjectCard project={project} />}
-                    />
-                </Tabs>
+                    <Tabs
+                        label="Project categories"
+                        tabs={PROJECT_CATEGORIES}
+                        selectedId={category}
+                        onSelect={(id) => setCategory(id as ProjectCategoryId)}
+                    >
+                        <Carousel
+                            key={category}
+                            className="-mx-8 md:mx-0"
+                            label="Projects"
+                            noun="project"
+                            items={projectsIn(category)}
+                            getKey={(project) => project.id}
+                            getTitle={(project) => project.title}
+                            renderItem={(project) => <ProjectCard project={project} />}
+                        />
+                    </Tabs>
                 </Reveal>
 
                 <div className="text-center mt-12">
@@ -53,5 +53,5 @@ export const ProjectsSection = () => {
                 </div>
             </div>
         </section>
-    )
-}
+    );
+};

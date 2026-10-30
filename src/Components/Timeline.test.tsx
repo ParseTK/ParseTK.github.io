@@ -123,6 +123,9 @@ describe("About section", () => {
         render(<AboutMe />);
 
         expect(screen.getByRole("link", { name: "Get In Touch" })).toHaveAttribute("href", "#contact");
-        expect(screen.getByRole("link", { name: "Download Résumé (PDF)" })).toHaveAttribute("href", "/TKirchner_Resume_2027.pdf");
+        expect(screen.getByRole("link", { name: "Download Résumé (PDF)" })).toHaveAttribute(
+            "href",
+            "/TKirchner_Resume_2027.pdf",
+        );
     });
 });

@@ -24,9 +24,7 @@ describe("SkillsSection", () => {
         const groups = [...container.querySelectorAll("details")];
 
         expect(groups).toHaveLength(skillGroups.length);
-        expect(groups.map((group) => group.hasAttribute("open"))).toEqual(
-            skillGroups.map((_, index) => index === 0),
-        );
+        expect(groups.map((group) => group.hasAttribute("open"))).toEqual(skillGroups.map((_, index) => index === 0));
     });
 
     it("shows how many skills each collapsed group holds", () => {

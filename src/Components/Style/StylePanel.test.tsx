@@ -42,12 +42,14 @@ describe("Style panel", () => {
             expect(within(panel).getByRole("radio", { name: option.label })).toBeInTheDocument();
         }
         for (const accent of ACCENTS) {
-            const swatch = within(panel).getByRole("radio", { name: accent.label })
+            const swatch = within(panel)
+                .getByRole("radio", { name: accent.label })
                 .parentElement!.querySelector<HTMLElement>("[style]");
             expect(swatch!.style.backgroundColor).not.toBe("");
         }
-        const sample = within(panel).getByRole("radio", { name: "Geometric" }).parentElement!
-            .querySelector<HTMLElement>("[style*='Sora']");
+        const sample = within(panel)
+            .getByRole("radio", { name: "Geometric" })
+            .parentElement!.querySelector<HTMLElement>("[style*='Sora']");
         expect(sample).not.toBeNull();
     });
 
@@ -85,8 +87,9 @@ describe("Style panel", () => {
 
         fireEvent.click(within(panel).getByRole("radio", { name: "Light" }));
 
-        const swatch = within(panel).getByRole("radio", { name: "Ice" }).parentElement!
-            .querySelector<HTMLElement>("[style]")!;
+        const swatch = within(panel)
+            .getByRole("radio", { name: "Ice" })
+            .parentElement!.querySelector<HTMLElement>("[style]")!;
         expect(swatch.style.backgroundColor).toBe("rgb(3, 105, 161)");
     });
 
