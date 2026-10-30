@@ -58,19 +58,19 @@ export const TYPEFACES: readonly Typeface[] = [
 
 export const ACCENTS: readonly Accent[] = [
     {
-        id: "orange",
-        label: "Orange",
-        colors: {
-            dark: { color: "#f47b25", onColor: "#06080d" },
-            light: { color: "#b83f0a", onColor: "#ffffff" },
-        },
-    },
-    {
         id: "ice",
         label: "Ice",
         colors: {
             dark: { color: "#5cc8ff", onColor: "#06080d" },
             light: { color: "#0369a1", onColor: "#ffffff" },
+        },
+    },
+    {
+        id: "orange",
+        label: "Orange",
+        colors: {
+            dark: { color: "#f47b25", onColor: "#06080d" },
+            light: { color: "#b83f0a", onColor: "#ffffff" },
         },
     },
     {
@@ -94,7 +94,7 @@ export const ACCENTS: readonly Accent[] = [
 export const DEFAULT_SELECTION: StyleSelection = {
     mode: "dark",
     typeface: "grotesk",
-    accent: "orange",
+    accent: "ice",
 };
 
 export const findOption = <T extends Option>(options: readonly T[], id: string): T | undefined =>

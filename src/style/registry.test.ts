@@ -45,6 +45,11 @@ describe("style registry", () => {
         expect(new Set(options.map((option) => option.label)).size).toBe(options.length);
     });
 
+    it("makes Ice the default accent and lists it first", () => {
+        expect(DEFAULT_SELECTION.accent).toBe("ice");
+        expect(ACCENTS[0].id).toBe("ice");
+    });
+
     it("has a default that exists in every list", () => {
         expect(findOption(MODES, DEFAULT_SELECTION.mode)).toBeDefined();
         expect(findOption(TYPEFACES, DEFAULT_SELECTION.typeface)).toBeDefined();
