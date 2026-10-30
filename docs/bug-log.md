@@ -4,6 +4,38 @@ Resolved bugs only, newest first. Each entry has the merge date (UTC), the pull 
 
 Add an entry in a small `doc/` pull request after the fixing pull request merges, so the PR number and date are final. Describe the bug in the fixing pull request's body too.
 
+## Buttons showed the plain arrow cursor instead of the hand
+
+- **Fixed:** 2026-10-30, [PR #59](https://github.com/ParseTK/ParseTK.github.io/pull/59)
+- **Seen:** hovering the bouncing Scroll arrow showed the hand, but the Top arrow at the bottom showed the plain arrow cursor even though it could be pressed. The palette and phone menu buttons did the same.
+- **Cause:** the Scroll cue is a link and the Top cue is a button. Tailwind's reset gives buttons the plain arrow cursor but leaves links with the hand. Measured on the live site: Scroll `pointer`, Top, palette and menu `default`.
+- **Fix:** one base rule in `index.css` gives every enabled button (and `role="button"` element) `cursor: pointer`. Utility classes still win, so the carousel's grab cursors are unchanged, and disabled buttons keep the plain cursor.
+- **Checked:** in the production build the computed cursor is `pointer` for Top, Scroll, palette, menu, a project tab and a carousel dot. A test checks the rule. The hand icon on a real mouse hover was not recorded at merge time.
+
+## Lucide icon upgrade broke the build
+
+- **Fixed:** 2026-10-30, [PR #55](https://github.com/ParseTK/ParseTK.github.io/pull/55), which replaced Dependabot's failing [PR #54](https://github.com/ParseTK/ParseTK.github.io/pull/54)
+- **Seen:** Dependabot's bump of `lucide-react` from 0.544 to 1.62 failed the `build` check with 28 failing tests.
+- **Cause:** lucide-react 1.x removed its brand logos, so `Github` and `Linkedin` were `undefined` and rendering the contact section and project cards threw. The other icons the site uses still exist.
+- **Fix:** `lucide-react` 1.62 plus a small `BrandIcons.tsx` with the GitHub and LinkedIn logos as inline SVGs that take the same size and class props as a lucide icon. Nothing looks different.
+- **Checked:** 311 tests (2 new), lint, types, format check, build and `npm audit` (0 vulnerabilities). #54 was closed after the merge.
+
+## Slow response to clicks (INP 408 ms)
+
+- **Fixed:** 2026-10-30, [PR #53](https://github.com/ParseTK/ParseTK.github.io/pull/53)
+- **Seen:** Chrome's local Interaction to Next Paint was 408 ms ("needs improvement"). Clicks on the palette button and even on plain hero text took 224-408 ms.
+- **Cause:** measured in a browser with no extensions, script time per click was small (5-9 ms for the palette button, none for plain text); the wait was for the next frame to be drawn. The star canvas redrew the full screen about 60 times a second forever, the nav blurred what was behind it on every frame, and opening a panel re-rendered every section of the page.
+- **Fix:** the stars redraw about 15 times a second (scrolling still redraws at once), the star canvas is capped at about 3 million pixels, the nav blurs only once the page has scrolled under it, and the sections and background pieces are skipped when a panel opens (`memo`).
+- **Checked:** on the same machine and the same six clicks, canvas redraws fell from 59.9 to 15 a second and clicks slower than 16 ms from 6 of 6 to 2 of 6. Undoing each change made its tests fail. After the deploy, INP measured 48 ms, then 8 ms on a second run, with LCP 0.38 s and CLS 0.02.
+
+## Project tabs sat on the left instead of centred
+
+- **Fixed:** 2026-10-30, [PR #52](https://github.com/ParseTK/ParseTK.github.io/pull/52)
+- **Seen:** after the left-aligned headings change, the project tabs (Python, Applications, JavaScript, ...) sat on the left while the carousel and its controls below them are centred.
+- **Cause:** the tab row's centring was removed along with the heading's. The headings are meant to be left aligned; the tabs belong to the centred carousel.
+- **Fix:** the tab row is centred at every width, and on a phone each wrapped line is centred on its own.
+- **Checked:** in the production build the single row of seven tabs has 166px on each side on desktop; at 375px the three wrapped rows each have equal space left and right and nothing overflows sideways. Putting the left alignment back made a test fail.
+
 ## Hero crushed on a phone held sideways
 
 - **Fixed:** 2026-10-30, [PR #49](https://github.com/ParseTK/ParseTK.github.io/pull/49)
