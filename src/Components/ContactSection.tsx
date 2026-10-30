@@ -1,4 +1,5 @@
 import { Headphones, Linkedin, Mail } from "lucide-react"
+import { ExternalLink } from "./ExternalLink"
 
 const linkClass =
     "text-muted-foreground underline underline-offset-4 hover:text-primary transition-colors"
@@ -40,15 +41,9 @@ export const ContactSection = () => {
                         </div>
                         <div>
                             <h4 className="font-medium text-left">LinkedIn</h4>
-                            <a
-                                href="https://www.linkedin.com/in/parsetk"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={linkClass}
-                            >
+                            <ExternalLink href="https://www.linkedin.com/in/parsetk" className={linkClass}>
                                 ParseTK
-                                <span className="sr-only"> (opens in a new tab)</span>
-                            </a>
+                            </ExternalLink>
                         </div>
                     </li>
                     <li className="flex items-start space-x-4">
@@ -57,15 +52,9 @@ export const ContactSection = () => {
                         </div>
                         <div>
                             <h4 className="font-medium text-left">Discord</h4>
-                            <a
-                                href="https://discordapp.com/users/estteekay#7458"
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className={linkClass}
-                            >
+                            <ExternalLink href="https://discordapp.com/users/estteekay#7458" className={linkClass}>
                                 estteekay
-                                <span className="sr-only"> (opens in a new tab)</span>
-                            </a>
+                            </ExternalLink>
                         </div>
                     </li>
                 </ul>

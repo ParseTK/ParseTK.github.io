@@ -1,6 +1,7 @@
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { cn } from "./lib/utils";
 import { useMediaQuery } from "./lib/useMediaQuery";
+import { useOverlay } from "./lib/useOverlay";
 import { useScrolledPast } from "./lib/useScrolledPast";
 import { ThemeToggle } from "./ThemeToggle";
 import { Menu, X } from "lucide-react";
@@ -27,24 +28,8 @@ export const Navbar = ({ isMenuOpen, onMenuOpenChange }: NavbarProps) => {
         if (isDesktop) onMenuOpenChange(false);
     }, [isDesktop, onMenuOpenChange]);
 
-    useEffect(() => {
-        if (!isMenuOpen) return;
-
-        const handleKeyDown = (event: KeyboardEvent) => {
-            if (event.key !== "Escape") return;
-            onMenuOpenChange(false);
-            menuButtonRef.current?.focus();
-        };
-        window.addEventListener("keydown", handleKeyDown);
-
-        const previousOverflow = document.documentElement.style.overflow;
-        document.documentElement.style.overflow = "hidden";
-
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-            document.documentElement.style.overflow = previousOverflow;
-        };
-    }, [isMenuOpen, onMenuOpenChange]);
+    const closeMenu = useCallback(() => onMenuOpenChange(false), [onMenuOpenChange]);
+    useOverlay({ isOpen: isMenuOpen, onClose: closeMenu, returnFocusTo: menuButtonRef });
 
     return (
         <>
