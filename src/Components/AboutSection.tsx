@@ -17,11 +17,9 @@ export const AboutMe = () => {
                             development, and continuous learning.
                         </p>
                         <p className="text-muted-foreground">
-                            I’m a CS & CITS student at Elms College (B.S., graduating 2027), with an A.S. in Computer
-                            Programming from STCC. I interned as a Software Engineer on the product development team,
-                            owning work-items end-to-end, and learning the AGILE model & SDLC. Built production ready
-                            features for a RAG platform with Next.js, React, TypeScript, Node.js, PostgreSQL, Weaviate
-                            and using TDD. (Vitest)
+                            I’m a computer science student at Elms College, graduating in 2027, after an associate
+                            degree in computer programming at STCC. I spent a summer as a software engineering intern,
+                            where I shipped real features for a production product.
                         </p>
 
                         <p className="text-muted-foreground">

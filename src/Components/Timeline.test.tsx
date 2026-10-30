@@ -118,12 +118,13 @@ describe("About section", () => {
         expect(screen.queryByText("Where I'm coming from")).toBeNull();
     });
 
-    it("keeps the about text from the live site", () => {
+    it("keeps the about text, with the education and internship told in plain words", () => {
         render(<AboutMe />);
 
         for (const phrase of [
             "Passionate about building software that makes a difference.",
-            "Elms College (B.S., graduating 2027)",
+            "computer science student at Elms College, graduating in 2027",
+            "software engineering intern, where I shipped real features for a production product",
             "Curiosity is my compass.",
             "I take pride in helping my team succeed.",
         ]) {
