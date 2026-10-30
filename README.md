@@ -91,6 +91,8 @@ Every pull request runs formatting, lint, tests and a build ([`deploy.yml`](.git
 
 Because GitHub Pages answers an unknown address with `404.html`, the build writes a copy of the app there, so a mistyped address shows the styled not-found page with a real 404 status.
 
+The built page carries a Content Security Policy in a meta tag (`vite-plugins/content-security-policy.ts`, build only, so the dev server is unaffected): scripts, styles, fonts and requests come only from the site itself, images also from `data:` for the grain texture. It means no inline `<script>`, `<style>` or `style="..."` in `index.html`, no `eval`, and no third-party scripts or fonts without changing that file first. Inline styles set from code (`element.style...`, React's `style` prop) are fine.
+
 ## Working on it
 
 - Branch names start with `feature/`, `fix/`, `update/` or `doc/`; commit messages use `feat`, `fix`, `build`, `refactor`, `docs`, `ci` or `test`.
