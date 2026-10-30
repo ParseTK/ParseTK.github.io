@@ -11,7 +11,7 @@ import {
     normalizeSelection,
     resolveStyle,
 } from "./registry";
-import { contrastRatio, hexToRgb, hslTripleToRgb } from "@/test/contrast";
+import { contrastRatio, hexToRgb, hslTripleToRgb, rgbToHex } from "@/test/contrast";
 
 const readProjectFile = (path: string) => readFileSync(resolve(process.cwd(), path), "utf8");
 const css = readProjectFile("src/index.css");
@@ -123,6 +123,18 @@ describe("defaults written in CSS", () => {
     });
 });
 
+describe("browser colour", () => {
+    it("is the page background of each mode, as written in CSS", () => {
+        for (const mode of MODES) {
+            expect(mode.themeColor, mode.id).toBe(rgbToHex(hslTripleToRgb(token(mode.id, "--background"))));
+        }
+    });
+
+    it("is part of what a selection resolves to", () => {
+        expect(resolveStyle({ mode: "light", typeface: "grotesk", accent: "orange" }).themeColor).toBe("#f8fafc");
+    });
+});
+
 describe("pre-paint script", () => {
     const run = () => new Function(themeInit)();
 
@@ -138,6 +150,29 @@ describe("pre-paint script", () => {
         run();
 
         expect(document.documentElement).toHaveClass(resolveStyle(DEFAULT_SELECTION).modeClass);
+    });
+
+    it("replays the saved browser colour", () => {
+        document.head.insertAdjacentHTML("beforeend", '<meta name="theme-color" content="#05080f">');
+        const selection = { mode: "light", typeface: "grotesk", accent: "orange" };
+        localStorage.setItem("style", JSON.stringify({ selection, resolved: resolveStyle(selection) }));
+
+        run();
+
+        expect(document.querySelector("meta[name=theme-color]")).toHaveAttribute("content", "#f8fafc");
+        document.querySelector("meta[name=theme-color]")!.remove();
+    });
+
+    it("keeps the browser colour as it is when the saved style predates it", () => {
+        document.head.insertAdjacentHTML("beforeend", '<meta name="theme-color" content="#05080f">');
+        const { themeColor, ...older } = resolveStyle({ mode: "dark", typeface: "grotesk", accent: "orange" });
+        void themeColor;
+        localStorage.setItem("style", JSON.stringify({ selection: {}, resolved: older }));
+
+        run();
+
+        expect(document.querySelector("meta[name=theme-color]")).toHaveAttribute("content", "#05080f");
+        document.querySelector("meta[name=theme-color]")!.remove();
     });
 
     it("replays the saved mode class and variables", () => {

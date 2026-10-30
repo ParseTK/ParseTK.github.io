@@ -1,4 +1,8 @@
+import { useDocumentTitle } from "@/Components/lib/useDocumentTitle";
+
 export const NotFound = () => {
+  useDocumentTitle("Page not found | Tyler Kirchner");
+
   return (
     <main className="min-h-screen flex flex-col items-center justify-center gap-4 px-4 bg-background text-foreground">
         <h1 className="text-4xl font-bold">Page not found</h1>
