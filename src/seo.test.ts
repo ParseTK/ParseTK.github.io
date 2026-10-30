@@ -125,6 +125,40 @@ describe("structured data", () => {
     });
 });
 
+describe("TK monogram", () => {
+    const svg = read("public/favicon.svg");
+    const STROKE = 7;
+    const stems = [...svg.matchAll(/M([\d.]+) ([\d.]+)v([\d.]+)/g)].map(([, x, y, length]) => ({
+        x: Number(x),
+        top: Number(y),
+        bottom: Number(y) + Number(length),
+    }));
+    const arms = [...svg.matchAll(/M([\d.]+) ([\d.]+)L/g)].map(([, x, y]) => ({ x: Number(x), y: Number(y) }));
+
+    it("has a T and a K whose stems are the same height", () => {
+        expect(stems).toHaveLength(2);
+        expect(stems[0].top).toBe(stems[1].top);
+        expect(stems[0].bottom).toBe(stems[1].bottom);
+    });
+
+    it("grows both arms of the K out of the middle of its stem, so no notch is left where they meet", () => {
+        const [, stem] = stems;
+
+        expect(arms).toHaveLength(2);
+        expect(arms[0]).toEqual(arms[1]);
+        expect(Math.abs(arms[0].x - stem.x)).toBeLessThan(STROKE / 2);
+        expect(arms[0].y).toBeGreaterThan(stem.top);
+        expect(arms[0].y).toBeLessThan(stem.bottom);
+    });
+
+    it("leaves a gap between the T and the K", () => {
+        const tBarEnd = Number(/M[\d.]+ [\d.]+h([\d.]+)/.exec(svg)![1]) + Number(/M([\d.]+) [\d.]+h/.exec(svg)![1]);
+        const kStemLeftEdge = stems[1].x - STROKE / 2;
+
+        expect(kStemLeftEdge - (tBarEnd + STROKE / 2)).toBeGreaterThanOrEqual(2);
+    });
+});
+
 describe("browser colour", () => {
     it("starts as the colour of the default mode", () => {
         expect(meta("meta[name=theme-color]")).toBe(MODES[0].themeColor);
