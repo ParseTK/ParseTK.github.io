@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { Reveal } from "./Reveal";
 import { cn } from "./lib/utils";
 
 interface SectionHeadingProps {
@@ -8,7 +9,7 @@ interface SectionHeadingProps {
 }
 
 export const SectionHeading = ({ lead, accent, description }: SectionHeadingProps) => (
-    <>
+    <Reveal>
         <h2 className={cn("text-3xl md:text-4xl font-bold text-center", description ? "mb-4" : "mb-12")}>
             {lead}
             {accent && (
@@ -19,5 +20,5 @@ export const SectionHeading = ({ lead, accent, description }: SectionHeadingProp
             )}
         </h2>
         {description && <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">{description}</p>}
-    </>
+    </Reveal>
 );

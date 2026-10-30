@@ -1,3 +1,4 @@
+import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { Timeline } from "./Timeline";
 import { timeline } from "@/data/timeline";
@@ -8,7 +9,7 @@ export const AboutMe = () => {
             <div className="container mx-auto max-w-5xl">
                 <SectionHeading lead="About" accent="Me" />
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
-                    <div className="space-y-6">
+                    <Reveal className="space-y-6">
                         <p className="text-2xl font-semibold">
                             Passionate about building software that makes a difference.
                             I enjoy creating applications that are not only functional, accessible, user-friendly, and visually appealing,
@@ -41,12 +42,12 @@ export const AboutMe = () => {
                                 Download Résumé (PDF)
                             </a>
                         </div>
-                    </div>
+                    </Reveal>
 
-                    <div>
+                    <Reveal>
                         <h3 className="mb-6 text-2xl font-semibold text-left">Where I'm coming from</h3>
                         <Timeline items={timeline} />
-                    </div>
+                    </Reveal>
                 </div>
             </div>
         </section>

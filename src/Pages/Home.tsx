@@ -1,13 +1,29 @@
-import { useState } from "react";
+import { useState, type ComponentType } from "react";
 import { StarBackground } from "../Components/StarBackground"
 import { GrainOverlay } from "../Components/GrainOverlay";
 import { Navbar, type OverlayName } from "../Components/Navbar";
+import { ScrollCue } from "../Components/ScrollCue";
 import { useIsDesktop } from "../Components/lib/useIsDesktop";
 import { HeroSection } from "../Components/HeroSection";
 import { AboutMe } from "../Components/AboutSection";
 import { SkillsSection } from "../Components/SkillsSection";
 import { ProjectsSection } from "../Components/ProjectsSection";
 import { ContactSection } from "@/Components/ContactSection";
+import { SECTIONS, type SectionId } from "@/data/sections";
+
+const SECTION_VIEWS: Record<SectionId, ComponentType> = {
+  projects: ProjectsSection,
+  skills: SkillsSection,
+  about: AboutMe,
+  contact: ContactSection,
+};
+
+const TOP_ID = "top";
+
+const goToTop = () => {
+  window.scrollTo({ top: 0 });
+  document.getElementById(TOP_ID)?.focus({ preventScroll: true });
+};
 
 export const Home = () => {
   const [openOverlay, setOpenOverlay] = useState<OverlayName | null>(null);
@@ -15,7 +31,7 @@ export const Home = () => {
   const isPageBlocked = openOverlay === "menu" || (openOverlay === "style" && !isDesktop);
 
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <div id={TOP_ID} tabIndex={-1} className="min-h-screen bg-background text-foreground overflow-x-hidden outline-none">
         <a
             href="#main"
             inert={isPageBlocked}
@@ -30,11 +46,15 @@ export const Home = () => {
 
         <main id="main" inert={isPageBlocked}>
           <HeroSection />
-          <AboutMe />
-          <SkillsSection />
-          <ProjectsSection />
-          <ContactSection />
+          {SECTIONS.map(({ id }) => {
+            const View = SECTION_VIEWS[id];
+            return <View key={id} />;
+          })}
         </main>
+
+        <footer inert={isPageBlocked} className="relative flex justify-center pb-10 pt-4">
+          <ScrollCue direction="up" label="Top" accessibleName="Back to top" onClick={goToTop} />
+        </footer>
     </div>
   )
 }

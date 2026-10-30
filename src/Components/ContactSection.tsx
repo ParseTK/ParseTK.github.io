@@ -1,5 +1,6 @@
 import { ExternalLink } from "./ExternalLink";
 import { Frame } from "./Frame";
+import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 import { contactEntries, type ContactEntry } from "@/data/contact";
 
@@ -26,6 +27,7 @@ export const ContactSection = () => (
                 description="I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Feel free to reach out!"
             />
 
+            <Reveal>
             <ul className="mx-auto grid max-w-md grid-cols-1 gap-4">
                 {contactEntries.map((entry) => (
                     <li key={entry.id}>
@@ -41,6 +43,7 @@ export const ContactSection = () => (
                     </li>
                 ))}
             </ul>
+            </Reveal>
         </div>
     </section>
 );

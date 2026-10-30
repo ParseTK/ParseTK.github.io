@@ -3,6 +3,7 @@ import { skillGroups, type SkillGroup } from "@/data/skills";
 import { useMediaQuery } from "./lib/useMediaQuery";
 import { Chip, ChipList } from "./Chip";
 import { Frame } from "./Frame";
+import { Reveal } from "./Reveal";
 import { SectionHeading } from "./SectionHeading";
 
 const SkillChips = ({ skills }: { skills: SkillGroup["skills"] }) => (
@@ -21,6 +22,7 @@ export const SkillsSection = () => {
             <div className="container mx-auto max-w-5xl">
                 <SectionHeading lead="Technical" accent="Skills" />
 
+                <Reveal>
                 <div
                     key={isDesktop ? "desktop" : "mobile"}
                     className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -53,6 +55,7 @@ export const SkillsSection = () => {
                         )
                     )}
                 </div>
+                </Reveal>
             </div>
         </section>
     );
