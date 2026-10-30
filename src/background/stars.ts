@@ -50,9 +50,16 @@ export const starY = (star: Star, height: number, scrollY: number): number => {
     return (((star.y - scrollY * star.parallax * SCROLL_FACTOR) % sky) + sky) % sky;
 };
 
-// A canvas ignores negative alpha and keeps the previous value, so the dip is clamped at invisible
-export const starOpacity = (star: Star, seconds: number, animate: boolean): number =>
-    animate ? Math.max(0, 0.4 + 0.5 * Math.sin(seconds * star.speed + star.phase)) : STILL_OPACITY;
+// Stars dim and brighten but never go out: they stay between these two
+export const TWINKLE_MIN = 0.35;
+export const TWINKLE_MAX = 0.95;
+
+export const starOpacity = (star: Star, seconds: number, animate: boolean): number => {
+    if (!animate) return STILL_OPACITY;
+    const middle = (TWINKLE_MIN + TWINKLE_MAX) / 2;
+    const reach = (TWINKLE_MAX - TWINKLE_MIN) / 2;
+    return middle + reach * Math.sin(seconds * star.speed + star.phase);
+};
 
 export const drawStars = (ctx: CanvasRenderingContext2D, stars: Star[], options: DrawOptions) => {
     const { width, height, color, scrollY, seconds, animate } = options;

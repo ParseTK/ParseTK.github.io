@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { Tabs } from "./Tabs";
 import { axe } from "@/test/axe";
 
@@ -88,5 +88,26 @@ describe("Tabs", () => {
         const { container } = render(<Harness />);
 
         expect(await axe(container)).toHaveNoViolations();
+    });
+});
+
+describe("Tabs and page position", () => {
+    it("never scrolls anything into view, so choosing a tab cannot move the page sideways", () => {
+        const scrollIntoView = vi.fn();
+        Element.prototype.scrollIntoView = scrollIntoView;
+        render(<Harness />);
+
+        fireEvent.click(tab("Three"));
+        fireEvent.keyDown(tab("Three"), { key: "Home" });
+
+        expect(scrollIntoView).not.toHaveBeenCalled();
+    });
+
+    it("wraps onto more lines on a narrow screen instead of scrolling sideways", () => {
+        render(<Harness />);
+
+        const list = screen.getByRole("tablist");
+        expect(list).toHaveClass("flex-wrap");
+        expect(list.className).not.toMatch(/overflow-x-(auto|scroll)/);
     });
 });

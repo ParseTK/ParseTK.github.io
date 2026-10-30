@@ -22,9 +22,7 @@ export const Tabs = <T extends Tab>({ label, tabs, selectedId, onSelect, childre
 
     const select = (id: string) => {
         onSelect(id);
-        const button = tabRefs.current.get(id);
-        button?.focus();
-        button?.scrollIntoView?.({ block: "nearest", inline: "center" });
+        tabRefs.current.get(id)?.focus();
     };
 
     const handleKeyDown = (event: KeyboardEvent, index: number) => {
@@ -45,7 +43,7 @@ export const Tabs = <T extends Tab>({ label, tabs, selectedId, onSelect, childre
             <div
                 role="tablist"
                 aria-label={label}
-                className="mb-8 flex gap-1 overflow-x-auto border-b border-border [scrollbar-width:none] md:justify-center"
+                className="mb-8 flex flex-wrap gap-x-1 border-b border-border md:justify-center"
             >
                 {tabs.map((tab, index) => {
                     const isSelected = tab.id === selectedId;
@@ -65,7 +63,7 @@ export const Tabs = <T extends Tab>({ label, tabs, selectedId, onSelect, childre
                             onClick={() => select(tab.id)}
                             onKeyDown={(event) => handleKeyDown(event, index)}
                             className={cn(
-                                "min-h-11 shrink-0 border-b-2 px-4 py-2 text-sm transition-colors",
+                                "min-h-11 border-b-2 px-4 py-2 text-sm transition-colors",
                                 isSelected
                                     ? "border-primary font-semibold text-primary"
                                     : "border-transparent text-muted-foreground hover:text-foreground",

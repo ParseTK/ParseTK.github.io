@@ -1,5 +1,13 @@
 import { describe, expect, it } from "vitest";
-import { AREA_PER_STAR, SKY_HEIGHT_IN_SCREENS, generateStars, starOpacity, starY } from "./stars";
+import {
+    AREA_PER_STAR,
+    SKY_HEIGHT_IN_SCREENS,
+    TWINKLE_MAX,
+    TWINKLE_MIN,
+    generateStars,
+    starOpacity,
+    starY,
+} from "./stars";
 
 const sequence = (values: number[]) => {
     let index = 0;
@@ -64,12 +72,32 @@ describe("starY", () => {
 describe("starOpacity", () => {
     const star = { x: 0, y: 0, radius: 1, speed: 1, phase: 0, parallax: 0.01 };
 
-    it("twinkles between invisible and 0.9 and never goes negative", () => {
-        const values = Array.from({ length: 100 }, (_, i) => starOpacity(star, i / 10, true));
+    const sample = (speed: number, phase: number) =>
+        Array.from({ length: 400 }, (_, i) => starOpacity({ ...star, speed, phase }, i / 10, true));
 
-        expect(Math.min(...values)).toBeGreaterThanOrEqual(0);
-        expect(Math.max(...values)).toBeLessThanOrEqual(0.9);
-        expect(new Set(values.map((value) => value.toFixed(2))).size).toBeGreaterThan(5);
+    it("dims and brightens a star without ever letting it go out", () => {
+        for (const [speed, phase] of [
+            [0.5, 0],
+            [1, 2],
+            [2, 4.5],
+        ]) {
+            const values = sample(speed, phase);
+
+            expect(Math.min(...values)).toBeGreaterThanOrEqual(TWINKLE_MIN - 1e-9);
+            expect(Math.max(...values)).toBeLessThanOrEqual(TWINKLE_MAX + 1e-9);
+        }
+    });
+
+    it("keeps even the dimmest moment clearly visible", () => {
+        expect(TWINKLE_MIN).toBeGreaterThanOrEqual(0.3);
+        expect(Math.min(...sample(1, 0))).toBeGreaterThan(0.3);
+    });
+
+    it("uses most of its range, so the twinkle can be seen", () => {
+        const values = sample(1, 0);
+
+        expect(Math.max(...values) - Math.min(...values)).toBeGreaterThan((TWINKLE_MAX - TWINKLE_MIN) * 0.9);
+        expect(new Set(values.map((value) => value.toFixed(2))).size).toBeGreaterThan(20);
     });
 
     it("stays at one steady brightness without animation", () => {

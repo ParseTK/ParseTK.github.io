@@ -195,19 +195,31 @@ export const Carousel = <T,>({ label, noun, items, getKey, getTitle, renderItem,
                     >
                         <ChevronLeft size={20} aria-hidden="true" />
                     </button>
-                    <div aria-hidden="true" className="flex flex-col items-center gap-2">
-                        <div className="flex gap-2">
-                            {items.map((item, index) => (
-                                <span
-                                    key={getKey(item)}
-                                    className={cn(
-                                        "h-[7px] rounded-full transition-all duration-300",
-                                        index === view.current ? "w-[22px] bg-primary" : "w-[7px] bg-border",
-                                    )}
-                                />
-                            ))}
+                    <div className="flex flex-col items-center">
+                        <div role="group" aria-label={`Choose a ${noun}`} className="flex">
+                            {items.map((item, index) => {
+                                const isCurrent = index === view.current;
+                                return (
+                                    <button
+                                        key={getKey(item)}
+                                        type="button"
+                                        aria-label={`Show ${noun} ${index + 1}: ${getTitle(item)}`}
+                                        aria-current={isCurrent ? "true" : undefined}
+                                        onClick={() => go(index)}
+                                        className="group grid h-6 min-w-6 cursor-pointer place-items-center"
+                                    >
+                                        <span
+                                            aria-hidden="true"
+                                            className={cn(
+                                                "block h-[7px] rounded-full transition-all duration-300 group-hover:bg-primary/70",
+                                                isCurrent ? "w-[22px] bg-primary" : "w-[7px] bg-border",
+                                            )}
+                                        />
+                                    </button>
+                                );
+                            })}
                         </div>
-                        <span className="text-xs text-muted-foreground">
+                        <span aria-hidden="true" className="text-xs text-muted-foreground">
                             {view.current + 1} of {count}
                         </span>
                     </div>

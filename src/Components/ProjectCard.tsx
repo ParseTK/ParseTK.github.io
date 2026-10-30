@@ -19,20 +19,20 @@ const PlayBadge = () => (
 const ProjectMedia = ({ project }: { project: Project }) => {
     const { image, videoUrl } = project;
 
-    if (project.comingSoon) {
+    // A card with no thumbnail yet keeps the same 16:9 slot, so every card has the same shape
+    if (project.comingSoon || !image) {
         return (
             <div
                 aria-hidden="true"
                 className={cn(
                     MEDIA_FRAME,
-                    "grid place-items-center border-b border-dashed border-input bg-secondary/40 text-muted-foreground",
+                    "grid place-items-center border-b border-border bg-secondary/40 text-muted-foreground",
                 )}
             >
                 <Play size={22} />
             </div>
         );
     }
-    if (!image) return null;
 
     const picture = <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />;
     if (!videoUrl) return <div className={MEDIA_FRAME}>{picture}</div>;
@@ -50,10 +50,7 @@ const ProjectMedia = ({ project }: { project: Project }) => {
 };
 
 export const ProjectCard = ({ project }: { project: Project }) => (
-    <Frame
-        as="article"
-        className={cn("flex h-full flex-col text-left", project.comingSoon && "border-dashed border-input")}
-    >
+    <Frame as="article" className="flex h-full flex-col text-left">
         <ProjectMedia project={project} />
         <div className="flex flex-1 flex-col p-6">
             {!project.comingSoon && (
