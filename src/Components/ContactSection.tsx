@@ -1,65 +1,46 @@
-import { Headphones, Linkedin, Mail } from "lucide-react"
-import { ExternalLink } from "./ExternalLink"
+import { ExternalLink } from "./ExternalLink";
+import { Frame } from "./Frame";
+import { SectionHeading } from "./SectionHeading";
+import { contactEntries, type ContactEntry } from "@/data/contact";
 
-const linkClass =
-    "text-muted-foreground underline underline-offset-4 hover:text-primary transition-colors"
+const EntryContent = ({ entry: { icon: Icon, label, value } }: { entry: ContactEntry }) => (
+    <>
+        <span className="grid size-12 shrink-0 place-items-center rounded-full bg-primary/10">
+            <Icon className="h-6 w-6 text-primary" aria-hidden="true" />
+        </span>
+        <span className="min-w-0 text-left">
+            <span className="block font-medium">{label}</span>{" "}
+            <span className="block break-words text-sm text-muted-foreground">{value}</span>
+        </span>
+    </>
+);
 
-export const ContactSection = () => {
-  return (
+const ENTRY_CLASS = "flex items-center gap-4 p-5 transition-colors hover:border-primary";
+
+export const ContactSection = () => (
     <section id="contact" className="py-24 px-4 bg-secondary/10">
         <div className="container mx-auto max-w-5xl">
-            <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-                Get In <span className="text-primary">Touch</span>
-            </h2>
-            <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-                I'm always open to discussing new projects,
-                creative ideas,
-                or opportunities to be part of your visions.
-                Feel free to reach out!
-            </p>
+            <SectionHeading
+                lead="Get In"
+                accent="Touch"
+                description="I'm always open to discussing new projects, creative ideas, or opportunities to be part of your visions. Feel free to reach out!"
+            />
 
-            <div className="max-w-md mx-auto">
-                <h3 className="text-2xl font-semibold mb-6 text-left">
-                    Contact Information
-                </h3>
-
-                <ul className="space-y-6">
-                    <li className="flex items-start space-x-4">
-                        <div className="p-3 rounded-full bg-primary/10">
-                            <Mail className="h-6 w-6 text-primary" aria-hidden="true" />
-                        </div>
-                        <div>
-                            <h4 className="font-medium text-left">Email</h4>
-                            <a href="mailto:kirchnertyler@gmail.com" className={linkClass}>
-                                kirchnertyler@gmail.com
-                            </a>
-                        </div>
+            <ul className="mx-auto grid max-w-md grid-cols-1 gap-4">
+                {contactEntries.map((entry) => (
+                    <li key={entry.id}>
+                        {entry.external ? (
+                            <Frame as={ExternalLink} href={entry.href} className={ENTRY_CLASS}>
+                                <EntryContent entry={entry} />
+                            </Frame>
+                        ) : (
+                            <Frame as="a" href={entry.href} className={ENTRY_CLASS}>
+                                <EntryContent entry={entry} />
+                            </Frame>
+                        )}
                     </li>
-                    <li className="flex items-start space-x-4">
-                        <div className="p-3 rounded-full bg-primary/10">
-                            <Linkedin className="h-6 w-6 text-primary" aria-hidden="true" />
-                        </div>
-                        <div>
-                            <h4 className="font-medium text-left">LinkedIn</h4>
-                            <ExternalLink href="https://www.linkedin.com/in/parsetk" className={linkClass}>
-                                ParseTK
-                            </ExternalLink>
-                        </div>
-                    </li>
-                    <li className="flex items-start space-x-4">
-                        <div className="p-3 rounded-full bg-primary/10">
-                            <Headphones className="h-6 w-6 text-primary" aria-hidden="true" />
-                        </div>
-                        <div>
-                            <h4 className="font-medium text-left">Discord</h4>
-                            <ExternalLink href="https://discordapp.com/users/estteekay#7458" className={linkClass}>
-                                estteekay
-                            </ExternalLink>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+                ))}
+            </ul>
         </div>
     </section>
-  )
-}
+);

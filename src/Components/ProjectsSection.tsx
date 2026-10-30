@@ -4,6 +4,7 @@ import { Glow } from "./Glow";
 import { ExternalLink } from "./ExternalLink";
 import { Carousel } from "./carousel/Carousel";
 import { ProjectCard } from "./ProjectCard";
+import { SectionHeading } from "./SectionHeading";
 import { Tabs } from "./Tabs";
 import { PROJECT_CATEGORIES, projectsIn, type ProjectCategoryId } from "@/data/projects";
 
@@ -14,14 +15,11 @@ export const ProjectsSection = () => {
         <section id="projects" className="py-24 px-4 relative isolate">
             <Glow className="-right-[40vmax] -bottom-[45vmax] [--glow-strength:15%]" />
             <div className="container mx-auto max-w-5xl">
-                <h2 className="text-3xl md:text-4xl font-bold mb-4 text-center">
-                    Featured <span className="text-primary">Projects</span>
-                </h2>
-
-                <p className="text-center text-muted-foreground mb-12 max-w-2xl mx-auto">
-                    Here are some of the projects I've worked on.
-                    Pick a category and swipe through the cards, then use the GitHub link on a card to see the code.
-                </p>
+                <SectionHeading
+                    lead="Featured"
+                    accent="Projects"
+                    description="Here are some of the projects I've worked on. Pick a category and swipe through the cards, then use the GitHub link on a card to see the code."
+                />
 
                 <Tabs
                     label="Project categories"
