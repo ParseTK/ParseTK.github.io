@@ -36,6 +36,7 @@ describe("ProjectCard", () => {
         const { container } = render(<ProjectCard project={baseProject} />);
 
         expect(container.querySelector("img")).toBeNull();
+        expect(container.querySelector(".aspect-video")).toBeNull();
     });
 
     it("shows a supplied image with its alt text", () => {
@@ -43,6 +44,13 @@ describe("ProjectCard", () => {
 
         expect(screen.getByRole("img", { name: "Terminal output" })).toHaveAttribute("src", "/thumb.png");
         expect(screen.queryByRole("link", { name: /video/ })).toBeNull();
+    });
+
+    it("keeps a supplied image in a 16:9 frame so a video thumbnail is not cropped", () => {
+        const { container } = render(<ProjectCard project={{ ...baseProject, image: { src: "/thumb.png", alt: "Terminal output" } }} />);
+
+        expect(screen.getByRole("img").closest(".aspect-video")).not.toBeNull();
+        expect(container.querySelectorAll(".aspect-video")).toHaveLength(1);
     });
 
     it("links the image to the video when there is one", () => {
@@ -59,6 +67,32 @@ describe("ProjectCard", () => {
         const link = screen.getByRole("link", { name: "Watch the Sample video (opens in a new tab)" });
         expect(link).toHaveAttribute("href", "https://www.youtube.com/watch?v=abc");
         expect(link).toContainElement(screen.getByRole("img", { name: "Terminal output" }));
+    });
+
+    it("marks a video thumbnail with a play badge that screen readers skip", () => {
+        const { container } = render(
+            <ProjectCard
+                project={{ ...baseProject, image: { src: "/thumb.png", alt: "Terminal output" }, videoUrl: "https://youtu.be/abc" }}
+            />,
+        );
+
+        const badge = container.querySelector("svg.lucide-play")!.closest("[aria-hidden=true]");
+        expect(badge).not.toBeNull();
+        expect(screen.getByRole("link", { name: /Watch the Sample video/ })).toContainElement(badge as HTMLElement);
+    });
+
+    it("shows no play badge on an image that has no video", () => {
+        const { container } = render(<ProjectCard project={{ ...baseProject, image: { src: "/thumb.png", alt: "Terminal output" } }} />);
+
+        expect(container.querySelector("svg.lucide-play")).toBeNull();
+    });
+
+    it("reserves the same 16:9 slot on a coming-soon card so a real thumbnail replaces it without a layout jump", () => {
+        const { container } = render(<ProjectCard project={comingSoon} />);
+
+        const slot = container.querySelector(".aspect-video");
+        expect(slot).not.toBeNull();
+        expect(slot).toHaveAttribute("aria-hidden", "true");
     });
 
     it("shows a coming-soon card with no link, image or technologies", () => {
