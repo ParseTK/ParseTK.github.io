@@ -1,4 +1,5 @@
-import { Github, Play } from "lucide-react";
+import { Play } from "lucide-react";
+import { GithubIcon } from "./BrandIcons";
 import { Chip, ChipList } from "./Chip";
 import { ExternalLink } from "./ExternalLink";
 import { Frame } from "./Frame";
@@ -72,7 +73,7 @@ export const ProjectCard = ({ project }: { project: Project }) => (
                         label={`${project.title} source code on GitHub`}
                         className="inline-flex rounded-full p-2 text-foreground/80 transition-colors duration-300 hover:text-primary"
                     >
-                        <Github size={20} aria-hidden="true" />
+                        <GithubIcon size={20} aria-hidden="true" />
                     </ExternalLink>
                 </Tooltip>
             )}

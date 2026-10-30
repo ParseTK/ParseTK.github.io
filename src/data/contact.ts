@@ -1,11 +1,11 @@
-import { Github, Linkedin, type LucideIcon } from "lucide-react";
+import { GithubIcon, LinkedinIcon, type IconComponent } from "@/Components/BrandIcons";
 
 export interface ContactEntry {
     id: string;
     label: string;
     value: string;
     href: string;
-    icon: LucideIcon;
+    icon: IconComponent;
 }
 
 // Web profiles only: there is deliberately no email address on the page
@@ -15,13 +15,13 @@ export const contactEntries: readonly ContactEntry[] = [
         label: "LinkedIn",
         value: "www.linkedin.com/in/parsetk",
         href: "https://www.linkedin.com/in/parsetk",
-        icon: Linkedin,
+        icon: LinkedinIcon,
     },
     {
         id: "github",
         label: "GitHub",
         value: "github.com/ParseTK",
         href: "https://github.com/ParseTK",
-        icon: Github,
+        icon: GithubIcon,
     },
 ];
