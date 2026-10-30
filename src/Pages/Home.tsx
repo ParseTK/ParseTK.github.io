@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { StarBackground } from "../Components/StarBackground"
+import { GrainOverlay } from "../Components/GrainOverlay";
 import { Navbar, type OverlayName } from "../Components/Navbar";
 import { useIsDesktop } from "../Components/lib/useIsDesktop";
 import { HeroSection } from "../Components/HeroSection";
@@ -24,6 +25,7 @@ export const Home = () => {
         </a>
 
         <StarBackground />
+        <GrainOverlay />
         <Navbar openOverlay={openOverlay} onOpenOverlayChange={setOpenOverlay} />
 
         <main id="main" inert={isPageBlocked}>

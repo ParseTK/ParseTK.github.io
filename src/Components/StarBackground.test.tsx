@@ -1,9 +1,12 @@
 import { act, render } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { StarBackground } from "./StarBackground";
+import { setReducedMotion, setScrollY } from "@/test/matchMedia";
+import { fakeContext, pendingFrames, runFrame } from "@/test/canvas";
+import { setSelection } from "@/style/store";
 
-const starPositions = (container: HTMLElement) =>
-    [...container.querySelectorAll<HTMLElement>(".star")].map((star) => `${star.style.left},${star.style.top}`);
+const positions = () => fakeContext().arcs.map((arc) => `${arc.x.toFixed(2)},${arc.y.toFixed(2)}`);
+const alphas = () => fakeContext().arcs.map((arc) => arc.alpha);
 
 const resizeTo = (width: number, height: number) => {
     Object.defineProperty(window, "innerWidth", { value: width, configurable: true, writable: true });
@@ -13,37 +16,124 @@ const resizeTo = (width: number, height: number) => {
     });
 };
 
-describe("StarBackground", () => {
-    it("is hidden from assistive technology", () => {
-        const { container } = render(<StarBackground />);
+const renderSky = (width = 1000, height = 700) => {
+    resizeTo(width, height);
+    const view = render(<StarBackground />);
+    act(() => runFrame(1000));
+    return view;
+};
 
-        expect(container.firstElementChild).toHaveAttribute("aria-hidden", "true");
+describe("StarBackground", () => {
+    it("is a canvas hidden from assistive technology", () => {
+        const { container } = renderSky();
+
+        const canvas = container.querySelector("canvas");
+        expect(canvas).not.toBeNull();
+        expect(canvas).toHaveAttribute("aria-hidden", "true");
     });
 
-    it("draws stars in proportion to the screen area", () => {
-        resizeTo(1000, 700);
-        const { container } = render(<StarBackground />);
+    it("draws stars in proportion to the screen area, in the mode's star color", () => {
+        renderSky(1000, 700);
 
-        expect(container.querySelectorAll(".star")).toHaveLength(Math.floor((1000 * 700) / 7000));
+        expect(Math.abs(fakeContext().arcs.length - (1000 * 700) / 7000)).toBeLessThanOrEqual(2);
+        expect(fakeContext().arcs[0].fillStyle).toBe("rgb(255, 255, 255)");
+    });
+
+    it("caps the canvas sharpness at twice the screen size", () => {
+        Object.defineProperty(window, "devicePixelRatio", { value: 3, configurable: true });
+        const { container } = renderSky(400, 800);
+
+        expect(container.querySelector("canvas")!.width).toBe(800);
+        expect(fakeContext().transform).toEqual([2, 0, 0, 2, 0, 0]);
+        Object.defineProperty(window, "devicePixelRatio", { value: 1, configurable: true });
     });
 
     it("keeps every star where it is when only the height changes, like a phone address bar", () => {
-        resizeTo(400, 800);
-        const { container } = render(<StarBackground />);
-        const before = starPositions(container);
+        renderSky(400, 800);
+        const before = positions();
 
         resizeTo(400, 700);
+        act(() => runFrame(2000));
 
-        expect(starPositions(container)).toEqual(before);
+        expect(positions()).toEqual(before);
     });
 
     it("draws a new star field when the width changes", () => {
-        resizeTo(400, 800);
-        const { container } = render(<StarBackground />);
-        const before = starPositions(container);
+        renderSky(400, 800);
+        const before = positions();
 
         resizeTo(800, 800);
+        act(() => runFrame(2000));
 
-        expect(starPositions(container)).not.toEqual(before);
+        expect(positions()).not.toEqual(before);
+    });
+
+    it("keeps twinkling frame after frame", () => {
+        renderSky();
+        const first = alphas();
+
+        act(() => runFrame(2500));
+
+        expect(alphas()).not.toEqual(first);
+        expect(pendingFrames()).toBe(1);
+    });
+
+    it("moves the stars with the scroll", () => {
+        renderSky();
+        const before = positions();
+
+        setScrollY(600);
+        act(() => runFrame(1100));
+
+        expect(positions()).not.toEqual(before);
+    });
+
+    it("stops animating when the page goes away", () => {
+        const { unmount } = renderSky();
+
+        unmount();
+
+        expect(pendingFrames()).toBe(0);
+    });
+
+    it("draws one still sky with no animation when reduced motion is on", () => {
+        setReducedMotion(true);
+        renderSky();
+        const before = [positions(), alphas()];
+
+        setScrollY(600);
+
+        expect(pendingFrames()).toBe(0);
+        expect(before[0].length).toBeGreaterThan(0);
+        expect(new Set<unknown>(before[1]).size).toBe(1);
+        expect([positions(), alphas()]).toEqual(before);
+    });
+
+    it("switches to a still sky when reduced motion is turned on", () => {
+        renderSky();
+        expect(pendingFrames()).toBe(1);
+
+        setReducedMotion(true);
+
+        expect(pendingFrames()).toBe(0);
+        expect(fakeContext().arcs.length).toBeGreaterThan(0);
+    });
+
+    it("shows no stars in a mode without a star color", () => {
+        setSelection({ mode: "light" });
+
+        const { container } = renderSky();
+
+        expect(container.querySelector("canvas")).toBeNull();
+        expect(pendingFrames()).toBe(0);
+    });
+
+    it("brings the stars back when the mode changes to one with stars", () => {
+        setSelection({ mode: "light" });
+        const { container } = renderSky();
+
+        act(() => setSelection({ mode: "dark" }));
+
+        expect(container.querySelector("canvas")).not.toBeNull();
     });
 });

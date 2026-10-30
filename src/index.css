@@ -124,7 +124,6 @@
 
 @theme {
   --animate-float: float 6s ease-in-out infinite;
-  --animate-pulse-subtle: pulse-subtle 4s ease-in-out infinite;
   --animate-fade-in: fade-in 0.7s ease-out forwards;
   --animate-fade-in-delay-1: fade-in 0.7s ease-out 0.2s forwards;
   --animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
@@ -135,11 +134,6 @@
 @keyframes float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
-}
-
-@keyframes pulse-subtle {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0.4; }
 }
 
 @keyframes fade-in {
@@ -194,10 +188,25 @@
          hover:scale-105 active:scale-85;
 }
 
-@utility star {
-  @apply absolute rounded-full bg-white;
-  box-shadow: 0 0 10px 2px rgba(255, 255, 255, 0.4);
-  animation: var(--animate-pulse-subtle);
+@utility glow {
+  --glow-strength: 17%;
+  position: absolute;
+  z-index: -1;
+  width: 90vmax;
+  height: 90vmax;
+  border-radius: 50%;
+  pointer-events: none;
+  /* Stops follow an ease-out curve so the edge fades without a visible ring */
+  background: radial-gradient(
+    closest-side,
+    color-mix(in srgb, var(--primary) var(--glow-strength), transparent) 0%,
+    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.82), transparent) 15%,
+    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.56), transparent) 32%,
+    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.32), transparent) 50%,
+    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.15), transparent) 68%,
+    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.05), transparent) 84%,
+    transparent 100%
+  );
 }
 
 #root {
