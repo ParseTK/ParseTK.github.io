@@ -57,27 +57,38 @@ describe("Chip", () => {
 });
 
 describe("SectionHeading", () => {
-    it("is a level two heading with the accent word in the accent color and a space before it", () => {
-        render(<SectionHeading lead="About" accent="Me" />);
+    it("is a level two heading with a small label above it", () => {
+        render(<SectionHeading kicker="Projects" title="Things I’ve built" />);
 
-        const heading = screen.getByRole("heading", { level: 2 });
-        expect(heading).toHaveTextContent("About Me");
-        expect(screen.getByText("Me")).toHaveClass("text-primary");
+        expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Things I’ve built");
+        const label = screen.getByText("Projects");
+        expect(label).toHaveClass("uppercase", "text-primary");
+        expect(
+            label.compareDocumentPosition(screen.getByRole("heading")) & Node.DOCUMENT_POSITION_FOLLOWING,
+        ).toBeTruthy();
     });
 
-    it("works without an accent word", () => {
-        render(<SectionHeading lead="Hello" />);
+    it("is left aligned, like the rest of the section", () => {
+        const { container } = render(<SectionHeading kicker="About me" title="A title" description="Words" />);
 
-        expect(screen.getByRole("heading", { level: 2 })).toHaveTextContent("Hello");
+        const box = container.firstElementChild as HTMLElement;
+        expect(box).toHaveClass("text-left");
+        expect(box.innerHTML).not.toContain("text-center");
+        expect(box.innerHTML).not.toContain("mx-auto");
     });
 
-    it("shows a description below and leaves less space under the heading when there is one", () => {
-        const { rerender } = render(<SectionHeading lead="A" description="About this section" />);
+    it("lets a section name itself after its heading", () => {
+        render(<SectionHeading kicker="Contact" title="Get in touch" id="contact-heading" />);
+
+        expect(screen.getByRole("heading")).toHaveAttribute("id", "contact-heading");
+    });
+
+    it("shows a description under the title only when there is one", () => {
+        const { rerender } = render(<SectionHeading kicker="A" title="B" description="About this section" />);
 
         expect(screen.getByText("About this section")).toBeInTheDocument();
-        const withText = screen.getByRole("heading").className;
 
-        rerender(<SectionHeading lead="A" />);
-        expect(screen.getByRole("heading").className).not.toBe(withText);
+        rerender(<SectionHeading kicker="A" title="B" />);
+        expect(screen.queryByText("About this section")).toBeNull();
     });
 });

@@ -21,7 +21,7 @@ describe("section order", () => {
         render(<Home />);
 
         expect(sectionIdsOnPage()).toEqual(["hero", ...SECTIONS.map((section) => section.id)]);
-        expect(sectionIdsOnPage().slice(1)).toEqual(["projects", "skills", "about", "contact"]);
+        expect(sectionIdsOnPage().slice(1)).toEqual(["about", "projects", "skills", "contact"]);
     });
 
     it("lists the same sections, in the same order, in the desktop navigation", () => {
@@ -67,15 +67,15 @@ describe("Scroll cue in the hero", () => {
     it("is a real link to the first section, named for where it goes", () => {
         render(<Home />);
 
-        const cue = screen.getByRole("link", { name: "Scroll to Projects" });
-        expect(cue).toHaveAttribute("href", "#projects");
+        const cue = screen.getByRole("link", { name: "Scroll to About" });
+        expect(cue).toHaveAttribute("href", "#about");
         expect(cue).toHaveTextContent("Scroll");
     });
 
     it("points down and bounces", () => {
         render(<Home />);
 
-        const arrow = screen.getByRole("link", { name: "Scroll to Projects" }).querySelector("svg")!;
+        const arrow = screen.getByRole("link", { name: "Scroll to About" }).querySelector("svg")!;
         expect(arrow).toHaveClass("lucide-arrow-down", "animate-bounce");
     });
 });

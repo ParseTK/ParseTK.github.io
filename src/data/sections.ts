@@ -1,8 +1,8 @@
 // Order here is the order on the page and in the navigation
 export const SECTIONS = [
+    { id: "about", label: "About" },
     { id: "projects", label: "Projects" },
     { id: "skills", label: "Skills" },
-    { id: "about", label: "About" },
     { id: "contact", label: "Contact" },
 ] as const;
 

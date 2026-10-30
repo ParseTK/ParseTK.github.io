@@ -5,10 +5,10 @@ import { timeline } from "@/data/timeline";
 
 export const AboutMe = () => {
     return (
-        <section id="about" className="py-24 px-4 relative">
+        <section id="about" aria-labelledby="about-heading" className="py-24 px-4 relative">
             <div className="container mx-auto max-w-5xl">
-                <SectionHeading lead="About" accent="Me" />
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
+                <SectionHeading kicker="About me" title="The person behind the code" id="about-heading" />
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start text-left">
                     <Reveal className="space-y-6">
                         <p className="text-2xl font-semibold">
                             Passionate about building software that makes a difference. I enjoy creating applications
@@ -30,7 +30,7 @@ export const AboutMe = () => {
                             environments, and I take pride in helping my team succeed.
                         </p>
 
-                        <div className="flex flex-col sm:flex-row gap-4 pt-4 justify-center">
+                        <div className="pt-4">
                             <a href="#contact" className="cosmic-button">
                                 Get In Touch
                             </a>
@@ -38,8 +38,7 @@ export const AboutMe = () => {
                     </Reveal>
 
                     <Reveal>
-                        <h3 className="mb-6 text-2xl font-semibold text-left">Where I'm coming from</h3>
-                        <Timeline items={timeline} />
+                        <Timeline items={timeline} label="Education and experience" />
                     </Reveal>
                 </div>
             </div>

@@ -18,9 +18,9 @@ export const SkillsSection = () => {
     const isDesktop = useMediaQuery("(min-width: 768px)");
 
     return (
-        <section id="skills" className="py-24 px-4 relative bg-secondary/30">
+        <section id="skills" aria-labelledby="skills-heading" className="py-24 px-4 relative bg-secondary/30">
             <div className="container mx-auto max-w-5xl">
-                <SectionHeading lead="Technical" accent="Skills" />
+                <SectionHeading kicker="Technical skills" title="What I work with" id="skills-heading" />
 
                 <Reveal>
                     <div key={isDesktop ? "desktop" : "mobile"} className="grid grid-cols-1 md:grid-cols-2 gap-6">

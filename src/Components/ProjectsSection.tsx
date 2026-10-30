@@ -13,12 +13,13 @@ export const ProjectsSection = () => {
     const [category, setCategory] = useState<ProjectCategoryId>(PROJECT_CATEGORIES[0].id);
 
     return (
-        <section id="projects" className="py-24 px-4 relative isolate">
+        <section id="projects" aria-labelledby="projects-heading" className="py-24 px-4 relative isolate">
             <Glow className="-right-[40vmax] -bottom-[45vmax] [--glow-strength:15%]" />
             <div className="container mx-auto max-w-5xl">
                 <SectionHeading
-                    lead="Featured"
-                    accent="Projects"
+                    kicker="Projects"
+                    title="Things I’ve built"
+                    id="projects-heading"
                     description="Here are some of the projects I've worked on. Pick a category and swipe through the cards, then use the GitHub link on a card to see the code."
                 />
 

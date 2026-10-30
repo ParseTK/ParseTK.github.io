@@ -1,4 +1,4 @@
-import { Github, Linkedin, Mail, type LucideIcon } from "lucide-react";
+import { Github, Linkedin, type LucideIcon } from "lucide-react";
 
 export interface ContactEntry {
     id: string;
@@ -6,25 +6,16 @@ export interface ContactEntry {
     value: string;
     href: string;
     icon: LucideIcon;
-    external: boolean;
 }
 
+// Web profiles only: there is deliberately no email address on the page
 export const contactEntries: readonly ContactEntry[] = [
-    {
-        id: "email",
-        label: "Email",
-        value: "kirchnertyler@gmail.com",
-        href: "mailto:kirchnertyler@gmail.com",
-        icon: Mail,
-        external: false,
-    },
     {
         id: "linkedin",
         label: "LinkedIn",
         value: "www.linkedin.com/in/parsetk",
         href: "https://www.linkedin.com/in/parsetk",
         icon: Linkedin,
-        external: true,
     },
     {
         id: "github",
@@ -32,6 +23,5 @@ export const contactEntries: readonly ContactEntry[] = [
         value: "github.com/ParseTK",
         href: "https://github.com/ParseTK",
         icon: Github,
-        external: true,
     },
 ];

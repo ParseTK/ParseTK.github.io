@@ -119,7 +119,7 @@ describe("structured data", () => {
     });
 
     it("links the same profiles as the contact section", () => {
-        const profiles = contactEntries.filter((entry) => entry.external).map((entry) => entry.href);
+        const profiles = contactEntries.map((entry) => entry.href);
 
         expect(person.sameAs).toEqual(profiles);
     });

@@ -19,18 +19,18 @@ const Marker = ({ status, isLast }: { status: TimelineItem["status"]; isLast: bo
     </div>
 );
 
-export const Timeline = ({ items }: { items: readonly TimelineItem[] }) => (
-    <ol className="max-w-xl text-left">
+export const Timeline = ({ items, label }: { items: readonly TimelineItem[]; label: string }) => (
+    <ol aria-label={label} className="max-w-xl text-left">
         {items.map((item, index) => {
             const isLast = index === items.length - 1;
             return (
                 <li key={item.id} className="grid grid-cols-[20px_1fr] gap-x-4.5">
                     <Marker status={item.status} isLast={isLast} />
                     <div className={cn(!isLast && "pb-8")}>
-                        <h4 className="text-xl font-semibold">
+                        <h3 className="text-xl font-semibold">
                             {item.title}
                             <span className="sr-only"> ({STATUS_LABEL[item.status]})</span>
-                        </h4>
+                        </h3>
                         <p className="text-sm text-muted-foreground">{item.detail}</p>
                     </div>
                 </li>
