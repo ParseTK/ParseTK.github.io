@@ -32,11 +32,31 @@ describe("ProjectCard", () => {
         expect(link).toHaveAttribute("target", "_blank");
     });
 
-    it("has no image area when no image is supplied", () => {
+    it("keeps an empty 16:9 slot, with no image, until a thumbnail is supplied", () => {
         const { container } = render(<ProjectCard project={baseProject} />);
 
         expect(container.querySelector("img")).toBeNull();
-        expect(container.querySelector(".aspect-video")).toBeNull();
+        const slot = container.querySelector(".aspect-video");
+        expect(slot).not.toBeNull();
+        expect(slot).toHaveAttribute("aria-hidden", "true");
+    });
+
+    it("gives a real project and a coming-soon card the same frame and the same slot", () => {
+        const real = render(<ProjectCard project={baseProject} />).container;
+        const later = render(<ProjectCard project={comingSoon} />).container;
+
+        const frameOf = (container: HTMLElement) => container.querySelector("article")!.className;
+        const slotOf = (container: HTMLElement) => container.querySelector(".aspect-video")!.className;
+        expect(frameOf(real)).toBe(frameOf(later));
+        expect(slotOf(real)).toBe(slotOf(later));
+    });
+
+    it("has no dotted border on any card", () => {
+        for (const project of [baseProject, comingSoon]) {
+            const { container } = render(<ProjectCard project={project} />);
+
+            expect(container.innerHTML).not.toMatch(/dashed|dotted/);
+        }
     });
 
     it("shows a supplied image with its alt text", () => {

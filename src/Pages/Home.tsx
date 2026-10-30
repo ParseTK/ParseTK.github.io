@@ -34,7 +34,7 @@ export const Home = () => {
         <div
             id={TOP_ID}
             tabIndex={-1}
-            className="min-h-screen bg-background text-foreground overflow-x-hidden outline-none"
+            className="min-h-screen bg-background text-foreground overflow-x-clip outline-none"
         >
             <a
                 href="#main"

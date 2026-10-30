@@ -1,4 +1,4 @@
-import { act, fireEvent, render, screen } from "@testing-library/react";
+import { act, fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { Carousel } from "./Carousel";
 import { axe } from "@/test/axe";
@@ -279,6 +279,70 @@ describe("Carousel with few cards", () => {
         expect(current()).toBe(2);
         fireEvent.click(screen.getByRole("button", { name: "Next thing" }));
         expect(current()).toBe(1);
+    });
+});
+
+describe("Carousel dots", () => {
+    const dots = () => within(screen.getByRole("group", { name: "Choose a thing" })).getAllByRole("button");
+
+    it("has one labelled button per card, with the current one marked", () => {
+        renderCarousel();
+
+        expect(dots().map((dot) => dot.getAttribute("aria-label"))).toEqual([
+            "Show thing 1: Item 1",
+            "Show thing 2: Item 2",
+            "Show thing 3: Item 3",
+            "Show thing 4: Item 4",
+            "Show thing 5: Item 5",
+        ]);
+        expect(dots().map((dot) => dot.getAttribute("aria-current"))).toEqual(["true", null, null, null, null]);
+    });
+
+    it("goes straight to the card whose dot is pressed, in any order", () => {
+        const { current } = renderCarousel();
+
+        fireEvent.click(dots()[2]);
+        expect(current()).toBe(3);
+        expect(screen.getByRole("status")).toHaveTextContent("Item 3, thing 3 of 5");
+
+        fireEvent.click(dots()[4]);
+        expect(current()).toBe(5);
+
+        fireEvent.click(dots()[0]);
+        expect(current()).toBe(1);
+    });
+
+    it("moves the marked dot with the arrows and the keyboard as well", () => {
+        const { stage } = renderCarousel();
+
+        fireEvent.click(screen.getByRole("button", { name: "Next thing" }));
+        expect(dots()[1]).toHaveAttribute("aria-current", "true");
+
+        fireEvent.keyDown(stage, { key: "ArrowRight" });
+        expect(dots()[2]).toHaveAttribute("aria-current", "true");
+        expect(dots()[1]).not.toHaveAttribute("aria-current");
+    });
+
+    it("is at least 24 pixels square to press, even though the dot itself is small", () => {
+        renderCarousel();
+
+        for (const dot of dots()) expect(dot).toHaveClass("h-6", "min-w-6");
+    });
+
+    it("works for two cards and is not there for one", () => {
+        const two = renderCarousel(2);
+        fireEvent.click(dots()[1]);
+        expect(two.current()).toBe(2);
+        two.unmount();
+
+        renderCarousel(1);
+        expect(screen.queryByRole("group", { name: "Choose a thing" })).toBeNull();
+    });
+
+    it("has no detectable accessibility violations", async () => {
+        const { container } = renderCarousel();
+
+        expect(await axe(container)).toHaveNoViolations();
     });
 });
 

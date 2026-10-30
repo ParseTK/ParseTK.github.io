@@ -57,7 +57,7 @@ Content is data, kept apart from the components that show it.
 | Section order and nav   | `src/data/sections.ts` (a new section also needs a view in `SECTION_VIEWS` in `Home.tsx`) |
 | Page title, description | `index.html` (a test keeps the share tags, canonical address and sitemap in step)         |
 
-**Project thumbnails.** Put a 16:9 image in `public/projects/` (create the folder) and add `image: { src, alt }` and `videoUrl` to the project. The image then links to the video with a play badge. Alt text is required. Until then a card shows no image area.
+**Project thumbnails.** Put a 16:9 image in `public/projects/` (create the folder) and add `image: { src, alt }` and `videoUrl` to the project. The image then links to the video with a play badge. Alt text is required. Until then every card shows the same empty 16:9 slot, so real and "coming soon" cards stay the same shape.
 
 **"Coming soon" cards.** Each tab is topped up to `CARDS_PER_CATEGORY` cards with placeholders. They disappear one by one as real projects are added; set it to `0` to show only real projects.
 

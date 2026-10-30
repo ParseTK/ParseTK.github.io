@@ -136,3 +136,13 @@ describe("Scroll behaviour", () => {
         expect(hint).not.toHaveAttribute("inert");
     });
 });
+
+describe("Page container", () => {
+    it("clips what sticks out sideways instead of hiding it, so nothing can scroll the page container", () => {
+        const { container } = render(<Home />);
+
+        const page = container.firstElementChild as HTMLElement;
+        expect(page).toHaveClass("overflow-x-clip");
+        expect(page.className).not.toContain("overflow-x-hidden");
+    });
+});
