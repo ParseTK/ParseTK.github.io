@@ -17,15 +17,10 @@ export const AboutMe = () => {
                             development, and continuous learning.
                         </p>
                         <p className="text-muted-foreground">
-                            I’m a computer science student at Elms College, graduating in 2027, after an associate
-                            degree in computer programming at STCC. I spent a summer as a software engineering intern,
-                            where I shipped real features for a production product.
-                        </p>
-
-                        <p className="text-muted-foreground">
                             Curiosity is my compass. I treat every problem as a classroom. I write up what I learn, with
                             clear notes and visualizations, so others can learn too. I thrive in collaborative, positive
-                            environments, and I take pride in helping my team succeed.
+                            environments, and I take pride in helping my team succeed. Outside of code, I’m a dad who
+                            enjoys video games, sports, and conversations with friends.
                         </p>
 
                         <div className="pt-4">
