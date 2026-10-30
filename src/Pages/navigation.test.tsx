@@ -192,3 +192,14 @@ describe("Scroll and Top controls", () => {
         }
     });
 });
+
+describe("Style button tooltip", () => {
+    it("labels the palette button, below it and lined up with the screen's right edge", () => {
+        render(<Home />);
+
+        const button = screen.getByRole("button", { name: "Style options" });
+        const tip = button.parentElement!.querySelector("[data-tooltip]")!;
+        expect(tip).toHaveTextContent("Style options");
+        expect(tip).toHaveClass("top-full", "right-0");
+    });
+});

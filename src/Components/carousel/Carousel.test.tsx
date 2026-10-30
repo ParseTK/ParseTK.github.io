@@ -361,3 +361,36 @@ describe("Carousel and reduced motion", () => {
         expect(slides()[1].style.transform).toContain("rotateY(-34deg)");
     });
 });
+
+describe("Carousel tooltips", () => {
+    const labels = (container: HTMLElement) =>
+        [...container.querySelectorAll("[data-tooltip]")].map((tip) => tip.textContent);
+
+    it("label both arrows and every dot, in the order they appear", () => {
+        const { container } = renderCarousel();
+
+        expect(labels(container)).toEqual([
+            "Previous thing",
+            "Item 1",
+            "Item 2",
+            "Item 3",
+            "Item 4",
+            "Item 5",
+            "Next thing",
+        ]);
+    });
+
+    it("leave the controls' own accessible names as they were", () => {
+        renderCarousel();
+
+        expect(screen.getByRole("button", { name: "Previous thing" })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Next thing" })).toBeInTheDocument();
+        expect(screen.getByRole("button", { name: "Show thing 3: Item 3" })).toBeInTheDocument();
+    });
+
+    it("are not there when there is nothing to move between", () => {
+        const { container } = renderCarousel(1);
+
+        expect(labels(container)).toEqual([]);
+    });
+});

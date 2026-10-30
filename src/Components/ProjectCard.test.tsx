@@ -133,3 +133,21 @@ describe("ProjectCard", () => {
         expect(screen.queryByRole("list", { name: "Technologies" })).toBeNull();
     });
 });
+
+describe("ProjectCard tooltip", () => {
+    it("labels the GitHub icon on a real project", () => {
+        const { container } = render(<ProjectCard project={baseProject} />);
+
+        const tip = container.querySelector("[data-tooltip]")!;
+        expect(tip).toHaveTextContent("Source code on GitHub");
+        expect(tip.parentElement).toContainElement(
+            screen.getByRole("link", { name: "Sample source code on GitHub (opens in a new tab)" }),
+        );
+    });
+
+    it("has none on a coming-soon card, which has no icon", () => {
+        const { container } = render(<ProjectCard project={comingSoon} />);
+
+        expect(container.querySelector("[data-tooltip]")).toBeNull();
+    });
+});
