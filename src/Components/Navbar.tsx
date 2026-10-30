@@ -6,14 +6,9 @@ import { useScrolledPast } from "./lib/useScrolledPast";
 import { StyleButton } from "./Style/StyleButton";
 import { StylePanel } from "./Style/StylePanel";
 import { Menu, X } from "lucide-react";
+import { SECTIONS } from "@/data/sections";
 
-const navItems = [
-    { name: "Home", href: "#hero" },
-    { name: "About", href: "#about" },
-    { name: "Skills", href: "#skills" },
-    { name: "Projects", href: "#projects" },
-    { name: "Contact", href: "#contact" },
-]
+const navItems = SECTIONS.map(({ id, label }) => ({ name: label, href: `#${id}` }));
 
 export type OverlayName = "menu" | "style";
 

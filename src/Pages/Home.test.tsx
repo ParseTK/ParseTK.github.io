@@ -117,19 +117,22 @@ describe("Scroll behaviour", () => {
         expect(nav.className).not.toContain("backdrop-blur");
     });
 
-    it("hides the scroll hint after 40px of scrolling and brings it back at the top", () => {
+    it("hides the scroll hint after 40px of scrolling, takes it out of reach, and brings it back at the top", () => {
         render(<Home />);
-        const hint = screen.getByText("Scroll").parentElement as HTMLElement;
+        const hint = screen.getByRole("link", { name: "Scroll to Projects" }).parentElement as HTMLElement;
 
         expect(hint.className).not.toContain("opacity-0");
+        expect(hint).not.toHaveAttribute("inert");
 
         setScrollY(20);
         expect(hint.className).not.toContain("opacity-0");
 
         setScrollY(60);
         expect(hint.className).toContain("opacity-0");
+        expect(hint).toHaveAttribute("inert");
 
         setScrollY(0);
         expect(hint.className).not.toContain("opacity-0");
+        expect(hint).not.toHaveAttribute("inert");
     });
 });

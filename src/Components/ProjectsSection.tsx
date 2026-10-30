@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { ArrowRight } from "lucide-react";
 import { Glow } from "./Glow";
+import { Reveal } from "./Reveal";
 import { ExternalLink } from "./ExternalLink";
 import { Carousel } from "./carousel/Carousel";
 import { ProjectCard } from "./ProjectCard";
@@ -21,6 +22,7 @@ export const ProjectsSection = () => {
                     description="Here are some of the projects I've worked on. Pick a category and swipe through the cards, then use the GitHub link on a card to see the code."
                 />
 
+                <Reveal>
                 <Tabs
                     label="Project categories"
                     tabs={PROJECT_CATEGORIES}
@@ -38,6 +40,7 @@ export const ProjectsSection = () => {
                         renderItem={(project) => <ProjectCard project={project} />}
                     />
                 </Tabs>
+                </Reveal>
 
                 <div className="text-center mt-12">
                     <ExternalLink
