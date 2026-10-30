@@ -118,12 +118,13 @@ describe("About section", () => {
         expect(screen.queryByText("Where I'm coming from")).toBeNull();
     });
 
-    it("tells the about story in two paragraphs, with the person outside of code, and leaves the résumé details to the timeline", () => {
+    it("tells the about story in two paragraphs, with the person outside of code, and keeps tool names out", () => {
         render(<AboutMe />);
 
         for (const phrase of [
-            "Passionate about building software that makes a difference.",
-            "Curiosity is my compass.",
+            "computer science student at Elms College, graduating in 2027",
+            "software engineering intern, where I shipped real features for a production product",
+            "I treat every problem as a classroom.",
             "I take pride in helping my team succeed.",
             "Outside of code, I’m a dad who enjoys video games, sports, and conversations with friends.",
         ]) {
