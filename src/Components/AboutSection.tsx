@@ -11,23 +11,15 @@ export const AboutMe = () => {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-start text-left">
                     <Reveal className="space-y-6">
                         <p className="text-2xl font-semibold">
-                            Passionate about building software that makes a difference. I enjoy creating applications
-                            that are not only functional, accessible, user-friendly, and visually appealing, but also
-                            follow production-ready best practices. I am a strong advocate for clean code, test-driven
-                            development, and continuous learning.
+                            I’m a computer science student at Elms College, graduating in 2027, after an associate
+                            degree in computer programming at STCC. I spent a summer as a software engineering intern,
+                            where I shipped features for a production product.
                         </p>
                         <p className="text-muted-foreground">
-                            I’m a CS & CITS student at Elms College (B.S., graduating 2027), with an A.S. in Computer
-                            Programming from STCC. I interned as a Software Engineer on the product development team,
-                            owning work-items end-to-end, and learning the AGILE model & SDLC. Built production ready
-                            features for a RAG platform with Next.js, React, TypeScript, Node.js, PostgreSQL, Weaviate
-                            and using TDD. (Vitest)
-                        </p>
-
-                        <p className="text-muted-foreground">
-                            Curiosity is my compass. I treat every problem as a classroom. I write up what I learn, with
-                            clear notes and visualizations, so others can learn too. I thrive in collaborative, positive
-                            environments, and I take pride in helping my team succeed.
+                            I treat every problem as a classroom. I write up what I learn, with clear notes and
+                            visualizations, so others can learn too. I thrive in collaborative, positive environments,
+                            and I take pride in helping my team succeed. Outside of code, I’m a dad who enjoys video
+                            games, sports, and conversations with friends.
                         </p>
 
                         <div className="pt-4">

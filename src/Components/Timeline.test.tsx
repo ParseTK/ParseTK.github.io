@@ -118,16 +118,20 @@ describe("About section", () => {
         expect(screen.queryByText("Where I'm coming from")).toBeNull();
     });
 
-    it("keeps the about text from the live site", () => {
+    it("tells the about story in two paragraphs, with the person outside of code, and keeps tool names out", () => {
         render(<AboutMe />);
 
         for (const phrase of [
-            "Passionate about building software that makes a difference.",
-            "Elms College (B.S., graduating 2027)",
-            "Curiosity is my compass.",
+            "computer science student at Elms College, graduating in 2027",
+            "software engineering intern, where I shipped features for a production product",
+            "I treat every problem as a classroom.",
             "I take pride in helping my team succeed.",
+            "Outside of code, I’m a dad who enjoys video games, sports, and conversations with friends.",
         ]) {
             expect(document.body.textContent).toContain(phrase);
+        }
+        for (const detail of ["AGILE", "SDLC", "Weaviate", "PostgreSQL", "Vitest"]) {
+            expect(document.body.textContent).not.toContain(detail);
         }
     });
 

@@ -20,7 +20,12 @@ export const SkillsSection = () => {
     return (
         <section id="skills" aria-labelledby="skills-heading" className="py-24 px-4 relative bg-secondary/30">
             <div className="container mx-auto max-w-5xl">
-                <SectionHeading kicker="Technical skills" title="What I work with" id="skills-heading" />
+                <SectionHeading
+                    kicker="Technical skills"
+                    title="What I work with"
+                    id="skills-heading"
+                    description="Passionate about building software that makes a difference. I enjoy creating applications that are not only functional, accessible, user-friendly, and visually appealing, but also follow production-ready best practices. I am a strong advocate for clean code, test-driven development, and continuous learning."
+                />
 
                 <Reveal>
                     <div key={isDesktop ? "desktop" : "mobile"} className="grid grid-cols-1 md:grid-cols-2 gap-6">
