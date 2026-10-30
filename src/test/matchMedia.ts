@@ -3,9 +3,11 @@ import { act } from "@testing-library/react";
 const DEFAULT_WIDTH = 1280;
 
 let width = DEFAULT_WIDTH;
+let reducedMotion = false;
 const subscribers = new Map<() => void, { query: string; last: boolean }>();
 
 const matches = (query: string): boolean => {
+    if (query.includes("prefers-reduced-motion: reduce")) return reducedMotion;
     const min = query.match(/\(min-width:\s*(\d+)px\)/);
     if (min) return width >= Number(min[1]);
     const max = query.match(/\(max-width:\s*(\d+)px\)/);
@@ -31,9 +33,7 @@ export const installMatchMedia = () => {
         }) as unknown as MediaQueryList;
 };
 
-export const setViewportWidth = (next: number) => {
-    width = next;
-    Object.defineProperty(window, "innerWidth", { value: next, configurable: true, writable: true });
+const notify = () =>
     act(() => {
         subscribers.forEach((state, callback) => {
             const now = matches(state.query);
@@ -43,11 +43,22 @@ export const setViewportWidth = (next: number) => {
             }
         });
     });
+
+export const setViewportWidth = (next: number) => {
+    width = next;
+    Object.defineProperty(window, "innerWidth", { value: next, configurable: true, writable: true });
+    notify();
+};
+
+export const setReducedMotion = (reduce: boolean) => {
+    reducedMotion = reduce;
+    notify();
 };
 
 export const resetViewport = () => {
     subscribers.clear();
     width = DEFAULT_WIDTH;
+    reducedMotion = false;
     Object.defineProperty(window, "innerWidth", { value: DEFAULT_WIDTH, configurable: true, writable: true });
 };
 

@@ -1,69 +1,73 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef } from "react";
+import { useMediaQuery } from "./lib/useMediaQuery";
+import { drawStars, generateStars, type Star } from "@/background/stars";
+import { MODES, findOption } from "@/style/registry";
+import { useStyleSelection } from "@/style/store";
 
-interface Star {
-    id: number;
-    size: number;
-    x: number;
-    y: number;
-    opacity: number;
-    animationDuration: number;
-}
+const MAX_PIXEL_RATIO = 2;
 
-export const StarBackground = () => {
-    const [stars, setStars] = useState<Star[]>([]);
-
-    const generateStars = () => {
-        const numOfStars = Math.floor(
-            (window.innerWidth * window.innerHeight) / 7000
-        );
-        const newStars: Star[] = [];
-        for (let i = 0; i < numOfStars; i++) {
-            newStars.push({
-                id: i,
-                size: Math.random() * 3 + 1,
-                x: Math.random() * 100,
-                y: Math.random() * 100,
-                opacity: Math.random() * 0.5 + 0.5,
-                animationDuration: Math.random() * 4 + 2,
-            });
-        }
-        setStars(newStars);
-    };
+const StarCanvas = ({ color }: { color: string }) => {
+    const canvasRef = useRef<HTMLCanvasElement>(null);
+    const reducedMotion = useMediaQuery("(prefers-reduced-motion: reduce)");
 
     useEffect(() => {
-        generateStars();
+        const canvas = canvasRef.current;
+        const ctx = canvas?.getContext("2d");
+        if (!canvas || !ctx) return;
 
-        let lastWidth = window.innerWidth;
-        const handleResize = () => {
-            const widthChanged = window.innerWidth !== lastWidth;
-            if (!widthChanged) return;
-            lastWidth = window.innerWidth;
-            generateStars();
+        const animate = !reducedMotion;
+        let width = 0;
+        let height = 0;
+        let stars: Star[] = [];
+        let frame = 0;
+
+        const render = (milliseconds: number) => {
+            drawStars(ctx, stars, { width, height, color, scrollY: window.scrollY, seconds: milliseconds / 1000, animate });
+            if (animate) frame = requestAnimationFrame(render);
         };
 
+        const build = () => {
+            const ratio = Math.min(window.devicePixelRatio || 1, MAX_PIXEL_RATIO);
+            width = window.innerWidth;
+            height = canvas.clientHeight || window.innerHeight;
+            canvas.width = width * ratio;
+            canvas.height = height * ratio;
+            ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
+            stars = generateStars(width, height);
+        };
+
+        build();
+        if (animate) frame = requestAnimationFrame(render);
+        else render(0);
+
+        // Height-only resizes (a phone address bar sliding) must not reshuffle the sky
+        let lastWidth = window.innerWidth;
+        const handleResize = () => {
+            if (window.innerWidth === lastWidth) return;
+            lastWidth = window.innerWidth;
+            build();
+            if (!animate) render(0);
+        };
         window.addEventListener("resize", handleResize);
 
         return () => {
+            cancelAnimationFrame(frame);
             window.removeEventListener("resize", handleResize);
         };
-    }, []);
+    }, [color, reducedMotion]);
 
     return (
-        <div aria-hidden="true" className="fixed inset-x-0 top-0 h-lvh overflow-hidden pointer-events-none z-0">
-            {stars.map((star) => (
-                <div
-                    key={star.id}
-                    className="star animate-pulse-subtle"
-                    style={{
-                        width: star.size + "px",
-                        height: star.size + "px",
-                        left: star.x + "%",
-                        top: star.y + "%",
-                        opacity: star.opacity,
-                        animationDuration: star.animationDuration + "s",
-                    }}
-                />
-            ))}
-        </div>
+        <canvas
+            ref={canvasRef}
+            aria-hidden="true"
+            className="fixed inset-x-0 top-0 h-lvh w-full pointer-events-none z-0"
+        />
     );
+};
+
+export const StarBackground = () => {
+    const [{ mode }] = useStyleSelection();
+    const starColor = findOption(MODES, mode)?.starColor;
+
+    return starColor ? <StarCanvas color={starColor} /> : null;
 };
