@@ -1,18 +1,16 @@
 import { ChevronDown } from "lucide-react";
 import { skillGroups, type SkillGroup } from "@/data/skills";
 import { useMediaQuery } from "./lib/useMediaQuery";
+import { Chip, ChipList } from "./Chip";
+import { Frame } from "./Frame";
+import { SectionHeading } from "./SectionHeading";
 
 const SkillChips = ({ skills }: { skills: SkillGroup["skills"] }) => (
-    <ul className="flex flex-wrap gap-2">
+    <ChipList>
         {skills.map((skill) => (
-            <li
-                key={skill}
-                className="px-3 py-1 text-sm rounded-full border border-border bg-secondary text-secondary-foreground"
-            >
-                {skill}
-            </li>
+            <Chip key={skill}>{skill}</Chip>
         ))}
-    </ul>
+    </ChipList>
 );
 
 export const SkillsSection = () => {
@@ -21,9 +19,7 @@ export const SkillsSection = () => {
     return (
         <section id="skills" className="py-24 px-4 relative bg-secondary/30">
             <div className="container mx-auto max-w-5xl">
-                <h2 className="text-3xl md:text-4xl font-bold mb-12 text-center">
-                    Technical <span className="text-primary">Skills</span>
-                </h2>
+                <SectionHeading lead="Technical" accent="Skills" />
 
                 <div
                     key={isDesktop ? "desktop" : "mobile"}
@@ -31,15 +27,16 @@ export const SkillsSection = () => {
                 >
                     {skillGroups.map((group, index) =>
                         isDesktop ? (
-                            <div key={group.id} className="bg-card p-6 rounded-lg shadow-xs text-left">
+                            <Frame key={group.id} className="p-6 text-left">
                                 <h3 className="font-semibold text-lg mb-4">{group.title}</h3>
                                 <SkillChips skills={group.skills} />
-                            </div>
+                            </Frame>
                         ) : (
-                            <details
+                            <Frame
+                                as="details"
                                 key={group.id}
                                 open={index === 0}
-                                className="group bg-card rounded-lg shadow-xs text-left"
+                                className="group text-left"
                             >
                                 <summary className="flex items-center gap-3 p-5 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                                     <h3 className="flex-1 font-semibold text-lg">{group.title}</h3>
@@ -52,7 +49,7 @@ export const SkillsSection = () => {
                                 <div className="px-5 pb-5">
                                     <SkillChips skills={group.skills} />
                                 </div>
-                            </details>
+                            </Frame>
                         )
                     )}
                 </div>

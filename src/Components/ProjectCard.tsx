@@ -1,5 +1,7 @@
 import { Github, Play } from "lucide-react";
+import { Chip, ChipList } from "./Chip";
 import { ExternalLink } from "./ExternalLink";
+import { Frame } from "./Frame";
 import { cn } from "./lib/utils";
 import type { Project } from "@/data/projects";
 
@@ -38,25 +40,15 @@ const ProjectMedia = ({ project }: { project: Project }) => {
 };
 
 export const ProjectCard = ({ project }: { project: Project }) => (
-    <article
-        className={cn(
-            "flex h-full flex-col overflow-hidden rounded-lg bg-card text-left",
-            project.comingSoon ? "border border-dashed border-input" : "shadow-xs card-hover"
-        )}
-    >
+    <Frame as="article" className={cn("flex h-full flex-col text-left", project.comingSoon && "border-dashed border-input")}>
         <ProjectMedia project={project} />
         <div className="flex flex-1 flex-col p-6">
             {!project.comingSoon && (
-                <ul aria-label="Technologies" className="mb-4 flex flex-wrap gap-2">
+                <ChipList label="Technologies" className="mb-4 flex flex-wrap gap-2">
                     {project.tags.map((tag) => (
-                        <li
-                            key={tag}
-                            className="rounded-full border bg-secondary px-2 py-1 text-xs font-medium text-secondary-foreground"
-                        >
-                            {tag}
-                        </li>
+                        <Chip key={tag}>{tag}</Chip>
                     ))}
-                </ul>
+                </ChipList>
             )}
             <h3 className={cn("mb-1 text-xl font-semibold", project.comingSoon && "text-muted-foreground")}>
                 {project.title}
@@ -72,5 +64,5 @@ export const ProjectCard = ({ project }: { project: Project }) => (
                 </ExternalLink>
             )}
         </div>
-    </article>
+    </Frame>
 );
