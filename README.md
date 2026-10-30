@@ -97,7 +97,6 @@ The built page carries a Content Security Policy in a meta tag (`vite-plugins/co
 
 - Branch names start with `feature/`, `fix/`, `update/` or `doc/`; commit messages use `feat`, `fix`, `build`, `refactor`, `docs`, `ci` or `test`.
 - Changes go through a pull request and are merged with a merge commit. `.git-blame-ignore-revs` hides the one-time Prettier reformat from `git blame` (run `git config blame.ignoreRevsFile .git-blame-ignore-revs` once; GitHub already does this).
-- Three logs keep the history, each updated in a small `doc/` pull request after the work it describes merges, so the pull request number and date are final:
+- Two logs keep the history, each updated in a small `doc/` pull request after the work it describes merges, so the pull request number and date are final:
   - [`docs/bug-log.md`](docs/bug-log.md): resolved bugs, with what was seen, the cause, the fix and how it was checked (`BUG-n`).
-  - [`docs/feature-log.md`](docs/feature-log.md): features and notable implementation changes, with what, why and how (`FEAT-n`).
   - [`docs/changelog.md`](docs/changelog.md): one line for every merged change, grouped by day.

@@ -2,33 +2,33 @@
 
 Every change that reached the live site, newest first, grouped by the day it merged (UTC). The site deploys on every merge to `master`, so there are no version numbers. The format follows [Keep a Changelog](https://keepachangelog.com): **Added**, **Changed**, **Fixed**, **Removed** and **Security**.
 
-Add the lines for a pull request in a small `doc/` pull request after it merges. One short line per change, with the pull request number. Bugs are explained in [`bug-log.md`](bug-log.md) (`BUG-n`) and features in [`feature-log.md`](feature-log.md) (`FEAT-n`), so a line here only points to them.
+Add the lines for a pull request in a small `doc/` pull request after it merges. One short line per change, with the pull request number. A line about a fix points to its `BUG-n` entry in [`bug-log.md`](bug-log.md) instead of repeating it.
 
 ## 2026-10-30
 
 ### Added
 
-- Tests and a CI test run ([#20]; FEAT-4).
-- Style panel: mode, typeface and accent with previews ([#38]; FEAT-7).
-- Canvas stars, accent glows and film grain ([#39]; FEAT-8).
-- Typed project data and category tabs ([#40]; FEAT-9).
-- Circular 3D project carousel ([#41]; FEAT-10).
-- Shared frame, chip and heading, an About timeline ([#42]; FEAT-11).
-- Section registry, Scroll and Top cues, scroll reveals ([#43]; FEAT-12).
-- Favicon, share image, search tags, a styled 404 page and a browser bar color that follows the mode ([#44]; FEAT-13).
-- Prettier formatting and a real README ([#46], [#47]; FEAT-14).
-- Tooltips on icon-only controls ([#51]; FEAT-16).
-- Content Security Policy on the built page ([#62]; FEAT-18).
-- Five Python projects with demo videos in a pop-out player ([#66]; FEAT-20).
+- Tests and a CI test run ([#20]).
+- Style panel: mode, typeface and accent with previews ([#38]).
+- Canvas stars, accent glows and film grain ([#39]).
+- Typed project data and category tabs ([#40]).
+- Circular 3D project carousel ([#41]).
+- Shared frame, chip and heading, an About timeline ([#42]).
+- Section registry, Scroll and Top cues, scroll reveals ([#43]).
+- Favicon, share image, search tags, a styled 404 page and a browser bar color that follows the mode ([#44]).
+- Prettier formatting and a real README ([#46], [#47]).
+- Tooltips on icon-only controls ([#51]).
+- Content Security Policy on the built page ([#62]).
+- Five Python projects with demo videos in a pop-out player ([#66]).
 - Bug log IDs, starting at `BUG-1` ([#61]).
 
 ### Changed
 
-- Shared overlay hook and external link component, with no change in behavior ([#30]; FEAT-6).
-- Dependencies, Vite 8 with the React plugin 6, ESLint 10 and the GitHub Actions upgraded; TypeScript 7 and the Node 26 types held back ([#21], [#22], [#23], [#24], [#25], [#26], [#32], [#37]; FEAT-5).
-- Left-aligned headings, an About me section, side-by-side LinkedIn and GitHub in Contact, the résumé download in the hero, and the section order About, Projects, Skills, Contact ([#50]; FEAT-15).
-- Ice is the default accent and the first in the style panel; favicon, touch icon and share card recolored to match ([#56], [#57]; FEAT-17).
-- Hero welcome wording, About text and the Skills statement rewritten in plainer words; `SQL (SQL Server)` shown as `SQL` ([#63], [#64], [#65]; FEAT-19).
+- Shared overlay hook and external link component, with no change in behavior ([#30]).
+- Dependencies, Vite 8 with the React plugin 6, ESLint 10 and the GitHub Actions upgraded; TypeScript 7 and the Node 26 types held back ([#21], [#22], [#23], [#24], [#25], [#26], [#32], [#37]).
+- Left-aligned headings, an About me section, side-by-side LinkedIn and GitHub in Contact, the résumé download in the hero, and the section order About, Projects, Skills, Contact ([#50]).
+- Ice is the default accent and the first in the style panel; favicon, touch icon and share card recolored to match ([#56], [#57]).
+- Hero welcome wording, About text and the Skills statement rewritten in plainer words; `SQL (SQL Server)` shown as `SQL` ([#63], [#64], [#65]).
 - `lucide-react` 1.62, with the GitHub and LinkedIn logos drawn in the project ([#55]).
 - Project cards are solid instead of 70% see-through ([#66]).
 
@@ -62,12 +62,12 @@ Add the lines for a pull request in a small `doc/` pull request after it merges.
 
 ### Added
 
-- Skills as grouped tags, collapsible on phones ([#7]; FEAT-2).
+- Skills as grouped tags, collapsible on phones ([#7]).
 - Bug log ([#9], [#11], [#15], [#17]).
 
 ### Changed
 
-- Full-width header with the theme toggle in the row ([#12]; FEAT-3).
+- Full-width header with the theme toggle in the row ([#12]).
 - The pre-paint theme script moved to `public/theme-init.js` ([#2]).
 - Unneeded comments removed and the About section fixed ([#3], [#4]).
 
@@ -85,7 +85,7 @@ Add the lines for a pull request in a small `doc/` pull request after it merges.
 
 ### Added
 
-- Dark by default with a pre-paint theme script, a skip link, a `main` landmark, visible focus, reduced-motion handling and a GitHub Actions workflow that checks, builds and deploys to GitHub Pages ([#1]; FEAT-1).
+- Dark by default with a pre-paint theme script, a skip link, a `main` landmark, visible focus, reduced-motion handling and a GitHub Actions workflow that checks, builds and deploys to GitHub Pages ([#1]).
 
 ### Fixed
 
