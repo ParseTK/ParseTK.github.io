@@ -1,8 +1,9 @@
-// Blocking on purpose: sets the theme before first paint. Keep in sync with ThemeToggle.tsx.
+// Blocking on purpose: replays the style the app saved before first paint. It holds no option lists of its own.
 try {
-  if (localStorage.getItem("theme") !== "light") {
-    document.documentElement.classList.add("dark");
-  }
-} catch {
+  var saved = JSON.parse(localStorage.getItem("style")).resolved;
+  var root = document.documentElement;
+  root.classList.add(saved.modeClass);
+  for (var name in saved.vars) root.style.setProperty(name, saved.vars[name]);
+} catch (error) {
   document.documentElement.classList.add("dark");
 }
