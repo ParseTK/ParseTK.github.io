@@ -2,6 +2,7 @@ import { cn } from "./lib/utils";
 import { Glow } from "./Glow";
 import { ScrollCue } from "./ScrollCue";
 import { useScrolledPast } from "./lib/useScrolledPast";
+import { RESUME } from "@/data/resume";
 import { SECTIONS } from "@/data/sections";
 
 const [firstSection] = SECTIONS;
@@ -9,8 +10,13 @@ const [firstSection] = SECTIONS;
 export const HeroSection = () => {
     const hasScrolled = useScrolledPast(40);
 
+    // The padding keeps the heading below the fixed nav and the content clear of the scroll cue,
+    // so on a short screen (a phone on its side) the hero grows instead of overlapping
     return (
-        <section id="hero" className="relative isolate min-h-svh flex flex-col items-center justify-center px-4">
+        <section
+            id="hero"
+            className="relative isolate min-h-svh flex flex-col items-center justify-center px-4 pb-28 pt-28"
+        >
             <Glow className="-left-[35vmax] -top-[40vmax]" />
             <div className="container max-w-4xl mx-auto text-center z-10">
                 <div className="space-y-6">
@@ -25,9 +31,16 @@ export const HeroSection = () => {
                         simplify tasks, exploring game development, and learning new technologies. This is a snapshot of
                         my journey so far!
                     </p>
-                    <div className="pt-4 opacity-0 animate-fade-in-delay-4">
+                    <div className="flex flex-wrap items-center justify-center gap-3 pt-4 opacity-0 animate-fade-in-delay-4">
                         <a href="#projects" className="cosmic-button">
                             View My Projects
+                        </a>
+                        <a
+                            href={RESUME.href}
+                            download
+                            className="rounded-full border border-primary px-6 py-2 text-primary transition-colors duration-300 hover:bg-primary/10"
+                        >
+                            {RESUME.label}
                         </a>
                     </div>
                 </div>
