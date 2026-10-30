@@ -59,7 +59,7 @@ describe("Style panel", () => {
 
         expect(within(panel).getByRole("radio", { name: "Dark" })).toBeChecked();
         expect(within(panel).getByRole("radio", { name: "Grotesk" })).toBeChecked();
-        expect(within(panel).getByRole("radio", { name: "Orange" })).toBeChecked();
+        expect(within(panel).getByRole("radio", { name: "Ice" })).toBeChecked();
     });
 
     it("applies and saves a mode, typeface and accent choice", () => {
