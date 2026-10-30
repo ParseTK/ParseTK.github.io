@@ -8,7 +8,7 @@ export const skillGroups: readonly SkillGroup[] = [
     {
         id: "languages",
         title: "Languages",
-        skills: ["C#", "TypeScript", "JavaScript", "Python", "Java", "SQL (SQL Server)", "HTML/CSS"],
+        skills: ["C#", "TypeScript", "JavaScript", "Python", "Java", "SQL", "HTML/CSS"],
     },
     {
         id: "frameworks",
