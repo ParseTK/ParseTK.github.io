@@ -47,7 +47,9 @@ describe("ProjectCard", () => {
     });
 
     it("keeps a supplied image in a 16:9 frame so a video thumbnail is not cropped", () => {
-        const { container } = render(<ProjectCard project={{ ...baseProject, image: { src: "/thumb.png", alt: "Terminal output" } }} />);
+        const { container } = render(
+            <ProjectCard project={{ ...baseProject, image: { src: "/thumb.png", alt: "Terminal output" } }} />,
+        );
 
         expect(screen.getByRole("img").closest(".aspect-video")).not.toBeNull();
         expect(container.querySelectorAll(".aspect-video")).toHaveLength(1);
@@ -72,7 +74,11 @@ describe("ProjectCard", () => {
     it("marks a video thumbnail with a play badge that screen readers skip", () => {
         const { container } = render(
             <ProjectCard
-                project={{ ...baseProject, image: { src: "/thumb.png", alt: "Terminal output" }, videoUrl: "https://youtu.be/abc" }}
+                project={{
+                    ...baseProject,
+                    image: { src: "/thumb.png", alt: "Terminal output" },
+                    videoUrl: "https://youtu.be/abc",
+                }}
             />,
         );
 
@@ -82,7 +88,9 @@ describe("ProjectCard", () => {
     });
 
     it("shows no play badge on an image that has no video", () => {
-        const { container } = render(<ProjectCard project={{ ...baseProject, image: { src: "/thumb.png", alt: "Terminal output" } }} />);
+        const { container } = render(
+            <ProjectCard project={{ ...baseProject, image: { src: "/thumb.png", alt: "Terminal output" } }} />,
+        );
 
         expect(container.querySelector("svg.lucide-play")).toBeNull();
     });

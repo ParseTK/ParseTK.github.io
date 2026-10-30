@@ -4,289 +4,322 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 @layer base {
-  /* .light exists so a preview tile can show light inside a dark page */
-  :root,
-  .light {
-    color-scheme: light;
+    /* .light exists so a preview tile can show light inside a dark page */
+    :root,
+    .light {
+        color-scheme: light;
 
-    --background: 210 40% 98%;
-    --foreground: 222 47% 11%;
+        --background: 210 40% 98%;
+        --foreground: 222 47% 11%;
 
-    --card: 0 0% 100%;
+        --card: 0 0% 100%;
 
-    --secondary: 210 40% 93%;
-    --secondary-foreground: 222 47% 11%;
+        --secondary: 210 40% 93%;
+        --secondary-foreground: 222 47% 11%;
 
-    --muted-foreground: 215 19% 33%;
+        --muted-foreground: 215 19% 33%;
 
-    --primary: #b83f0a;
-    --primary-foreground: #ffffff;
+        --primary: #b83f0a;
+        --primary-foreground: #ffffff;
 
-    --border: 214 32% 91%;
-    --input: 215 16% 47%;
-  }
+        --border: 214 32% 91%;
+        --input: 215 16% 47%;
+    }
 
-  .dark {
-    color-scheme: dark;
+    .dark {
+        color-scheme: dark;
 
-    --background: 222 47% 4%;
-    --foreground: 213 31% 91%;
+        --background: 222 47% 4%;
+        --foreground: 213 31% 91%;
 
-    --card: 222 47% 8%;
+        --card: 222 47% 8%;
 
-    --secondary: 217 33% 17%;
-    --secondary-foreground: 213 31% 91%;
+        --secondary: 217 33% 17%;
+        --secondary-foreground: 213 31% 91%;
 
-    --muted-foreground: 215 20% 72%;
+        --muted-foreground: 215 20% 72%;
 
-    --primary: #f47b25;
-    --primary-foreground: #06080d;
+        --primary: #f47b25;
+        --primary-foreground: #06080d;
 
-    --border: 217 33% 20%;
-    --input: 215 16% 55%;
-  }
+        --border: 217 33% 20%;
+        --input: 215 16% 55%;
+    }
 
-  :root {
-    --style-font-heading: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
-    --style-font-body: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
-  }
+    :root {
+        --style-font-heading: "Space Grotesk Variable", ui-sans-serif, system-ui, sans-serif;
+        --style-font-body: "Inter Variable", ui-sans-serif, system-ui, sans-serif;
+    }
 
-  * {
-    @apply border-border;
-  }
+    * {
+        @apply border-border;
+    }
 
-  h1,
-  h2,
-  h3,
-  h4 {
-    font-family: var(--font-display);
-  }
+    h1,
+    h2,
+    h3,
+    h4 {
+        font-family: var(--font-display);
+    }
 
-  html {
-    scroll-padding-top: 5rem;
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
     html {
-      scroll-behavior: smooth;
+        scroll-padding-top: 5rem;
     }
-  }
 
-  body {
-    @apply bg-background text-foreground;
-    font-feature-settings: "rlig" 1, "calt" 1;
-  }
-
-  .theme-switching,
-  .theme-switching *,
-  .theme-switching *::before,
-  .theme-switching *::after {
-    transition: none !important;
-  }
-
-  :focus-visible {
-    outline: 2px solid var(--primary);
-    outline-offset: 2px;
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-      animation-duration: 0.01ms !important;
-      animation-iteration-count: 1 !important;
-      animation-delay: 0s !important;
-      transition-duration: 0.01ms !important;
+    @media (prefers-reduced-motion: no-preference) {
+        html {
+            scroll-behavior: smooth;
+        }
     }
-  }
+
+    body {
+        @apply bg-background text-foreground;
+        font-feature-settings:
+            "rlig" 1,
+            "calt" 1;
+    }
+
+    .theme-switching,
+    .theme-switching *,
+    .theme-switching *::before,
+    .theme-switching *::after {
+        transition: none !important;
+    }
+
+    :focus-visible {
+        outline: 2px solid var(--primary);
+        outline-offset: 2px;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            animation-duration: 0.01ms !important;
+            animation-iteration-count: 1 !important;
+            animation-delay: 0s !important;
+            transition-duration: 0.01ms !important;
+        }
+    }
 }
 
 /* inline: utilities read the variables where they are used, so a .dark or .light preview tile gets its own colors */
 @theme inline {
-  --color-border: hsl(var(--border));
-  --color-input: hsl(var(--input));
-  --color-background: hsl(var(--background));
-  --color-foreground: hsl(var(--foreground));
+    --color-border: hsl(var(--border));
+    --color-input: hsl(var(--input));
+    --color-background: hsl(var(--background));
+    --color-foreground: hsl(var(--foreground));
 
-  --color-primary: var(--primary);
-  --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
 
-  --color-secondary: hsl(var(--secondary));
-  --color-secondary-foreground: hsl(var(--secondary-foreground));
+    --color-secondary: hsl(var(--secondary));
+    --color-secondary-foreground: hsl(var(--secondary-foreground));
 
-  --color-muted-foreground: hsl(var(--muted-foreground));
+    --color-muted-foreground: hsl(var(--muted-foreground));
 
-  --color-card: hsl(var(--card));
+    --color-card: hsl(var(--card));
 
-  --font-sans: var(--style-font-body);
-  --font-display: var(--style-font-heading);
+    --font-sans: var(--style-font-body);
+    --font-display: var(--style-font-heading);
 }
 
 @theme {
-  --animate-float: float 6s ease-in-out infinite;
-  --animate-bounce-up: bounce-up 1s infinite;
-  --animate-fade-in: fade-in 0.7s ease-out forwards;
-  --animate-fade-in-delay-1: fade-in 0.7s ease-out 0.2s forwards;
-  --animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
-  --animate-fade-in-delay-3: fade-in 0.7s ease-out 0.6s forwards;
-  --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
+    --animate-float: float 6s ease-in-out infinite;
+    --animate-bounce-up: bounce-up 1s infinite;
+    --animate-fade-in: fade-in 0.7s ease-out forwards;
+    --animate-fade-in-delay-1: fade-in 0.7s ease-out 0.2s forwards;
+    --animate-fade-in-delay-2: fade-in 0.7s ease-out 0.4s forwards;
+    --animate-fade-in-delay-3: fade-in 0.7s ease-out 0.6s forwards;
+    --animate-fade-in-delay-4: fade-in 0.7s ease-out 0.8s forwards;
 }
 
 @keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
 }
 
 /* The mirror of the standard bounce: for an arrow that points up */
 @keyframes bounce-up {
-  0%, 100% { transform: translateY(25%); animation-timing-function: cubic-bezier(0.8, 0, 1, 1); }
-  50% { transform: none; animation-timing-function: cubic-bezier(0, 0, 0.2, 1); }
+    0%,
+    100% {
+        transform: translateY(25%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+        transform: none;
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
 }
 
 @keyframes marker-level {
-  0%, 100% { clip-path: inset(100% 0 0 0); }
-  40%, 60% { clip-path: inset(0); }
+    0%,
+    100% {
+        clip-path: inset(100% 0 0 0);
+    }
+    40%,
+    60% {
+        clip-path: inset(0);
+    }
 }
 
 @keyframes fade-in {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 @utility container {
-  margin-inline: auto;
-  padding-inline: 2rem;
+    margin-inline: auto;
+    padding-inline: 2rem;
 
-  @media (width >= 640px) {}
-  @media (width >= 768px) {}
-  @media (width >= 1024px) {}
-  @media (width >= 1200px) {}
-  @media (width >= 1400px) {}
+    @media (width >= 640px) {
+    }
+    @media (width >= 768px) {
+    }
+    @media (width >= 1024px) {
+    }
+    @media (width >= 1200px) {
+    }
+    @media (width >= 1400px) {
+    }
 }
 
 @utility text-glow {
-  @apply relative;
-  text-shadow: 0 0 10px color-mix(in srgb, var(--primary) 50%, transparent);
+    @apply relative;
+    text-shadow: 0 0 10px color-mix(in srgb, var(--primary) 50%, transparent);
 }
 
 @utility text-gradient {
-  background-image: linear-gradient(to right, var(--primary), hsl(var(--foreground)));
-  background-clip: text;
-  -webkit-background-clip: text;
-  color: transparent;
+    background-image: linear-gradient(to right, var(--primary), hsl(var(--foreground)));
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
 
-  /* Gradient text disappears in Windows High Contrast; fall back to a system color */
-  @media (forced-colors: active) {
-    background-image: none;
-    color: CanvasText;
-  }
+    /* Gradient text disappears in Windows High Contrast; fall back to a system color */
+    @media (forced-colors: active) {
+        background-image: none;
+        color: CanvasText;
+    }
 }
 
 /* Sharp frame with accent corner brackets that grow on hover */
 @utility frame {
-  position: relative;
-  border: 1px solid hsl(var(--border));
-  border-radius: 3px;
-  background-color: hsl(var(--card) / 0.7);
+    position: relative;
+    border: 1px solid hsl(var(--border));
+    border-radius: 3px;
+    background-color: hsl(var(--card) / 0.7);
 
-  &::before,
-  &::after {
-    content: "";
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    border: 2px solid var(--primary);
-    pointer-events: none;
-    transition: width 0.3s, height 0.3s;
-  }
+    &::before,
+    &::after {
+        content: "";
+        position: absolute;
+        width: 12px;
+        height: 12px;
+        border: 2px solid var(--primary);
+        pointer-events: none;
+        transition:
+            width 0.3s,
+            height 0.3s;
+    }
 
-  &::before {
-    left: -1px;
-    top: -1px;
-    border-right: 0;
-    border-bottom: 0;
-  }
+    &::before {
+        left: -1px;
+        top: -1px;
+        border-right: 0;
+        border-bottom: 0;
+    }
 
-  &::after {
-    right: -1px;
-    bottom: -1px;
-    border-left: 0;
-    border-top: 0;
-  }
+    &::after {
+        right: -1px;
+        bottom: -1px;
+        border-left: 0;
+        border-top: 0;
+    }
 
-  &:hover::before,
-  &:hover::after {
-    width: 22px;
-    height: 22px;
-  }
+    &:hover::before,
+    &:hover::after {
+        width: 22px;
+        height: 22px;
+    }
 }
 
 @utility chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  padding: 4px 11px;
-  border: 1px solid hsl(var(--border));
-  border-radius: 9999px;
-  background-color: hsl(var(--card) / 0.7);
-  font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 11px;
+    border: 1px solid hsl(var(--border));
+    border-radius: 9999px;
+    background-color: hsl(var(--card) / 0.7);
+    font-size: 0.78rem;
 
-  &::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background-color: var(--primary);
-  }
+    &::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background-color: var(--primary);
+    }
 }
 
 /* Fills a timeline marker; an in-progress marker rises and drains, and rests half full for reduced motion */
 @utility marker-fill {
-  position: absolute;
-  inset: 0;
-  background-color: var(--primary);
+    position: absolute;
+    inset: 0;
+    background-color: var(--primary);
 
-  &[data-status="in-progress"] {
-    animation: marker-level 3.6s ease-in-out infinite;
+    &[data-status="in-progress"] {
+        animation: marker-level 3.6s ease-in-out infinite;
 
-    @media (prefers-reduced-motion: reduce) {
-      animation: none;
-      clip-path: inset(50% 0 0 0);
+        @media (prefers-reduced-motion: reduce) {
+            animation: none;
+            clip-path: inset(50% 0 0 0);
+        }
     }
-  }
 }
 
 @utility cosmic-button {
-  @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium
+    @apply px-6 py-2 rounded-full bg-primary text-primary-foreground font-medium
          transition-all duration-300
          hover:shadow-[0_6px_16px_-10px_color-mix(in_srgb,var(--primary)_60%,transparent)]
          hover:scale-105 active:scale-85;
 }
 
 @utility glow {
-  --glow-strength: 17%;
-  position: absolute;
-  z-index: -1;
-  width: 90vmax;
-  height: 90vmax;
-  border-radius: 50%;
-  pointer-events: none;
-  /* Stops follow an ease-out curve so the edge fades without a visible ring */
-  background: radial-gradient(
-    closest-side,
-    color-mix(in srgb, var(--primary) var(--glow-strength), transparent) 0%,
-    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.82), transparent) 15%,
-    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.56), transparent) 32%,
-    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.32), transparent) 50%,
-    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.15), transparent) 68%,
-    color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.05), transparent) 84%,
-    transparent 100%
-  );
+    --glow-strength: 17%;
+    position: absolute;
+    z-index: -1;
+    width: 90vmax;
+    height: 90vmax;
+    border-radius: 50%;
+    pointer-events: none;
+    /* Stops follow an ease-out curve so the edge fades without a visible ring */
+    background: radial-gradient(
+        closest-side,
+        color-mix(in srgb, var(--primary) var(--glow-strength), transparent) 0%,
+        color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.82), transparent) 15%,
+        color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.56), transparent) 32%,
+        color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.32), transparent) 50%,
+        color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.15), transparent) 68%,
+        color-mix(in srgb, var(--primary) calc(var(--glow-strength) * 0.05), transparent) 84%,
+        transparent 100%
+    );
 }
 
 #root {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 0;
-  text-align: center;
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0;
+    text-align: center;
 }

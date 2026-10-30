@@ -25,7 +25,12 @@ interface StylePanelProps {
 }
 
 const ModePreview = ({ mode, selection }: { mode: Mode; selection: StyleSelection }) => (
-    <span className={cn(mode.id, "flex items-center gap-3 rounded border border-border bg-background p-3 text-foreground")}>
+    <span
+        className={cn(
+            mode.id,
+            "flex items-center gap-3 rounded border border-border bg-background p-3 text-foreground",
+        )}
+    >
         <span
             aria-hidden="true"
             className="h-4 w-4 shrink-0 rounded-full"
@@ -58,7 +63,11 @@ const TypefacePreview = ({ typeface }: { typeface: Typeface }) => (
             </span>
             <span className="text-sm font-medium">{typeface.label}</span>
         </span>
-        <span aria-hidden="true" className="mt-1 block text-base font-semibold" style={{ fontFamily: typeface.heading }}>
+        <span
+            aria-hidden="true"
+            className="mt-1 block text-base font-semibold"
+            style={{ fontFamily: typeface.heading }}
+        >
             Tyler Kirchner
         </span>
         <span aria-hidden="true" className="block text-sm text-muted-foreground" style={{ fontFamily: typeface.body }}>
@@ -94,7 +103,7 @@ export const StylePanel = ({ isOpen, onClose, buttonRef }: StylePanelProps) => {
                 "fixed inset-0 z-40 overflow-y-auto bg-background px-4 pb-8 pt-24 text-left outline-none",
                 "transition-opacity duration-300",
                 "md:inset-auto md:right-8 md:top-[4.5rem] md:w-96 md:max-h-[calc(100svh-6rem)] md:rounded-lg md:border md:p-5 md:shadow-lg",
-                isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+                isOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
             )}
         >
             <div className="mx-auto max-w-md space-y-6 md:max-w-none">

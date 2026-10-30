@@ -17,7 +17,7 @@ export const decodePng = (buffer) => {
 
     let header;
     const parts = [];
-    for (let offset = 8; offset < buffer.length; ) {
+    for (let offset = 8; offset < buffer.length;) {
         const length = buffer.readUInt32BE(offset);
         const type = buffer.toString("ascii", offset + 4, offset + 8);
         const data = buffer.subarray(offset + 8, offset + 8 + length);
@@ -65,7 +65,11 @@ export const resize = ({ width, height, pixels }, targetWidth, targetHeight) => 
         for (let x = 0; x < targetWidth; x++) {
             const x0 = Math.floor((x * width) / targetWidth);
             const x1 = Math.max(x0 + 1, Math.floor(((x + 1) * width) / targetWidth));
-            let r = 0, g = 0, b = 0, a = 0, count = 0;
+            let r = 0,
+                g = 0,
+                b = 0,
+                a = 0,
+                count = 0;
             for (let sy = y0; sy < y1; sy++) {
                 for (let sx = x0; sx < x1; sx++) {
                     const i = (sy * width + sx) * 4;
@@ -108,5 +112,10 @@ export const encodePng = ({ width, height, pixels }) => {
     for (let row = 0; row < height; row++) {
         pixels.copy(raw, row * (stride + 1) + 1, row * stride, (row + 1) * stride);
     }
-    return Buffer.concat([SIGNATURE, chunk("IHDR", header), chunk("IDAT", deflateSync(raw, { level: 9 })), chunk("IEND", Buffer.alloc(0))]);
+    return Buffer.concat([
+        SIGNATURE,
+        chunk("IHDR", header),
+        chunk("IDAT", deflateSync(raw, { level: 9 })),
+        chunk("IEND", Buffer.alloc(0)),
+    ]);
 };

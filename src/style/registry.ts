@@ -45,20 +45,14 @@ export const TYPEFACES: readonly Typeface[] = [
         label: "Grotesk",
         heading: `"Space Grotesk Variable", ${SANS_FALLBACK}`,
         body: `"Inter Variable", ${SANS_FALLBACK}`,
-        load: () => Promise.all([
-            import("@fontsource-variable/space-grotesk"),
-            import("@fontsource-variable/inter"),
-        ]),
+        load: () => Promise.all([import("@fontsource-variable/space-grotesk"), import("@fontsource-variable/inter")]),
     },
     {
         id: "geometric",
         label: "Geometric",
         heading: `"Sora Variable", ${SANS_FALLBACK}`,
         body: `"DM Sans Variable", ${SANS_FALLBACK}`,
-        load: () => Promise.all([
-            import("@fontsource-variable/sora"),
-            import("@fontsource-variable/dm-sans"),
-        ]),
+        load: () => Promise.all([import("@fontsource-variable/sora"), import("@fontsource-variable/dm-sans")]),
     },
 ];
 

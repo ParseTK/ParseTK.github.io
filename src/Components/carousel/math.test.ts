@@ -94,17 +94,30 @@ describe("dragPosition", () => {
 
 describe("velocityOf", () => {
     it("is the distance over time between the first and last points", () => {
-        expect(velocityOf([{ time: 0, x: 0 }, { time: 100, x: -50 }])).toBeCloseTo(-0.5);
+        expect(
+            velocityOf([
+                { time: 0, x: 0 },
+                { time: 100, x: -50 },
+            ]),
+        ).toBeCloseTo(-0.5);
     });
 
     it("is zero without movement over time", () => {
         expect(velocityOf([])).toBe(0);
         expect(velocityOf([{ time: 5, x: 10 }])).toBe(0);
-        expect(velocityOf([{ time: 5, x: 10 }, { time: 5, x: 90 }])).toBe(0);
+        expect(
+            velocityOf([
+                { time: 5, x: 10 },
+                { time: 5, x: 90 },
+            ]),
+        ).toBe(0);
     });
 
     it("looks only at the last few points", () => {
-        const points = Array.from({ length: 10 }, (_, index) => ({ time: index * 10, x: index < 5 ? 0 : (index - 4) * 10 }));
+        const points = Array.from({ length: 10 }, (_, index) => ({
+            time: index * 10,
+            x: index < 5 ? 0 : (index - 4) * 10,
+        }));
 
         expect(velocityOf(points)).toBeCloseTo(1);
     });

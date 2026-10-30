@@ -38,14 +38,11 @@ export const Navbar = ({ openOverlay, onOpenOverlayChange }: NavbarProps) => {
                 aria-label="Primary"
                 className={cn(
                     "fixed w-full z-50 transition-all duration-300",
-                    isScrolled ? "py-3 bg-background/80 backdrop-blur-md shadow-xs" : "py-5"
+                    isScrolled ? "py-3 bg-background/80 backdrop-blur-md shadow-xs" : "py-5",
                 )}
             >
                 <div className="flex items-center justify-between px-4 md:px-8">
-                    <a
-                        className="text-xl font-bold text-primary flex items-center"
-                        href="#hero"
-                    >
+                    <a className="text-xl font-bold text-primary flex items-center" href="#hero">
                         <span className="relative z-10">
                             <span className="text-glow text-foreground"> ParseTK </span> Portfolio
                         </span>
@@ -79,9 +76,7 @@ export const Navbar = ({ openOverlay, onOpenOverlayChange }: NavbarProps) => {
                             aria-expanded={isMenuOpen}
                             aria-controls="mobile-menu"
                         >
-                            {isMenuOpen
-                                ? <X size={24} aria-hidden="true" />
-                                : <Menu size={24} aria-hidden="true" />}
+                            {isMenuOpen ? <X size={24} aria-hidden="true" /> : <Menu size={24} aria-hidden="true" />}
                         </button>
                     </div>
                 </div>
@@ -95,9 +90,7 @@ export const Navbar = ({ openOverlay, onOpenOverlayChange }: NavbarProps) => {
                 className={cn(
                     "fixed inset-0 z-40 flex flex-col items-center justify-center bg-background",
                     "transition-opacity duration-300 md:hidden",
-                    isMenuOpen
-                        ? "opacity-100 pointer-events-auto"
-                        : "opacity-0 pointer-events-none"
+                    isMenuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
                 )}
             >
                 <div className="flex flex-col space-y-8 text-xl">

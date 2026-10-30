@@ -34,7 +34,11 @@ export const Reveal = ({ children, className }: RevealProps) => {
     return (
         <div
             ref={ref}
-            className={cn("transition-[opacity,translate] duration-700 ease-out", !shown && "translate-y-6 opacity-0", className)}
+            className={cn(
+                "transition-[opacity,translate] duration-700 ease-out",
+                !shown && "translate-y-6 opacity-0",
+                className,
+            )}
         >
             {children}
         </div>

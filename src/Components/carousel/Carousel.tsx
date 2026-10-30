@@ -147,7 +147,7 @@ export const Carousel = <T,>({ label, noun, items, getKey, getTitle, renderItem,
                 onDragStart={(event) => event.preventDefault()}
                 className={cn(
                     "mx-auto grid max-w-250 select-none justify-items-center rounded-md py-2.5 [perspective:1300px] [touch-action:pan-y]",
-                    count > 1 && (isDragging ? "cursor-grabbing" : "cursor-grab")
+                    count > 1 && (isDragging ? "cursor-grabbing" : "cursor-grab"),
                 )}
             >
                 {items.map((item, index) => {
@@ -170,7 +170,7 @@ export const Carousel = <T,>({ label, noun, items, getKey, getTitle, renderItem,
                                 animate
                                     ? "[transition:transform_700ms_cubic-bezier(0.2,0.7,0.2,1),opacity_500ms]"
                                     : "transition-none",
-                                !isActive && "cursor-pointer"
+                                !isActive && "cursor-pointer",
                             )}
                         >
                             <div inert={!isActive} className="h-full">
@@ -187,7 +187,12 @@ export const Carousel = <T,>({ label, noun, items, getKey, getTitle, renderItem,
 
             {count > 1 && (
                 <div className="mt-2 flex items-center justify-center gap-5">
-                    <button type="button" aria-label={`Previous ${noun}`} onClick={() => go(view.current - 1)} className={arrowButtonClass}>
+                    <button
+                        type="button"
+                        aria-label={`Previous ${noun}`}
+                        onClick={() => go(view.current - 1)}
+                        className={arrowButtonClass}
+                    >
                         <ChevronLeft size={20} aria-hidden="true" />
                     </button>
                     <div aria-hidden="true" className="flex flex-col items-center gap-2">
@@ -197,7 +202,7 @@ export const Carousel = <T,>({ label, noun, items, getKey, getTitle, renderItem,
                                     key={getKey(item)}
                                     className={cn(
                                         "h-[7px] rounded-full transition-all duration-300",
-                                        index === view.current ? "w-[22px] bg-primary" : "w-[7px] bg-border"
+                                        index === view.current ? "w-[22px] bg-primary" : "w-[7px] bg-border",
                                     )}
                                 />
                             ))}
@@ -206,7 +211,12 @@ export const Carousel = <T,>({ label, noun, items, getKey, getTitle, renderItem,
                             {view.current + 1} of {count}
                         </span>
                     </div>
-                    <button type="button" aria-label={`Next ${noun}`} onClick={() => go(view.current + 1)} className={arrowButtonClass}>
+                    <button
+                        type="button"
+                        aria-label={`Next ${noun}`}
+                        onClick={() => go(view.current + 1)}
+                        className={arrowButtonClass}
+                    >
                         <ChevronRight size={20} aria-hidden="true" />
                     </button>
                 </div>

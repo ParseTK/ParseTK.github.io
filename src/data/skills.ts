@@ -23,7 +23,16 @@ export const skillGroups: readonly SkillGroup[] = [
     {
         id: "data",
         title: "Data & Persistence",
-        skills: ["SQL Server", "PostgreSQL", "Oracle (PL/SQL)", "SQLite", "Entity Framework Core", "LINQ", "Prisma", "Weaviate"],
+        skills: [
+            "SQL Server",
+            "PostgreSQL",
+            "Oracle (PL/SQL)",
+            "SQLite",
+            "Entity Framework Core",
+            "LINQ",
+            "Prisma",
+            "Weaviate",
+        ],
     },
     {
         id: "testing",

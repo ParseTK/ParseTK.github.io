@@ -22,7 +22,14 @@ const StarCanvas = ({ color }: { color: string }) => {
         let frame = 0;
 
         const render = (milliseconds: number) => {
-            drawStars(ctx, stars, { width, height, color, scrollY: window.scrollY, seconds: milliseconds / 1000, animate });
+            drawStars(ctx, stars, {
+                width,
+                height,
+                color,
+                scrollY: window.scrollY,
+                seconds: milliseconds / 1000,
+                animate,
+            });
             if (animate) frame = requestAnimationFrame(render);
         };
 

@@ -71,6 +71,10 @@ export const snapTarget = (options: {
 }): number => {
     const { position, startIndex, velocity, step, count } = options;
     const throwDistance = clamp((velocity * VELOCITY_REACH_MS) / step, -MAX_FLICK, MAX_FLICK);
-    const target = clamp(Math.round(position - throwDistance), startIndex - MAX_CARDS_PER_DRAG, startIndex + MAX_CARDS_PER_DRAG);
+    const target = clamp(
+        Math.round(position - throwDistance),
+        startIndex - MAX_CARDS_PER_DRAG,
+        startIndex + MAX_CARDS_PER_DRAG,
+    );
     return count === 2 ? clamp(target, 0, 1) : target;
 };

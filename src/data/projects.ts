@@ -72,7 +72,10 @@ const liveProjects: readonly LiveProject[] = [
 
 const comingSoonFor = (live: readonly LiveProject[]): ComingSoonProject[] =>
     PROJECT_CATEGORIES.flatMap(({ id: category }) => {
-        const missing = Math.max(0, CARDS_PER_CATEGORY - live.filter((project) => project.category === category).length);
+        const missing = Math.max(
+            0,
+            CARDS_PER_CATEGORY - live.filter((project) => project.category === category).length,
+        );
         return Array.from({ length: missing }, (_, index) => ({
             id: `${category}-coming-soon-${index + 1}`,
             title: "Coming soon",

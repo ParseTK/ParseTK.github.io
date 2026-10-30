@@ -21,7 +21,13 @@ const ProjectMedia = ({ project }: { project: Project }) => {
 
     if (project.comingSoon) {
         return (
-            <div aria-hidden="true" className={cn(MEDIA_FRAME, "grid place-items-center border-b border-dashed border-input bg-secondary/40 text-muted-foreground")}>
+            <div
+                aria-hidden="true"
+                className={cn(
+                    MEDIA_FRAME,
+                    "grid place-items-center border-b border-dashed border-input bg-secondary/40 text-muted-foreground",
+                )}
+            >
                 <Play size={22} />
             </div>
         );
@@ -32,7 +38,11 @@ const ProjectMedia = ({ project }: { project: Project }) => {
     if (!videoUrl) return <div className={MEDIA_FRAME}>{picture}</div>;
 
     return (
-        <ExternalLink href={videoUrl} label={`Watch the ${project.title} video`} className={cn(MEDIA_FRAME, "group/media")}>
+        <ExternalLink
+            href={videoUrl}
+            label={`Watch the ${project.title} video`}
+            className={cn(MEDIA_FRAME, "group/media")}
+        >
             {picture}
             <PlayBadge />
         </ExternalLink>
@@ -40,7 +50,10 @@ const ProjectMedia = ({ project }: { project: Project }) => {
 };
 
 export const ProjectCard = ({ project }: { project: Project }) => (
-    <Frame as="article" className={cn("flex h-full flex-col text-left", project.comingSoon && "border-dashed border-input")}>
+    <Frame
+        as="article"
+        className={cn("flex h-full flex-col text-left", project.comingSoon && "border-dashed border-input")}
+    >
         <ProjectMedia project={project} />
         <div className="flex flex-1 flex-col p-6">
             {!project.comingSoon && (

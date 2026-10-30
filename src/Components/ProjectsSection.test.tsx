@@ -21,7 +21,10 @@ describe("ProjectsSection", () => {
     it("puts the selected tab's cards in a carousel, real project first, then coming-soon cards", () => {
         render(<ProjectsSection />);
 
-        expect(within(panel()).getByRole("region", { name: "Projects" })).toHaveAttribute("aria-roledescription", "carousel");
+        expect(within(panel()).getByRole("region", { name: "Projects" })).toHaveAttribute(
+            "aria-roledescription",
+            "carousel",
+        );
         expect(slides()).toHaveLength(CARDS_PER_CATEGORY);
         expect(titles()[0]).toBe("PaintJob");
         expect(titles()[1]).toBe("Coming soon");
@@ -74,7 +77,9 @@ describe("ProjectsSection", () => {
 
         fireEvent.click(screen.getByRole("button", { name: "Next project" }));
 
-        expect(within(panel()).getByRole("link")).toHaveAccessibleName("FinTk source code on GitHub (opens in a new tab)");
+        expect(within(panel()).getByRole("link")).toHaveAccessibleName(
+            "FinTk source code on GitHub (opens in a new tab)",
+        );
     });
 
     it("shows no images until some are supplied", () => {
