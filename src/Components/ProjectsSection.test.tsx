@@ -1,7 +1,7 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ProjectsSection } from "./ProjectsSection";
-import { CARDS_PER_CATEGORY, PROJECT_CATEGORIES } from "@/data/projects";
+import { CARDS_PER_CATEGORY, PROJECT_CATEGORIES, projectsIn } from "@/data/projects";
 import { axe } from "@/test/axe";
 
 const panel = () => screen.getByRole("tabpanel");
@@ -18,17 +18,33 @@ describe("ProjectsSection", () => {
         expect(screen.getByRole("tab", { name: "Python" })).toHaveAttribute("aria-selected", "true");
     });
 
-    it("puts the selected tab's cards in a carousel, real project first, then coming-soon cards", () => {
+    it("puts the selected tab's cards in a carousel, real projects first, then coming-soon cards", () => {
         render(<ProjectsSection />);
+        fireEvent.click(screen.getByRole("tab", { name: "JavaScript" }));
 
         expect(within(panel()).getByRole("region", { name: "Projects" })).toHaveAttribute(
             "aria-roledescription",
             "carousel",
         );
         expect(slides()).toHaveLength(CARDS_PER_CATEGORY);
-        expect(titles()[0]).toBe("PaintJob");
-        expect(titles()[1]).toBe("Coming soon");
-        expect(within(slides()[0]).getByRole("heading", { name: "PaintJob" })).toBeInTheDocument();
+        expect(titles()[0]).toBe("Coming soon");
+    });
+
+    it("lists the Python projects first, in order, each with its own demo video", () => {
+        render(<ProjectsSection />);
+
+        expect(titles()).toEqual([
+            "Password Validator",
+            "Planetary Weights",
+            "Real Estate Analyzer",
+            "Tax Year Validator",
+            "Numerology",
+            "PaintJob",
+        ]);
+        expect(within(slides()[0]).getByRole("heading", { name: "Password Validator" })).toBeInTheDocument();
+        expect(
+            within(slides()[0]).getByRole("button", { name: "Play the Password Validator video" }),
+        ).toBeInTheDocument();
     });
 
     it("switches the cards when another tab is chosen", () => {
@@ -43,7 +59,7 @@ describe("ProjectsSection", () => {
     it("starts a tab on its first card, even after browsing another", () => {
         render(<ProjectsSection />);
         fireEvent.click(screen.getByRole("button", { name: "Next project" }));
-        expect(screen.getByRole("status")).toHaveTextContent("project 2 of 5");
+        expect(screen.getByRole("status")).toHaveTextContent("project 2 of 6");
 
         fireEvent.click(screen.getByRole("tab", { name: "Applications" }));
 
@@ -61,9 +77,9 @@ describe("ProjectsSection", () => {
     it("gives every tab a full set of cards", () => {
         render(<ProjectsSection />);
 
-        for (const { label } of PROJECT_CATEGORIES) {
+        for (const { id, label } of PROJECT_CATEGORIES) {
             fireEvent.click(screen.getByRole("tab", { name: label }));
-            expect(slides(), label).toHaveLength(CARDS_PER_CATEGORY);
+            expect(slides(), label).toHaveLength(Math.max(CARDS_PER_CATEGORY, projectsIn(id).length));
         }
     });
 
@@ -82,12 +98,13 @@ describe("ProjectsSection", () => {
         );
     });
 
-    it("shows no images until some are supplied", () => {
+    it("shows an image only on the cards that have one: the Python demos, and nothing else", () => {
         const { container } = render(<ProjectsSection />);
 
-        for (const { label } of PROJECT_CATEGORIES) {
+        for (const { id, label } of PROJECT_CATEGORIES) {
             fireEvent.click(screen.getByRole("tab", { name: label }));
-            expect(container.querySelector("img"), label).toBeNull();
+            const withImage = projectsIn(id).filter((project) => project.image).length;
+            expect(container.querySelectorAll("img"), label).toHaveLength(withImage);
         }
     });
 

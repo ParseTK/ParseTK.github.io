@@ -1,9 +1,11 @@
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { Play } from "lucide-react";
 import { GithubIcon } from "./BrandIcons";
 import { Chip, ChipList } from "./Chip";
 import { ExternalLink } from "./ExternalLink";
 import { Frame } from "./Frame";
 import { Tooltip } from "./Tooltip";
+import { VideoDialog } from "./VideoDialog";
 import { cn } from "./lib/utils";
 import type { Project } from "@/data/projects";
 
@@ -18,8 +20,49 @@ const PlayBadge = () => (
     </span>
 );
 
+// The thumbnail is a button that opens the video in a pop-out; nothing of the video loads until then
+const PlayableMedia = ({
+    title,
+    video,
+    poster,
+    picture,
+}: {
+    title: string;
+    video: { src: string };
+    poster: string;
+    picture: ReactNode;
+}) => {
+    const [isOpen, setIsOpen] = useState(false);
+    const buttonRef = useRef<HTMLButtonElement>(null);
+
+    // The dialog is removed from the page when it closes, so the browser cannot return focus by itself. This waits
+    // until it is gone: while a modal dialog is still open, everything behind it refuses focus.
+    const wasOpen = useRef(false);
+    useEffect(() => {
+        if (wasOpen.current && !isOpen) buttonRef.current?.focus();
+        wasOpen.current = isOpen;
+    }, [isOpen]);
+
+    return (
+        <>
+            <button
+                ref={buttonRef}
+                type="button"
+                onClick={() => setIsOpen(true)}
+                aria-haspopup="dialog"
+                aria-label={`Play the ${title} video`}
+                className={cn(MEDIA_FRAME, "group/media")}
+            >
+                {picture}
+                <PlayBadge />
+            </button>
+            {isOpen && <VideoDialog title={title} src={video.src} poster={poster} onClose={() => setIsOpen(false)} />}
+        </>
+    );
+};
+
 const ProjectMedia = ({ project }: { project: Project }) => {
-    const { image, videoUrl } = project;
+    const { image, video, videoUrl } = project;
 
     // A card with no thumbnail yet keeps the same 16:9 slot, so every card has the same shape
     if (project.comingSoon || !image) {
@@ -36,7 +79,10 @@ const ProjectMedia = ({ project }: { project: Project }) => {
         );
     }
 
-    const picture = <img src={image.src} alt={image.alt} className="h-full w-full object-cover" />;
+    const picture = (
+        <img src={image.src} alt={image.alt} loading="lazy" decoding="async" className="h-full w-full object-cover" />
+    );
+    if (video) return <PlayableMedia title={project.title} video={video} poster={image.src} picture={picture} />;
     if (!videoUrl) return <div className={MEDIA_FRAME}>{picture}</div>;
 
     return (
@@ -52,7 +98,7 @@ const ProjectMedia = ({ project }: { project: Project }) => {
 };
 
 export const ProjectCard = ({ project }: { project: Project }) => (
-    <Frame as="article" className="flex h-full flex-col text-left">
+    <Frame as="article" className="flex h-full flex-col bg-card! text-left">
         <ProjectMedia project={project} />
         <div className="flex flex-1 flex-col p-6">
             {!project.comingSoon && (

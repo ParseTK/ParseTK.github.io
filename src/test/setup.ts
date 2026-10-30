@@ -5,6 +5,7 @@ import { cleanup } from "@testing-library/react";
 import * as axeMatchers from "vitest-axe/matchers";
 import { installMatchMedia, resetViewport } from "./matchMedia";
 import { installFakeCanvas, installFakeFrames } from "./canvas";
+import { installFakeDialog } from "./dialog";
 
 expect.extend(axeMatchers);
 
@@ -13,6 +14,7 @@ beforeEach(() => {
     installMatchMedia();
     installFakeCanvas();
     installFakeFrames();
+    installFakeDialog();
     Object.defineProperty(window, "scrollY", { value: 0, configurable: true, writable: true });
 });
 

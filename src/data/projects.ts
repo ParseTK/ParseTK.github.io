@@ -19,7 +19,11 @@ interface ProjectBase {
     title: string;
     description: string;
     category: ProjectCategoryId;
+    // The still shown on the card; it is also the poster of a video played on the site
     image?: { src: string; alt: string };
+    // A video hosted with the site, played in a pop-out
+    video?: { src: string };
+    // A video hosted elsewhere (YouTube), opened in a new tab
     videoUrl?: string;
 }
 
@@ -35,7 +39,58 @@ export interface ComingSoonProject extends ProjectBase {
 
 export type Project = LiveProject | ComingSoonProject;
 
+const demoVideo = (id: string, title: string) => ({
+    image: { src: `/projects/posters/${id}.png`, alt: `A still from the ${title} demo video` },
+    video: { src: `/projects/videos/${id}.mp4` },
+});
+
 const liveProjects: readonly LiveProject[] = [
+    {
+        id: "passvalidator",
+        title: "Password Validator",
+        description:
+            "Checks a password against configurable rules and lists every rule it breaks, until the password is valid.",
+        category: "python",
+        tags: ["Python"],
+        githubUrl: "https://github.com/ParseTK/Python2-PasswordValidator",
+        ...demoVideo("passvalidator", "Password Validator"),
+    },
+    {
+        id: "planetweights",
+        title: "Planetary Weights",
+        description: "Converts your weight to every planet, saves a history and keeps rotating backups.",
+        category: "python",
+        tags: ["Python"],
+        githubUrl: "https://github.com/ParseTK/PlanetWeights",
+        ...demoVideo("planetweights", "Planetary Weights"),
+    },
+    {
+        id: "realestate",
+        title: "Real Estate Analyzer",
+        description: "Reads a property-sales file and shows price statistics by city, type and zip code.",
+        category: "python",
+        tags: ["Python"],
+        githubUrl: "https://github.com/ParseTK/RealEstateAnalyzer",
+        ...demoVideo("realestate", "Real Estate Analyzer"),
+    },
+    {
+        id: "taxyear",
+        title: "Tax Year Validator",
+        description: "Uses SQLite to check each employee's yearly earnings against the Social Security minimum.",
+        category: "python",
+        tags: ["Python", "SQLite"],
+        githubUrl: "https://github.com/ParseTK/TaxYearValidator",
+        ...demoVideo("taxyear", "Tax Year Validator"),
+    },
+    {
+        id: "numerology",
+        title: "Numerology",
+        description: "Calculates life path and other numerology numbers from a name and birthday.",
+        category: "python",
+        tags: ["Python"],
+        githubUrl: "https://github.com/ParseTK/NumerologyProject",
+        ...demoVideo("numerology", "Numerology"),
+    },
     {
         id: "portfolio",
         title: "HomeScreen",

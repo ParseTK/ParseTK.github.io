@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
 import { ProjectCard } from "./ProjectCard";
 import type { ComingSoonProject, LiveProject } from "@/data/projects";
@@ -149,5 +149,133 @@ describe("ProjectCard tooltip", () => {
         const { container } = render(<ProjectCard project={comingSoon} />);
 
         expect(container.querySelector("[data-tooltip]")).toBeNull();
+    });
+});
+
+describe("ProjectCard video pop-out", () => {
+    const withVideo: LiveProject = {
+        ...baseProject,
+        image: { src: "/poster.png", alt: "A still from the Sample demo video" },
+        video: { src: "/clip.mp4" },
+    };
+    const openIt = () => {
+        render(<ProjectCard project={withVideo} />);
+        fireEvent.click(screen.getByRole("button", { name: "Play the Sample video" }));
+    };
+
+    it("turns the thumbnail into a button that announces a dialog, with the play badge on it", () => {
+        const { container } = render(<ProjectCard project={withVideo} />);
+
+        const button = screen.getByRole("button", { name: "Play the Sample video" });
+        expect(button).toHaveAttribute("aria-haspopup", "dialog");
+        expect(button).toContainElement(screen.getByRole("img", { name: "A still from the Sample demo video" }));
+        expect(button).toContainElement(container.querySelector("svg.lucide-play") as HTMLElement);
+        expect(screen.queryByRole("link", { name: /video/ })).toBeNull();
+    });
+
+    it("loads nothing of the video until it is opened", () => {
+        const { container } = render(<ProjectCard project={withVideo} />);
+
+        expect(screen.queryByRole("dialog")).toBeNull();
+        expect(container.querySelector("video")).toBeNull();
+        expect(document.querySelector("video, source")).toBeNull();
+    });
+
+    it("opens a dialog named after the project, with a playable video that starts from the thumbnail", () => {
+        openIt();
+
+        const dialog = screen.getByRole("dialog", { name: "Sample" });
+        const video = dialog.querySelector("video") as HTMLVideoElement;
+        expect(video).toHaveAttribute("controls");
+        expect(video).toHaveAttribute("poster", "/poster.png");
+        expect(video.querySelector("source")).toHaveAttribute("src", "/clip.mp4");
+        expect(video.querySelector("source")).toHaveAttribute("type", "video/mp4");
+    });
+
+    it("closes from the close button, and the video leaves the page with it", () => {
+        openIt();
+
+        fireEvent.click(screen.getByRole("button", { name: "Close video" }));
+
+        expect(screen.queryByRole("dialog")).toBeNull();
+        expect(document.querySelector("video")).toBeNull();
+    });
+
+    it("closes on Escape", () => {
+        openIt();
+
+        fireEvent.keyDown(window, { key: "Escape" });
+
+        expect(screen.queryByRole("dialog")).toBeNull();
+    });
+
+    it("closes when the dimmed page around it is pressed, but not when the video is", () => {
+        openIt();
+        const dialog = screen.getByRole("dialog");
+
+        fireEvent.click(dialog.querySelector("video") as HTMLVideoElement);
+        expect(screen.getByRole("dialog")).toBeInTheDocument();
+
+        fireEvent.click(dialog);
+        expect(screen.queryByRole("dialog")).toBeNull();
+    });
+
+    it("locks page scrolling while it is open and restores it afterwards", () => {
+        openIt();
+        expect(document.documentElement.style.overflow).toBe("hidden");
+
+        fireEvent.click(screen.getByRole("button", { name: "Close video" }));
+
+        expect(document.documentElement.style.overflow).toBe("");
+    });
+
+    it("can be reopened after closing", () => {
+        openIt();
+        fireEvent.click(screen.getByRole("button", { name: "Close video" }));
+
+        fireEvent.click(screen.getByRole("button", { name: "Play the Sample video" }));
+
+        expect(screen.getByRole("dialog", { name: "Sample" })).toBeInTheDocument();
+    });
+
+    it("still links out for a video hosted elsewhere", () => {
+        render(<ProjectCard project={{ ...withVideo, video: undefined, videoUrl: "https://youtu.be/abc" }} />);
+
+        expect(screen.getByRole("link", { name: "Watch the Sample video (opens in a new tab)" })).toHaveAttribute(
+            "href",
+            "https://youtu.be/abc",
+        );
+        expect(screen.queryByRole("button", { name: /Play the/ })).toBeNull();
+    });
+});
+
+describe("ProjectCard background", () => {
+    it("is solid, so the card behind it in the carousel cannot show through its text", () => {
+        const { container } = render(<ProjectCard project={baseProject} />);
+
+        expect(container.querySelector("article")).toHaveClass("bg-card!");
+    });
+});
+
+describe("ProjectCard video pop-out focus", () => {
+    const withVideo: LiveProject = {
+        ...baseProject,
+        image: { src: "/poster.png", alt: "A still from the Sample demo video" },
+        video: { src: "/clip.mp4" },
+    };
+
+    it.each([
+        ["the close button", () => fireEvent.click(screen.getByRole("button", { name: "Close video" }))],
+        ["Escape", () => fireEvent.keyDown(window, { key: "Escape" })],
+        ["a press on the dimmed page", () => fireEvent.click(screen.getByRole("dialog"))],
+    ])("goes back to the thumbnail button after closing with %s", (_how, close) => {
+        render(<ProjectCard project={withVideo} />);
+        const button = screen.getByRole("button", { name: "Play the Sample video" });
+        fireEvent.click(button);
+
+        close();
+
+        expect(screen.queryByRole("dialog")).toBeNull();
+        expect(button).toHaveFocus();
     });
 });

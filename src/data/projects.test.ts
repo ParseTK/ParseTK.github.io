@@ -1,3 +1,5 @@
+import { existsSync, statSync } from "node:fs";
+import { resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { CARDS_PER_CATEGORY, PROJECT_CATEGORIES, projects, projectsIn, type LiveProject } from "./projects";
 
@@ -75,5 +77,42 @@ describe("projects", () => {
             expect(project.image, project.id).toBeUndefined();
             expect(project.videoUrl, project.id).toBeUndefined();
         }
+    });
+});
+
+describe("project media on the site", () => {
+    const publicFile = (address: string) => resolve(process.cwd(), "public", address.replace(/^\//, ""));
+    const hosted = projects.filter((project) => project.video);
+    const MAX_VIDEO_BYTES = 5 * 1024 * 1024;
+
+    it("has at least one video to play", () => {
+        expect(hosted.length).toBeGreaterThan(0);
+    });
+
+    it("gives every hosted video a still of its own, with alt text, as the card image", () => {
+        for (const project of hosted) {
+            expect(project.image, project.id).toBeDefined();
+            expect(project.image!.alt.trim(), project.id).not.toBe("");
+            expect(project.image!.src, project.id).toMatch(/^\/projects\/posters\/[\w-]+\.png$/);
+        }
+    });
+
+    it("points every video and still at a file that exists", () => {
+        for (const project of projects) {
+            for (const address of [project.image?.src, project.video?.src]) {
+                if (address) expect(existsSync(publicFile(address)), `${project.id}: ${address}`).toBe(true);
+            }
+        }
+    });
+
+    it("keeps each hosted video small enough to start quickly and to keep the repository light", () => {
+        for (const project of hosted) {
+            expect(project.video!.src, project.id).toMatch(/^\/projects\/videos\/[\w-]+\.mp4$/);
+            expect(statSync(publicFile(project.video!.src)).size, project.id).toBeLessThan(MAX_VIDEO_BYTES);
+        }
+    });
+
+    it("never hosts a video and links one elsewhere on the same card", () => {
+        for (const project of projects) expect(Boolean(project.video && project.videoUrl), project.id).toBe(false);
     });
 });
