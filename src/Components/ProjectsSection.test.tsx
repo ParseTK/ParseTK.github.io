@@ -30,7 +30,7 @@ describe("ProjectsSection", () => {
         expect(titles()[0]).toBe("Coming soon");
     });
 
-    it("lists the Python projects first, in order, each with its own demo video", () => {
+    it("lists the five Python projects in order, each with its own demo video and no coming-soon card", () => {
         render(<ProjectsSection />);
 
         expect(titles()).toEqual([
@@ -39,7 +39,6 @@ describe("ProjectsSection", () => {
             "Real Estate Analyzer",
             "Tax Year Validator",
             "Numerology",
-            "PaintJob",
         ]);
         expect(within(slides()[0]).getByRole("heading", { name: "Password Validator" })).toBeInTheDocument();
         expect(
@@ -53,13 +52,13 @@ describe("ProjectsSection", () => {
         fireEvent.click(screen.getByRole("tab", { name: "C#" }));
 
         expect(titles()[0]).toBe("PhotoDemo");
-        expect(titles()).not.toContain("PaintJob");
+        expect(titles()).not.toContain("Password Validator");
     });
 
     it("starts a tab on its first card, even after browsing another", () => {
         render(<ProjectsSection />);
         fireEvent.click(screen.getByRole("button", { name: "Next project" }));
-        expect(screen.getByRole("status")).toHaveTextContent("project 2 of 6");
+        expect(screen.getByRole("status")).toHaveTextContent("project 2 of 5");
 
         fireEvent.click(screen.getByRole("tab", { name: "Applications" }));
 

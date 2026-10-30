@@ -115,14 +115,6 @@ const liveProjects: readonly LiveProject[] = [
         tags: ["C#"],
         githubUrl: "https://github.com/ParseTK/C_Sharp_Projects/blob/main/CSharpExercises/PhotoDemo.cs",
     },
-    {
-        id: "paintjob",
-        title: "PaintJob",
-        description: "Calculates paint needed and cost for a job",
-        category: "python",
-        tags: ["Python"],
-        githubUrl: "https://github.com/ParseTK/pythonProjects/blob/main/Paint%20Job.py",
-    },
 ];
 
 const comingSoonFor = (live: readonly LiveProject[]): ComingSoonProject[] =>
