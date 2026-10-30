@@ -2,6 +2,7 @@ import { useRef, useState, type KeyboardEvent, type MouseEvent, type PointerEven
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "../lib/utils";
 import { useMediaQuery } from "../lib/useMediaQuery";
+import { Tooltip } from "../Tooltip";
 import {
     STEP_RATIO,
     cardStyle,
@@ -187,35 +188,38 @@ export const Carousel = <T,>({ label, noun, items, getKey, getTitle, renderItem,
 
             {count > 1 && (
                 <div className="mt-2 flex items-center justify-center gap-5">
-                    <button
-                        type="button"
-                        aria-label={`Previous ${noun}`}
-                        onClick={() => go(view.current - 1)}
-                        className={arrowButtonClass}
-                    >
-                        <ChevronLeft size={20} aria-hidden="true" />
-                    </button>
+                    <Tooltip label={`Previous ${noun}`}>
+                        <button
+                            type="button"
+                            aria-label={`Previous ${noun}`}
+                            onClick={() => go(view.current - 1)}
+                            className={arrowButtonClass}
+                        >
+                            <ChevronLeft size={20} aria-hidden="true" />
+                        </button>
+                    </Tooltip>
                     <div className="flex flex-col items-center">
                         <div role="group" aria-label={`Choose a ${noun}`} className="flex">
                             {items.map((item, index) => {
                                 const isCurrent = index === view.current;
                                 return (
-                                    <button
-                                        key={getKey(item)}
-                                        type="button"
-                                        aria-label={`Show ${noun} ${index + 1}: ${getTitle(item)}`}
-                                        aria-current={isCurrent ? "true" : undefined}
-                                        onClick={() => go(index)}
-                                        className="group grid h-6 min-w-6 cursor-pointer place-items-center"
-                                    >
-                                        <span
-                                            aria-hidden="true"
-                                            className={cn(
-                                                "block h-[7px] rounded-full transition-all duration-300 group-hover:bg-primary/70",
-                                                isCurrent ? "w-[22px] bg-primary" : "w-[7px] bg-border",
-                                            )}
-                                        />
-                                    </button>
+                                    <Tooltip key={getKey(item)} label={getTitle(item)}>
+                                        <button
+                                            type="button"
+                                            aria-label={`Show ${noun} ${index + 1}: ${getTitle(item)}`}
+                                            aria-current={isCurrent ? "true" : undefined}
+                                            onClick={() => go(index)}
+                                            className="group grid h-6 min-w-6 cursor-pointer place-items-center"
+                                        >
+                                            <span
+                                                aria-hidden="true"
+                                                className={cn(
+                                                    "block h-[7px] rounded-full transition-all duration-300 group-hover:bg-primary/70",
+                                                    isCurrent ? "w-[22px] bg-primary" : "w-[7px] bg-border",
+                                                )}
+                                            />
+                                        </button>
+                                    </Tooltip>
                                 );
                             })}
                         </div>
@@ -223,14 +227,16 @@ export const Carousel = <T,>({ label, noun, items, getKey, getTitle, renderItem,
                             {view.current + 1} of {count}
                         </span>
                     </div>
-                    <button
-                        type="button"
-                        aria-label={`Next ${noun}`}
-                        onClick={() => go(view.current + 1)}
-                        className={arrowButtonClass}
-                    >
-                        <ChevronRight size={20} aria-hidden="true" />
-                    </button>
+                    <Tooltip label={`Next ${noun}`}>
+                        <button
+                            type="button"
+                            aria-label={`Next ${noun}`}
+                            onClick={() => go(view.current + 1)}
+                            className={arrowButtonClass}
+                        >
+                            <ChevronRight size={20} aria-hidden="true" />
+                        </button>
+                    </Tooltip>
                 </div>
             )}
         </div>

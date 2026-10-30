@@ -82,6 +82,7 @@ Built to work with a keyboard, a screen reader and reduced motion:
 - Real links and buttons, a skip link, visible focus, 44px minimum targets, and menus and the carousel that hide what is out of reach (`inert`).
 - Reduced motion is honored everywhere: no star twinkle or drift, a flat carousel, and no scroll reveals.
 - Meaning never relies on color alone, and accent contrast is tested.
+- Icon-only controls (the palette button, carousel arrows and dots, the GitHub icon on a card) show a small label on mouse hover and keyboard focus, and Escape hides it. The label is for the eye only: each control already has an accessible name, so it is not read twice. Touch screens have no hover, so they do not show it.
 - Tests run axe against each section and the page.
 
 ## Quality checks and deployment

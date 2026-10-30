@@ -2,6 +2,7 @@ import { Github, Play } from "lucide-react";
 import { Chip, ChipList } from "./Chip";
 import { ExternalLink } from "./ExternalLink";
 import { Frame } from "./Frame";
+import { Tooltip } from "./Tooltip";
 import { cn } from "./lib/utils";
 import type { Project } from "@/data/projects";
 
@@ -65,13 +66,15 @@ export const ProjectCard = ({ project }: { project: Project }) => (
             </h3>
             <p className="mb-4 text-sm text-muted-foreground">{project.description}</p>
             {!project.comingSoon && (
-                <ExternalLink
-                    href={project.githubUrl}
-                    label={`${project.title} source code on GitHub`}
-                    className="mt-auto inline-flex w-fit rounded-full p-2 text-foreground/80 transition-colors duration-300 hover:text-primary"
-                >
-                    <Github size={20} aria-hidden="true" />
-                </ExternalLink>
+                <Tooltip label="Source code on GitHub" className="mt-auto w-fit">
+                    <ExternalLink
+                        href={project.githubUrl}
+                        label={`${project.title} source code on GitHub`}
+                        className="inline-flex rounded-full p-2 text-foreground/80 transition-colors duration-300 hover:text-primary"
+                    >
+                        <Github size={20} aria-hidden="true" />
+                    </ExternalLink>
+                </Tooltip>
             )}
         </div>
     </Frame>
