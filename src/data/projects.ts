@@ -102,10 +102,11 @@ const liveProjects: readonly LiveProject[] = [
     {
         id: "fintk",
         title: "FinTk",
-        description: "Full-stack Stock trends",
+        description: "Full-stack crypto market research: prices, official news, and a personal watchlist.",
         category: "applications",
-        tags: ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express", "C#"],
-        githubUrl: "https://github.com/ParseTK/FinTk/tree/main/frontend",
+        tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "FastAPI", "Python", "PostgreSQL"],
+        githubUrl: "https://github.com/ParseTK/FinTk",
+        ...demoVideo("fintk", "FinTk"),
     },
     {
         id: "photodemo",
