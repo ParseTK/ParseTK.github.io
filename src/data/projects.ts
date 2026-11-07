@@ -106,6 +106,7 @@ const liveProjects: readonly LiveProject[] = [
         category: "applications",
         tags: ["React", "TypeScript", "Tailwind CSS", "Node.js", "Express", "C#"],
         githubUrl: "https://github.com/ParseTK/FinTk/tree/main/frontend",
+        ...demoVideo("fintk", "FinTk"),
     },
     {
         id: "photodemo",

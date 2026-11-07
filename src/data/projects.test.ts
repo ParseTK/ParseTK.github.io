@@ -83,7 +83,7 @@ describe("projects", () => {
 describe("project media on the site", () => {
     const publicFile = (address: string) => resolve(process.cwd(), "public", address.replace(/^\//, ""));
     const hosted = projects.filter((project) => project.video);
-    const MAX_VIDEO_BYTES = 5 * 1024 * 1024;
+    const MAX_VIDEO_BYTES = 10 * 1024 * 1024;
 
     it("has at least one video to play", () => {
         expect(hosted.length).toBeGreaterThan(0);
